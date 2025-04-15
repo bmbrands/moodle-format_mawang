@@ -1,0 +1,103 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template format_mawang/local/content/tilesection
+
+    TODO describe template tilesection
+
+    Example context (json):
+    {
+        "testingonly-make-mustache-lint-happy": true
+    }
+}}
+{{#testingonly-make-mustache-lint-happy}}
+<ul>
+{{/testingonly-make-mustache-lint-happy}}
+<li id="section-{{num}}"
+    class="section course-section main tile{{!
+        }}{{#onlysummary}} section-summary{{/onlysummary}}{{!
+        }}{{#ishidden}} hidden{{/ishidden}}{{!
+        }}{{#iscurrent}} current{{/iscurrent}}{{!
+        }}{{#isstealth}} orphaned {{/isstealth}}{{!
+        }}{{#restrictionlock}} locked {{/restrictionlock}}"
+    data-sectionid="{{num}}"
+    data-sectionreturnid="{{sectionreturnid}}"
+    data-region="tilesection"
+    data-for="section"
+    data-id="{{id}}"
+    data-number="{{num}}"
+>
+    {{#restrictionlock}}
+        <div class="badge badge-warning badge-pill section-restricted-badge">
+            {{#str}}notavailable, format_mawang{{/str}}
+            <i class="icon fa fa-lock"></i>
+        </div>
+    {{/restrictionlock}}
+    <div class="course-section-header {{^restrictionlock}}tiletoggle{{/restrictionlock}} d-flex flex-column justify-content-end position-relative"
+        data-id="{{id}}"
+        data-number="{{num}}"
+        data-action="{{^restrictionlock}}tiletoggle{{/restrictionlock}}"
+        tabindex="0"
+        {{^restrictionlock}}role="button"{{/restrictionlock}}
+    >
+        <div class="section-image-background" style='background-image: url("{{sectionimage}}");' aria-hidden="true">
+        </div>
+        {{#header}}
+        {{$ core_courseformat/local/content/section/header }}
+            {{> format_mawang/local/content/section/tileheader }}
+        {{/ core_courseformat/local/content/section/header }}
+        {{/header}}
+
+        {{^restrictionlock}}
+        <div data-region="courseprogress" data-id="{{id}}"></div>
+        {{/restrictionlock}}
+    </div>
+</li>
+{{^restrictionlock}}
+<li id="section-content-{{num}}"
+    class="sectioncontent"
+    data-sectionid="{{num}}"
+    data-region="sectioncontent"
+    data-sectionreturnid="{{sectionreturnid}}"
+    data-for="section"
+    data-id="{{id}}"
+    data-number="{{num}}"
+>
+{{$ core_courseformat/local/content/section/content }}
+    <div class="tilecontent d-flex position-relative">
+        <button class="btn btn-close bg-light" data-action="tiletoggle" data-id="{{id}}" data-number="{{num}}" tabindex="0">
+            <span class="sr-only">{{#str}}close, format_mawang{{/str}}</span>
+            <span aria-hidden="true">&times;</span>
+        </button>
+        {{> format_mawang/local/content/section/orgcontent }}
+        {{^showaslink}}
+        <ul class="mawang-level-{{level}}" data-for="course_subsectionlist" data-parent="{{id}}">
+            {{#insertsubsection}}
+                {{> format_mawang/local/content/addsection}}
+            {{/insertsubsection}}
+            {{#subsections}}
+                {{> format_mawang/local/content/section }}
+            {{/subsections}}
+        </ul>
+        {{/showaslink}}
+    </div>
+{{/ core_courseformat/local/content/section/content }}
+</li>
+{{/restrictionlock}}
+{{#testingonly-make-mustache-lint-happy}}
+</ul>
+{{/testingonly-make-mustache-lint-happy}}
