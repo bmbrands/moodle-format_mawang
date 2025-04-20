@@ -18,6 +18,7 @@ namespace format_mawang\output\courseformat\content;
 
 use stdClass;
 use tool_monitor\output\managesubs\subs;
+use renderer_base;
 
 /**
  * Contains the section controls output class.
@@ -44,125 +45,46 @@ class section extends \core_courseformat\output\local\content\section {
         return 'format_mawang/local/content/section';
     }
 
-    /**
-     * Data exporter
+        /**
+     * Export this data so it can be used as the context for a mustache template.
      *
-     * @param \renderer_base $output
-     * @return stdClass
+     * @param renderer_base $output typically, the renderer that's calling this function
+     * @return stdClass data context for a mustache template
      */
-    public function export_for_template(\renderer_base $output): stdClass {
-        global $PAGE;
+    public function export_for_template(renderer_base $output): stdClass {
+        global $USER, $PAGE;
+
         $format = $this->format;
         $course = $format->get_course();
+        $section = $this->section;
 
-        $data = parent::export_for_template($output);
+        $summary = new $this->summaryclass($format, $section);
 
-        // For sections that are displayed as a link do not print list of cms or controls.
-        $showaslink = $this->section->collapsed == FORMAT_mawang_COLLAPSED
-            && $this->format->get_viewed_section() != $this->section->section;
-
-        $data->showaslink = $showaslink;
-        if ($showaslink) {
-            $data->cmlist = [];
-            $data->cmcontrols = '';
-        }
-
-        // Add subsections.
-        if (!$showaslink) {
-            $data->subsections = $this->section->section ? $this->get_subsections($output) : [];
-            $data->level = $this->level;
-        }
-
-        if ((!$course->showsection0title && $this->section->section === 0) ||
-                ($this->section->section !== 0 && $this->section->section === $this->format->get_viewed_section())) {
-            // Never collapse content of top section in single section view or
-            // when showing title of the top section is not shown.
-            $data->contentcollapsed = false;
-        }
-
-        if (!$PAGE->user_is_editing()) {
-            $data->collapsemenu = false;
-        }
-
-        $data->addsectionafter = false;
-        $data->insertsubsection = false;
-        if ($this->format->should_display_add_sub_section_link($this->section->parent)
-                && ($this->section->section != $this->format->get_viewed_section() || $this->section->section === 0)) {
-            // Display 'Add section' button after to insert after this section.
-            $data->addsectionafter = $this->export_add_section($output);
-        }
-        if ($this->section->section && $this->format->should_display_add_sub_section_link($this->section->section)) {
-            // Display 'Add section' button to insert a section as a first direct child of this section.
-            $data->insertsubsection = $this->export_add_section($output, $this->section->id);
-        }
-
-        $data->courseid = $course->id;
-        $data->editing = $PAGE->user_is_editing();
-        if ($this->level == 1) {
-            if ($this->section->section > 0 && $this->section->parent == 0) {
-                $data->sectionimage = $this->format->get_section_image($this->section->id);
-            }
-        } else {
-            $data->sectionimage = '';
-        }
-        $data->sectionformat = $this->format->get_format_options($this->section);
-
-        return $data;
-    }
-
-    /**
-     * Exporter for the 'Add section' link
-     *
-     * @param \renderer_base $output
-     * @param int $parentid
-     * @return stdClass
-     */
-    protected function export_add_section(\renderer_base $output, int $parentid = 0): stdClass {
-        $addsectionclass = $this->format->get_output_classname('content\\addsection');
-        /** @var \core_courseformat\output\local\content\addsection $addsection */
-        $addsection = new $addsectionclass($this->format);
-        $data = $addsection->export_for_template($output);
-        $data->insertparentid = $parentid;
-        return $data;
-    }
-
-    /**
-     * Subsections (recursive)
-     *
-     * @param \renderer_base $output
-     * @return array
-     */
-    protected function get_subsections(\renderer_base $output): array {
-        $modinfo = $this->format->get_modinfo();
-        $data = [];
-        foreach ($modinfo->get_section_info_all() as $section) {
-            if ($section->parent == $this->section->section) {
-                if ($this->format->is_section_visible($section)) {
-                    $instance = new static($this->format, $section);
-                    $instance->level++;
-                    $d = (array)($instance->export_for_template($output)) +
-                        $this->default_section_properties();
-                    $data[] = (object)$d;
-                }
-            }
-        }
-        return $data;
-    }
-
-    /**
-     * Since we display sections nested the values from the parent can propagate in templates
-     *
-     * @return array
-     */
-    protected function default_section_properties(): array {
-        return [
-            'collapsemenu' => false, 'summary' => [],
-            'insertafter' => false, 'numsections' => false,
-            'availability' => [], 'restrictionlock' => false, 'hasavailability' => false,
-            'isstealth' => false, 'ishidden' => false, 'notavailable' => false, 'hiddenfromstudents' => false,
-            'controlmenu' => [], 'cmcontrols' => '',
-            'singleheader' => [], 'header' => [],
-            'cmsummary' => [], 'onlysummary' => false, 'cmlist' => [],
+        $data = (object)[
+            'num' => $section->section ?? '0',
+            'id' => $section->id,
+            'sectionreturnnum' => $format->get_sectionnum(),
+            'insertafter' => false,
+            'summary' => $summary->export_for_template($output),
+            'highlightedlabel' => $format->get_section_highlighted_name(),
+            'sitehome' => $course->id == SITEID,
+            'editing' => $PAGE->user_is_editing(),
+            'displayonesection' => ($course->id != SITEID && $format->get_sectionid() == $section->id),
+            // Section name is used as data attribute is to facilitate behat locators.
+            'sectionname' => $format->get_section_name($section),
+            'sectionimage' => $this->format->get_section_image($this->section->id),
+            'courseid' => $course->id,
         ];
+
+        $haspartials = [];
+        $haspartials['availability'] = $this->add_availability_data($data, $output);
+        $haspartials['visibility'] = $this->add_visibility_data($data, $output);
+        $haspartials['editor'] = $this->add_editor_data($data, $output);
+        $haspartials['header'] = $this->add_header_data($data, $output);
+        $haspartials['cm'] = $this->add_cm_data($data, $output);
+        $this->add_format_data($data, $haspartials, $output);
+
+        return $data;
     }
+
 }

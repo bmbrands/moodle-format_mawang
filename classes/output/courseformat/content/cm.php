@@ -16,6 +16,9 @@
 
 namespace format_mawang\output\courseformat\content;
 
+use core_courseformat\base as course_format;
+use section_info;
+use cm_info;
 use renderer_base;
 use stdClass;
 /**
@@ -27,6 +30,9 @@ use stdClass;
  */
 class cm extends \core_courseformat\output\local\content\cm {
 
+    /** @var section_info the section object */
+    private $section;
+
     /**
      * Template name
      *
@@ -37,6 +43,18 @@ class cm extends \core_courseformat\output\local\content\cm {
         return 'format_mawang/local/content/cm';
     }
 
+        /**
+     * Constructor.
+     *
+     * @param course_format $format the course format
+     * @param section_info $section the section info
+     * @param cm_info $mod the course module ionfo
+     * @param array $displayoptions optional extra display options
+     */
+    public function __construct(course_format $format, section_info $section, cm_info $mod, array $displayoptions = []) {
+        parent::__construct($format, $section, $mod, $displayoptions);
+        $this->section = $section;
+    }
     /**
      * Export this data so it can be used as the context for a mustache template.
      *
@@ -60,7 +78,7 @@ class cm extends \core_courseformat\output\local\content\cm {
             'editing' => $PAGE->user_is_editing(),
             'sectionnum' => $this->section->section,
             'cmbulk' => !$mod->get_delegated_section_info(),
-            'duration' => '10'
+            'duration' => '20'
         ];
 
         // Add partial data segments.

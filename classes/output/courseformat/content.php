@@ -46,26 +46,17 @@ class content extends \core_courseformat\output\local\content {
     }
 
     /**
-     * Override the parent export_for_template, for Moodle 4.4 only
+     * Export this data so it can be used as the context for a mustache template (core/inplace_editable).
      *
-     * This function is almost identical to the
-     * \core_courseformat\output\local\content::export_for_template() from Moodle 4.3
-     * except for the $data->sectionreturn being null instead of 0 (otherwise JS does not work)
-     *
-     * @param \renderer_base $output
-     * @return stdClass
+     * @param \renderer_base $output typically, the renderer that's calling this function
+     * @return \stdClass data context for a mustache template
      */
-    public function export_for_template_override(\renderer_base $output): stdClass {
+    public function export_for_template(\renderer_base $output) {
         global $PAGE;
-
         $format = $this->format;
 
-        // Most formats uses section 0 as a separate section so we remove from the list.
         $sections = $this->export_sections($output);
         $initialsection = '';
-        if (!empty($sections)) {
-            $initialsection = array_shift($sections);
-        }
 
         $data = (object)[
             'title' => $format->page_title(), // This method should be in the course_format class.
@@ -73,12 +64,11 @@ class content extends \core_courseformat\output\local\content {
             'sections' => $sections,
             'format' => $format->get_format(),
             'sectionreturn' => null,
-            'editing' => $PAGE->user_is_editing(),
         ];
 
         // The single section format has extra navigation.
-        $singlesectionnum = $this->format->get_section_number();
-        if ($singlesectionnum) {
+        if ($this->format->get_sectionid()) {
+            $singlesectionnum = $this->format->get_sectionnum();
             if (!$PAGE->theme->usescourseindex) {
                 $sectionnavigation = new $this->sectionnavigationclass($format, $singlesectionnum);
                 $data->sectionnavigation = $sectionnavigation->export_for_template($output);
@@ -100,126 +90,8 @@ class content extends \core_courseformat\output\local\content {
             $bulkedittools = new $this->bulkedittoolsclass($format);
             $data->bulkedittools = $bulkedittools->export_for_template($output);
         }
-
         $data->cssurl = new \moodle_url('/course/format/mawang/scss/styles.css', ['cache' => time()]);
-
-        return $data;
-    }
-
-    /**
-     * Export this data so it can be used as the context for a mustache template (core/inplace_editable).
-     *
-     * @param \renderer_base $output typically, the renderer that's calling this function
-     * @return \stdClass data context for a mustache template
-     */
-    public function export_for_template(\renderer_base $output) {
-        global $CFG, $PAGE;
-        if ((int)($CFG->branch) >= 404) {
-            $data = $this->export_for_template_override($output);
-        } else {
-            $data = parent::export_for_template($output);
-        }
-
         $data->editing = $PAGE->user_is_editing();
-
-        foreach ($data->sections as &$section) {
-            $section->contentcollapsed = false;
-        }
-
-        // If we are on course view page for particular section.
-        if ($this->format->get_viewed_section()) {
-            // Do not display the "General" section when on a page of another section.
-            $data->initialsection = null;
-            // Add 'back to parent' control.
-            $section = $this->format->get_section($this->format->get_viewed_section());
-            if ($section->parent) {
-                $sr = $this->format->find_collapsed_parent($section->parent);
-                $url = $this->format->get_view_url($section->section, ['sr' => $sr]);
-                $data->backtosection = [
-                    'url' => $url->out(false),
-                    'sectionname' => $this->format->get_section_name($section->parent),
-                ];
-            } else {
-                $sr = 0;
-                $url = $this->format->get_view_url($section->section, ['sr' => $sr]);
-                $context = \context_course::instance($this->format->get_courseid());
-                $data->backtocourse = [
-                    'url' => $url->out(false),
-                    'coursename' => format_string($this->format->get_course()->fullname, true, ['context' => $context]),
-                ];
-            }
-
-            // Hide add section link below page content.
-            $data->numsections = false;
-        }
-        $data->mainsection = $this->format->get_viewed_section();
-
         return $data;
-    }
-
-    /**
-     * Export sections array data.
-     *
-     * TODO: this is an exact copy of the parent function because get_sections_to_display() is private
-     *
-     * @param \renderer_base $output typically, the renderer that's calling this function
-     * @return array data context for a mustache template
-     */
-    protected function export_sections(\renderer_base $output): array {
-
-        $format = $this->format;
-        $course = $format->get_course();
-        $modinfo = $this->format->get_modinfo();
-
-        // Generate section list.
-        $sections = [];
-        $stealthsections = [];
-        $numsections = $format->get_last_section_number();
-        foreach ($this->get_sections_to_display($modinfo) as $sectionnum => $thissection) {
-            // The course/view.php check the section existence but the output can be called
-            // from other parts so we need to check it.
-            if (!$thissection) {
-                throw new \moodle_exception('unknowncoursesection', 'error',
-                    course_get_url($course), format_string($course->fullname));
-            }
-
-            $section = new $this->sectionclass($format, $thissection);
-
-            if ($sectionnum > $numsections) {
-                // Activities inside this section are 'orphaned', this section will be printed as 'stealth' below.
-                if (!empty($modinfo->sections[$sectionnum])) {
-                    $stealthsections[] = $section->export_for_template($output);
-                }
-                continue;
-            }
-
-            if (!$format->is_section_visible($thissection)) {
-                continue;
-            }
-
-            $sections[] = $section->export_for_template($output);
-        }
-        if (!empty($stealthsections)) {
-            $sections = array_merge($sections, $stealthsections);
-        }
-        return $sections;
-    }
-
-    /**
-     * Return an array of sections to display.
-     *
-     * This method is used to differentiate between display a specific section
-     * or a list of them.
-     *
-     * @param course_modinfo $modinfo the current course modinfo object
-     * @return \section_info[] an array of section_info to display
-     */
-    private function get_sections_to_display(course_modinfo $modinfo): array {
-        $viewedsection = $this->format->get_viewed_section();
-        return array_values(array_filter($modinfo->get_section_info_all(), function($s) use ($viewedsection) {
-            return (!$s->section) ||
-                (!$viewedsection && !$s->parent && $this->format->is_section_visible($s)) ||
-                ($viewedsection && $s->section == $viewedsection);
-        }));
     }
 }
