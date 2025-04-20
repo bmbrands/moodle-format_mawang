@@ -101,6 +101,8 @@ class content extends \core_courseformat\output\local\content {
             $data->bulkedittools = $bulkedittools->export_for_template($output);
         }
 
+        $data->cssurl = new \moodle_url('/course/format/mawang/scss/styles.css', ['cache' => time()]);
+
         return $data;
     }
 

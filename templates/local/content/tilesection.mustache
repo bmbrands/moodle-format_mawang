@@ -56,15 +56,21 @@
     >
         <div class="section-image-background" style='background-image: url("{{sectionimage}}");' aria-hidden="true">
         </div>
-        {{#header}}
-        {{$ core_courseformat/local/content/section/header }}
-            {{> format_mawang/local/content/section/tileheader }}
-        {{/ core_courseformat/local/content/section/header }}
-        {{/header}}
-
         {{^restrictionlock}}
         <div data-region="courseprogress" data-id="{{id}}"></div>
         {{/restrictionlock}}
+    </div>
+    <div class="sectioncardbody">
+        {{#header}}
+            {{$ core_courseformat/local/content/section/header }}
+                {{> format_mawang/local/content/section/tileheader }}
+            {{/ core_courseformat/local/content/section/header }}
+        {{/header}}
+        {{#summary}}
+        {{$ core_courseformat/local/content/section/summary }}
+            {{> core_courseformat/local/content/section/summary }}
+        {{/ core_courseformat/local/content/section/summary }}
+        {{/summary}}
     </div>
 </li>
 {{^restrictionlock}}

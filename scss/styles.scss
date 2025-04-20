@@ -1,4 +1,6 @@
 /*! stylelint-disable */
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
 .course-content ul.mawang {
     list-style: none;
     padding: 0;
@@ -95,7 +97,7 @@
         margin: 0 0.5rem;
         padding: 0;
         max-width: 100%;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
         grid-template-rows: auto;
 
         & > li.sectioncontent {
@@ -108,6 +110,10 @@
             border: 1px solid #cdcaca;
             border-radius: 0.5rem;
             padding: 1rem;
+        }
+
+        .sectioncardbody {
+            padding: 1rem 0.75rem;
         }
 
         .tilecontent > div > .icons-collapse-expand {
@@ -128,10 +134,11 @@
         & > li.section {
             position: relative;
             margin: 0;
-            background-color: #f9f9f9;
-            border: 0;
+            border: 1px solid $gray-200;
             border-radius: 0.5rem;
             padding: 0;
+            max-height: 340px;
+            height: 340px;
 
             .sectionprogress {
                 top: 0.25rem;
@@ -157,8 +164,9 @@
             > .course-section-header {
                 padding: 1.5rem 1rem;
                 flex: 1 0 100%;
-                border-radius: 0.5rem;
-                min-height: 300px;
+                border-top-left-radius: 0.5rem;
+                border-top-right-radius: 0.5rem;
+                min-height: 140px;
                 position: relative;
                 overflow: hidden;
 
@@ -172,7 +180,8 @@
 
                 .section-image-background {
                     position: absolute;
-                    border-radius: 0.5rem;
+                    border-top-left-radius: 0.5rem;
+                    border-top-right-radius: 0.5rem;
                     top: 0;
                     left: 0;
                     right: 0;
@@ -180,7 +189,6 @@
                     background-size: cover;
                     background-position: center;
                     background-repeat: no-repeat;
-                    border-radius: 0.5rem;
                     pointer-events: none;
                     transition: filter 0.3s, transform 0.3s;
                 }
