@@ -84,8 +84,61 @@
 }}
 {{> format_mawang/local/navigate_back_to }}
 <link rel="stylesheet" type="text/css" href="{{{cssurl}}}">
+{{#secondarymoremenu}}
+    <div class="secondary-navigation d-print-none">
+        {{> core/moremenu}}
+    </div>
+{{/secondarymoremenu}}
+
+{{#tabcontent}}
+    <div class="customfield-acc" id="tabcontent">
+        {{#fields}}
+            <div class="card">
+                <div class="card-header d-flex" id="heading{{shortname}}">
+                    <a role="button" data-toggle="collapse"
+                        href="#coll{{shortname}}"
+                        id="hcoll{{shortname}}"
+                        aria-expanded="true"
+                        aria-controls="coll{{shortname}}"
+                        class="btn btn-icon mr-1 icons-collapse-expand justify-content-center stretched-link"
+                        aria-label="{{name}}">
+                        <span class="expanded-icon icon-no-margin p-2" title="{{#str}} collapse, core {{/str}}">
+                            {{#pix}} t/expandedchevron, core {{/pix}}
+                        </span>
+                        <span class="collapsed-icon icon-no-margin p-2" title="{{#str}} expand, core {{/str}}">
+                            <span class="dir-rtl-hide">{{#pix}} t/collapsedchevron, core {{/pix}}</span>
+                            <span class="dir-ltr-hide">{{#pix}} t/collapsedchevron_rtl, core {{/pix}}</span>
+                        </span>
+                    </a>
+                    <div class="sectionid-{{shortname}}-title card-header-text d-flex align-self-stretch align-items-center mb-0"
+                        id="coursecontentsection{{shortname}}" data-for="section_title" data-id="{{shortname}}" data-number="{{shortname}}">
+                        {{{name}}}
+                    </div>
+                </div>
+
+                <div id="coll{{shortname}}" class="collapse show" aria-labelledby="heading{{shortname}}">
+                    <div class="card-body">
+                        {{{value}}}
+                    </div>
+                </div>
+            </div>
+        {{/fields}}
+    </div>
+{{/tabcontent}}
+{{^tabcontent}}
+{{^singlesection}}
+<div class="course-warning my-5">
+    <div class="alert alert-info" role="alert">
+        <span class="iconwrapper icon-no-margin text-white">{{#pix}} i/info, core {{/pix}}</span>
+        This course starts on Monday. You can view all of the course content now, but you will only be able to access the discussion forums on the scheduled day from 00:05 UTC*
+    </div>
+</div>
+
+<h3 class="my-5">{{#str}}lessons, format_mawang{{/str}}</h3>
+{{/singlesection}}
 <div id="{{uniqid}}-course-format" data-mawang-accordion="{{{accordion}}}"
         data-mawang-mainsection="{{mainsection}}">
+
     <h2 class="accesshide">{{{title}}}</h2>
     {{{completionhelp}}}
     <ul class="{{format}} mawang-level-0" data-for="course_sectionlist">
@@ -109,6 +162,12 @@
             </li>
         {{/editing}}
     </ul>
+    {{^singlesection}}
+        <div class="extracoursecontent">
+            <h3 class="my-5">{{#str}}coursetutor, format_mawang{{/str}}</h3>
+            {{{teacherprofile}}}
+        </div>
+    {{/singlesection}}
     {{#hasnavigation}}
         <div class="single-section">
             {{#sectionnavigation}}
@@ -120,7 +179,9 @@
                 {{/singlesection}}
             </ul>
             {{#sectionselector}}
-                {{> format_mawang/local/content/section }}
+                {{$ format_mawang/local/content/sectionselector }}
+                    {{> format_mawang/local/content/sectionselector }}
+                {{/ format_mawang/local/content/sectionselector }}
             {{/sectionselector}}
         </div>
     {{/hasnavigation}}
@@ -130,6 +191,7 @@
         {{/ core_courseformat/local/content/bulkedittools}}
     {{/bulkedittools}}
 </div>
+{{/tabcontent}}
 {{#js}}
     require(['format_mawang/local/content'], function(component) {
         component.init('{{uniqid}}-course-format', {}, {{sectionreturn}});
@@ -140,7 +202,7 @@
     require(['format_mawang/local/tiles'], function(component) {
         component.init();
     });
-    require(['format_mawang/local/content/sectionprogress'], function(component) {
+    require(['format_mawang/local/content/progress'], function(component) {
         component.init('{{uniqid}}-course-format', {});
     });
 {{/js}}

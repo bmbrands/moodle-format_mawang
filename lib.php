@@ -28,6 +28,7 @@ require_once($CFG->dirroot. '/course/format/lib.php');
 use format_mawang\constants;
 use core\output\inplace_editable;
 
+
 define('FORMAT_mawang_COLLAPSED', 1);
 define('FORMAT_mawang_EXPANDED', 0);
 
@@ -50,6 +51,13 @@ class format_mawang extends core_courseformat\base {
      */
     public function __construct($format, $courseid) {
         global $PAGE;
+
+        // Need to add this bodyclass to hide blocks when custom fields tab is active.
+        $tab = optional_param('tab', '', PARAM_INT);
+        if ($tab) {
+            $PAGE->add_body_class('has-customfields-tab');
+        }
+
         if (get_config('format_mawang', 'courseindexautoclose')) {
             if ($PAGE->pagetype == 'course-view') {
                 set_user_preference('drawer-open-index', false);
@@ -69,6 +77,7 @@ class format_mawang extends core_courseformat\base {
                 set_user_preference('drawer-open-block', true);
             }
         }
+
         parent::__construct($format, $courseid);
     }
 
@@ -78,6 +87,7 @@ class format_mawang extends core_courseformat\base {
      * @return bool
      */
     public function uses_sections() {
+
         return true;
     }
 
@@ -202,46 +212,6 @@ class format_mawang extends core_courseformat\base {
         } else {
             return (int)$section;
         }
-    }
-
-    /**
-     * The URL to use for the specified course (with section).
-     *
-     * @param int|stdClass $section Section object from database or just field course_sections.section
-     *     if omitted the course view page is returned
-     * @param array $options options for view URL. At the moment core uses:
-     *     'navigation' (bool) if true and section has no separate page, the function returns null
-     *     'sr' (int) used by multipage formats to specify to which section to return
-     * @return null|moodle_url
-     */
-    public function get_view_url($section, $options = []) {
-        $url = new moodle_url('/course/view.php', ['id' => $this->courseid]);
-
-        $sectionno = $this->resolve_section_number($section);
-        $section = $this->get_section($sectionno);
-        if ($sectionno && !$this->is_section_visible($section)) {
-            return empty($options['navigation']) ? $url : null;
-        }
-
-        if (array_key_exists('sr', $options)) {
-            // Return to the page for section with number $sr.
-            $url->param('section', $options['sr']);
-            if ($sectionno) {
-                $url->set_anchor('section-'.$sectionno);
-            }
-        } else if ($sectionno) {
-            // Check if this section has separate page.
-            if ($section->collapsed == FORMAT_mawang_COLLAPSED) {
-                $url->param('section', $section->section);
-                return $url;
-            }
-            // Find the parent (or grandparent) page that is displayed on separate page.
-            if ($parent = $this->find_collapsed_parent($section->parent)) {
-                $url->param('section', $parent);
-            }
-            $url->set_anchor('section-'.$sectionno);
-        }
-        return $url;
     }
 
     /**
@@ -492,6 +462,10 @@ class format_mawang extends core_courseformat\base {
                     'default' => (bool)get_config('format_mawang', 'cmbacklink'),
                     'type' => PARAM_BOOL,
                 ],
+                'coursedisplay' => array(
+                    'default' => $courseconfig->coursedisplay ?? COURSE_DISPLAY_SINGLEPAGE,
+                    'type' => PARAM_INT,
+                ),
             ];
         }
         if ($foreditform && !isset($courseformatoptions['showsection0title']['label'])) {
@@ -516,6 +490,18 @@ class format_mawang extends core_courseformat\base {
                     'label' => new lang_string('cmbacklink', 'format_mawang'),
                     'element_type' => 'advcheckbox',
                 ],
+                'coursedisplay' => array(
+                    'label' => new lang_string('coursedisplay'),
+                    'element_type' => 'select',
+                    'element_attributes' => array(
+                        array(
+                            COURSE_DISPLAY_SINGLEPAGE => new lang_string('coursedisplay_single'),
+                            COURSE_DISPLAY_MULTIPAGE => new lang_string('coursedisplay_multi')
+                        )
+                    ),
+                    'help' => 'coursedisplay',
+                    'help_component' => 'moodle',
+                ),
             ];
             $courseformatoptions = array_merge_recursive($courseformatoptions, $courseformatoptionsedit);
         }
@@ -578,17 +564,6 @@ class format_mawang extends core_courseformat\base {
      */
     public function inplace_editable_render_section_name($section, $linkifneeded = true,
             $editable = null, $edithint = null, $editlabel = null) {
-        if (empty($edithint)) {
-            $edithint = new lang_string('editsectionname', 'format_mawang');
-        }
-        if (empty($editlabel)) {
-            $title = get_section_name($section->course, $section);
-            $editlabel = new lang_string('newsectionname', 'format_mawang', $title);
-        }
-        $section = $this->get_section($section);
-        if ($linkifneeded && $section->collapsed != FORMAT_mawang_COLLAPSED) {
-            $linkifneeded = false;
-        }
         return parent::inplace_editable_render_section_name($section, $linkifneeded, $editable, $edithint, $editlabel);
     }
 
@@ -1618,20 +1593,6 @@ class format_mawang extends core_courseformat\base {
     }
 
     /**
-     * Little hack to force the boost breadcrumb to show the course sections.
-     */
-    public function get_course() {
-        global $PAGE;
-        $course = parent::get_course();
-        if ($PAGE->context->contextlevel == CONTEXT_MODULE) {
-            $course->coursedisplay = COURSE_DISPLAY_MULTIPAGE;
-        } else {
-            $course->coursedisplay = COURSE_DISPLAY_SINGLEPAGE;
-        }
-        return $course;
-    }
-
-    /**
      * Returns the default section image URL
      * @return string
      */
@@ -1652,6 +1613,93 @@ class format_mawang extends core_courseformat\base {
         }
         return $OUTPUT->image_url('defaultsectionimage', 'format_mawang');
     }
+
+    /**
+     * Get the content of a course tab.
+     * the tab is related to a category of course custom fields.
+     * @param int $tab
+     * @return array Of objects grouped by category, examlpe
+     * [
+     *   ['category' => ['name' => 'Category 1', 'shortname' => 'cat1', 'fields' => [
+     *      ['name' => 'Field 1', 'shortname' => 'field1', 'value' => 'Value 1'],
+     *     ['name' => 'Field 2', 'shortname' => 'field2', 'value' => 'Value 2'],
+     *   ]],
+     *   ['category' => ['name' => 'Category 2', 'shortname' => 'cat2', 'fields' => [...
+     * 
+     */
+    public function get_customfields_tab_content(int $tab): array {
+        $handler = \core_course\customfield\course_handler::create();
+        $datas = $handler->get_instance_data($this->courseid);
+        $metadata = [];
+        foreach ($datas as $data) {
+            if (empty($data->get_value())) {
+                continue;
+            }
+            $cat = $data->get_field()->get_category()->get('name');
+            $catid = $data->get_field()->get_category()->get('id');
+            if ($catid != $tab) {
+                continue;
+            }
+            $shortnames = $data->get_field()->get('shortname');
+            $fullname = $data->get_field()->get('name');
+            $value = $data->get_value();
+            if (!isset($metadata[$cat])) {
+                $metadata[$cat] = [
+                    'name' => $cat,
+                    'fields' => [],
+                ];
+            }
+            $metadata[$cat]['fields'][] = [
+                'name' => $fullname,
+                'shortname' => $shortnames,
+                'value' => $value,
+            ];
+        }
+        return array_values($metadata);
+    }
+
+    /**
+     * Get the duration of a course module in minutes.
+     * @param int $cmid
+     * @return int
+     */
+    public function get_cm_duration(int $cmid): int {
+        $handler = \local_modcustomfields\customfield\mod_handler::create();
+        $datas = $handler->get_instance_data($cmid);
+        $duration = 0;
+        foreach ($datas as $data) {
+            $field = $data->get_field();
+            $shortname = $field->get('shortname');
+            $value = $data->get_value();
+            if ($shortname == 'duration') {
+                $duration = Intval($value);
+            }
+        }
+        return $duration;
+    }
+
+    /**
+     * Get the displayable duration of something.
+     *
+     * Reformat the number of seconds to a human readable format.
+     * So an input of 90 will return 1h 30m.
+     *
+     * @param int $minutes
+     * @return string
+     */
+    public function durationstring(int $minutes): string {
+        $hours = floor($minutes / 60);
+        $minutes = $minutes % 60;
+        $displayable = '';
+        if ($hours > 0) {
+            $displayable .= $hours . 'h ';
+        }
+        if ($minutes > 0) {
+            $displayable .= $minutes . 'm';
+        }
+        return trim($displayable);
+    }
+
 }
 
 /**

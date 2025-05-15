@@ -89,9 +89,6 @@
 <div>
 {{/testingonly-make-mustache-lint-happy}}
 
-{{#singleheader}}
-{{> format_mawang/local/content/section/header }}
-{{/singleheader}}
 {{#header}}
 {{> format_mawang/local/content/section/header }}
 {{/header}}
@@ -137,11 +134,7 @@
         {{/ core_courseformat/local/content/section/availability }}
     {{/availability}}
 </div>
-{{#cmsummary}}
-    {{$ core_courseformat/local/content/section/cmsummary }}
-        {{> core_courseformat/local/content/section/cmsummary }}
-    {{/ core_courseformat/local/content/section/cmsummary }}
-{{/cmsummary}}
+
 {{#cmlist}}
     {{$ format_mawang/local/content/section/cmlist }}
         {{> format_mawang/local/content/section/cmlist }}
@@ -155,17 +148,6 @@
         {{/ core_courseformat/local/content/addsection}}
     {{/numsections}}
 {{/insertafter}}
-
-{{^showaslink}}
-<ul class="mawang-level-{{level}}" data-for="course_subsectionlist" data-parent="{{id}}">
-    {{#insertsubsection}}
-        {{> format_mawang/local/content/addsection}}
-    {{/insertsubsection}}
-    {{#subsections}}
-        {{> format_mawang/local/content/section }}
-    {{/subsections}}
-</ul>
-{{/showaslink}}
 
 {{#testingonly-make-mustache-lint-happy}}
 </div>

@@ -46,6 +46,12 @@
       border: 0; }
       .course-content ul.mawang li.section .section-modchooser-link.activity-add .pluscontainer {
         display: none !important; }
+  .course-content ul.mawang .activity-item .activity-grid {
+    grid-template-areas: "icon   name          groupmode      completion    actions" "icon   visibility    groupmode      completion    actions" "icon   dates         groupmode      completion    actions" "icon   altcontent    altcontent     altcontent    altcontent" "icon   afterlink     afterlink      afterlink     afterlink" "icon   availability  availability   availability  availability" "icon   duration     duration       duration      duration"; }
+  .course-content ul.mawang .activity-duration {
+    grid-area: duration;
+    grid-column: 2;
+    margin-top: 0.5rem; }
   .course-content ul.mawang .changenumsections {
     margin-bottom: 1rem;
     margin-top: 1rem;
@@ -73,7 +79,15 @@
       .course-content ul.mawang .tilesections > li.sectioncontent.show {
         display: block; }
     .course-content ul.mawang .tilesections .sectioncardbody {
-      padding: 1rem 0.75rem; }
+      padding: 1rem 0.75rem;
+      flex: 1 1 100%; }
+      .course-content ul.mawang .tilesections .sectioncardbody .totalduration {
+        position: absolute;
+        bottom: 0.75rem;
+        left: 0.75rem;
+        padding: 6px 8px;
+        background-color: #F8F8F8;
+        border-radius: 10px; }
     .course-content ul.mawang .tilesections .tilecontent > div > .icons-collapse-expand {
       display: none; }
     .course-content ul.mawang .tilesections .tilecontent > .btn-close {
@@ -90,7 +104,9 @@
       border-radius: 0.5rem;
       padding: 0;
       max-height: 340px;
-      height: 340px; }
+      height: 340px;
+      display: flex;
+      flex-direction: column; }
       .course-content ul.mawang .tilesections > li.section .sectionprogress {
         top: 0.25rem;
         right: 0.25rem; }
@@ -106,15 +122,27 @@
         max-width: 100%;
         overflow: hidden;
         word-wrap: break-word; }
+        .course-content ul.mawang .tilesections > li.section .tiletext a:hover, .course-content ul.mawang .tilesections > li.section .tiletext a:focus {
+          text-decoration: none; }
+        .course-content ul.mawang .tilesections > li.section .tiletext a::after {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          z-index: 1;
+          pointer-events: auto;
+          content: "";
+          background-color: rgba(0, 0, 0, 0); }
       .course-content ul.mawang .tilesections > li.section > .course-section-header {
         padding: 1.5rem 1rem;
         flex: 1 0 100%;
         border-top-left-radius: 0.5rem;
         border-top-right-radius: 0.5rem;
-        min-height: 140px;
+        height: 140px;
+        max-height: 140px;
         position: relative;
-        overflow: hidden;
-        transition: filter 0.3s; }
+        overflow: hidden; }
         .course-content ul.mawang .tilesections > li.section > .course-section-header h3.sectionname {
           color: #fff;
           background-color: rgba(0, 43, 92, 0.92);
@@ -137,13 +165,6 @@
         .course-content ul.mawang .tilesections > li.section > .course-section-header:hover, .course-content ul.mawang .tilesections > li.section > .course-section-header:focus {
           cursor: auto;
           outline: 0; }
-        .course-content ul.mawang .tilesections > li.section > .course-section-header.tiletoggle:hover, .course-content ul.mawang .tilesections > li.section > .course-section-header.tiletoggle:focus {
-          cursor: pointer;
-          outline: 0;
-          box-shadow: none; }
-          .course-content ul.mawang .tilesections > li.section > .course-section-header.tiletoggle:hover .section-image-background, .course-content ul.mawang .tilesections > li.section > .course-section-header.tiletoggle:focus .section-image-background {
-            filter: brightness(1.05);
-            transform: scale(1.03); }
       .course-content ul.mawang .tilesections > li.section.show > .course-section-header h3 {
         border-left: 4px solid #007bff; }
       .course-content ul.mawang .tilesections > li.section.locked > .course-section-header {
@@ -156,32 +177,52 @@
           display: none; }
         .course-content ul.mawang .tilesections > li.section.locked > .course-section-header:hover:before, .course-content ul.mawang .tilesections > li.section.locked > .course-section-header:focus:before {
           border: 0; }
+      .course-content ul.mawang .tilesections > li.section .section-image-background {
+        transition: filter 0.3s; }
+      .course-content ul.mawang .tilesections > li.section:hover, .course-content ul.mawang .tilesections > li.section:focus {
+        cursor: pointer;
+        outline: 0;
+        box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.25); }
+        .course-content ul.mawang .tilesections > li.section:hover .section-image-background, .course-content ul.mawang .tilesections > li.section:focus .section-image-background {
+          filter: brightness(1.05); }
     .course-content ul.mawang .tilesections .btn-icon {
       background-color: #fff; }
-  .course-content ul.mawang .progress-ring__circle {
-    transition: 0.35s stroke-dashoffset;
-    transform: rotate(-90deg);
-    transform-origin: 50% 50%;
-    stroke-dashoffset: 20;
-    stroke: #007bff;
-    stroke-width: 6;
-    fill: transparent; }
-  .course-content ul.mawang .progress-ring__back {
-    fill: rgba(254, 254, 254, 0.9); }
-  .course-content ul.mawang .progress-ring__text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1rem;
-    font-weight: 700;
-    color: rgba(0, 43, 92, 0.92); }
   .course-content ul.mawang .mawang-level-0,
   .course-content ul.mawang .mawang-level-1 {
     padding-left: 0; }
   @media screen and (max-width: 600px) {
     .course-content ul.mawang .activity-item:not(.activityinline) {
       border: 0; } }
+
+.format-mawang .separator {
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+
+.format-mawang .separator-icon {
+  font-size: 0.3rem; }
+
+.customfield-acc {
+  color: #000; }
+  .customfield-acc .card {
+    border: 1px solid var(--light);
+    border-radius: 0.5rem;
+    margin-bottom: 1rem; }
+    .customfield-acc .card .card-header,
+    .customfield-acc .card .card-header:first-child {
+      padding: 0.5rem;
+      border-top-left-radius: 0.5rem;
+      border-top-right-radius: 0.5rem; }
+    .customfield-acc .card .card-header-text {
+      font-weight: 600;
+      color: #5331A3; }
+    .customfield-acc .card .btn.btn-icon.icons-collapse-expand {
+      color: #5331A3;
+      background-color: transparent; }
+      .customfield-acc .card .btn.btn-icon.icons-collapse-expand:hover, .customfield-acc .card .btn.btn-icon.icons-collapse-expand:focus {
+        outline: 0;
+        color: #5331A3;
+        background-color: transparent; }
 
 .format-mawang .form-filetypes-descriptions li {
   font-size: 0;
@@ -194,5 +235,21 @@
 
 body.format-mawang.limitedwidth #page.drawers .main-inner {
   max-width: 1280px; }
+
+.extracoursecontent .teacherinfo {
+  display: flex; }
+  .extracoursecontent .teacherinfo .teacherinfo-picture img {
+    border-radius: 50%;
+    width: 75px;
+    height: 75px; }
+  .extracoursecontent .teacherinfo .teacherinfo-description {
+    margin-left: 1rem; }
+
+.mawang-progress-container {
+  min-width: 250px; }
+  .mawang-progress-container .progress {
+    height: 10px; }
+  .mawang-progress-container .progress-text {
+    font-size: 0.8rem; }
 
 /*# sourceMappingURL=styles.css.map */

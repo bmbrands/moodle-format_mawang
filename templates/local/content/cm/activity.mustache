@@ -99,12 +99,6 @@
             </div>
         {{/hasdates}}
     {{/dates}}
-    {{! Duration}}
-    {{#duration}}
-    <div class="badge badge-secondary activity-duration me-sm-2">
-        {{{duration}}}
-    </div>
-    {{/duration}}
 
     {{! Extras }}
     {{#hasextras}}
@@ -181,4 +175,19 @@
             {{{afterlink}}}
         </div>
     {{/afterlink}}
+
+    {{! Duration}}
+    {{#duration}}
+        <div class="activity-duration d-flex me-sm-2">
+            <div class="modname">
+                {{{modname}}}
+            </div>
+            <div class="separator px-2">
+                <i class="fa fa-circle separator-icon"></i>
+            </div>
+            <div class="duration">
+                {{{duration}}}
+            </div>
+        </div>
+    {{/duration}}
 </div>

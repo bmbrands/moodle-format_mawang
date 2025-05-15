@@ -24,7 +24,6 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-use core_reportbuilder\external\columns\sort\get;
 use format_mawang\constants;
 
 if ($ADMIN->fulltree) {

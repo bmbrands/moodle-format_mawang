@@ -57,6 +57,7 @@ $string['showcollapsed'] = 'Display as a link';
 $string['showexpanded'] = 'Display on the same page';
 $string['showfromothers'] = 'Show section';
 $string['showsection0title'] = 'Show top section title';
+$string['showsection0title_help'] = 'Show the title of the top section on the course page.';
 
 // New strings for the Grid tiles.
 $string['sectionimage'] = 'Section image';
@@ -70,3 +71,9 @@ $string['courseindexautoclose'] = 'Automatically close the course index on the c
 $string['courseindexautoclosedesc'] = 'When enabled, the course index will be automatically closed on the course page and opened on the activity page.';
 $string['autoblockopen'] = 'Automatically open the block area for these activities';
 $string['autoblockopendesc'] = 'Select the activities for which the block area should be automatically opened.';
+
+$string['reading'] = '{$a} reading';
+$string['activity'] = '{$a} activity';
+$string['progress'] = '{$a}% Progress';
+$string['lessons'] = 'Lessons';
+$string['coursetutor'] = 'Meet the course tutor';

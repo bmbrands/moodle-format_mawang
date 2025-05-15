@@ -35,8 +35,10 @@ export default class Component extends BaseComponent {
         this.name = 'courseprogress';
         // Default query selectors.
         this.selectors = {
-            CONTAINER: `[data-region="courseprogress"]`,
+            PROGRESSCONTAINER: `[data-region="courseprogresscontainer"]`,
+            DESTINATION: `[data-region="mawang-extra"]`,
         };
+
         // Default classes to toggle on refresh.
         this.classes = {
             PROGRESSHIDDEN: 'd-none',
@@ -86,7 +88,12 @@ export default class Component extends BaseComponent {
         if (this.reactive.isEditing) {
             return;
         }
-        const containers = this.getElements(this.selectors.CONTAINER);
+
+        const container = document.querySelector(this.selectors.PROGRESSCONTAINER);
+
+        if (!container) {
+            return;
+        }
         const items = this.reactive.getExporter().allItemsArray(this.reactive.state);
         const exporter = this.reactive.getExporter();
         if (items.length === 0) {
@@ -101,40 +108,19 @@ export default class Component extends BaseComponent {
             }
         });
 
-        const findRootParent = (sections, parentid) => {
-            const parent = sections.find((section) => section.id == parentid);
-            if (parent.parentid) {
-                return findRootParent(sections, parent.parentid);
-            } else {
-                return parent.id;
-            }
-        };
         allsections.forEach((section) => {
-            if (section.parentid !== 0) {
-                const rootid = findRootParent(allsections, section.parentid);
-                if (!rootsections[rootid]) {
-                    rootsections[rootid] = {
-                        total: 0,
-                        completed: 0,
-                        subsections: [section.id],
-                    };
-                } else {
-                    rootsections[rootid].subsections.push(section.id);
-                }
-            } else {
-                rootsections[section.id] = {
-                    total: 0,
-                    completed: 0,
-                    subsections: [],
-                };
-            }
+            rootsections[section.id] = {
+                total: 0,
+                completed: 0,
+                subsections: [],
+            };
         });
 
         items.every((item) => {
             if (item.type == 'cm') {
                 const cm = state.cm.get(item.id);
                 // Find the root section of the cm.
-                const rootid = findRootParent(allsections, cm.sectionid);
+                const rootid = cm.sectionid;
                 if (cm.visible === false || cm.uservisible === false) {
                     return true;
                 }
@@ -151,31 +137,29 @@ export default class Component extends BaseComponent {
             return true;
         });
 
-        containers.forEach(async(container) => {
-            if (rootsections[container.dataset.id]) {
-                const completed = rootsections[container.dataset.id].completed;
-                const total = rootsections[container.dataset.id].total;
-                container.dataset.subsections = rootsections[container.dataset.id].subsections.join(',');
-                if (total === 0) {
-                    return;
-                }
+        if (rootsections[container.dataset.id]) {
+            const completed = rootsections[container.dataset.id].completed;
+            const total = rootsections[container.dataset.id].total;
+            container.dataset.subsections = rootsections[container.dataset.id].subsections.join(',');
+            if (total === 0) {
+                return;
+            }
 
-                const progress = Math.round((completed / total) * 100);
-                const circumference = 2 * Math.PI * 35;
-                const dashoffset = circumference - (progress / 100) * circumference;
+            const progress = Math.round((completed / total) * 100);
+
+            if (progress !== container.dataset.progress) {
 
                 const {html, js} = await Templates.renderForPromise('format_mawang/local/content/progress',
                     {
                         'progress': progress,
-                        'dashoffset': dashoffset,
-                        'circumference': circumference,
-                        'completed': completed,
-                        'total': total
+                        'sectionid': container.dataset.id,
                     }
                 );
-                Templates.replaceNodeContents(container, html, js);
+
+                Templates.replaceNode(container, html, js);
             }
-        });
+
+        }
     }
 
     /**

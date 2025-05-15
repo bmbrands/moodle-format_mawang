@@ -47,18 +47,18 @@
             <i class="icon fa fa-lock"></i>
         </div>
     {{/restrictionlock}}
+
     <div class="course-section-header {{^restrictionlock}}tiletoggle{{/restrictionlock}} d-flex flex-column justify-content-end position-relative"
+    {{^multipage}}
         data-id="{{id}}"
         data-number="{{num}}"
         data-action="{{^restrictionlock}}tiletoggle{{/restrictionlock}}"
         tabindex="0"
         {{^restrictionlock}}role="button"{{/restrictionlock}}
+    {{/multipage}}
     >
         <div class="section-image-background" style='background-image: url("{{sectionimage}}");' aria-hidden="true">
         </div>
-        {{^restrictionlock}}
-        <div data-region="courseprogress" data-id="{{id}}"></div>
-        {{/restrictionlock}}
     </div>
     <div class="sectioncardbody">
         {{#header}}
@@ -66,11 +66,21 @@
                 {{> format_mawang/local/content/section/tileheader }}
             {{/ core_courseformat/local/content/section/header }}
         {{/header}}
+        {{#cmsummary}}
+            {{$ format_mawang/local/content/section/cmsummary }}
+                {{> format_mawang/local/content/section/cmsummary }}
+            {{/ format_mawang/local/content/section/cmsummary }}
+        {{/cmsummary}}
         {{#summary}}
         {{$ core_courseformat/local/content/section/summary }}
             {{> core_courseformat/local/content/section/summary }}
         {{/ core_courseformat/local/content/section/summary }}
         {{/summary}}
+        {{#cmsummary.totalduration}}
+            <div class="totalduration ma-small">
+                {{{.}}}
+            </div>
+        {{/cmsummary.totalduration}}
     </div>
 </li>
 {{^restrictionlock}}
@@ -95,9 +105,6 @@
             {{#insertsubsection}}
                 {{> format_mawang/local/content/addsection}}
             {{/insertsubsection}}
-            {{#subsections}}
-                {{> format_mawang/local/content/section }}
-            {{/subsections}}
         </ul>
         {{/showaslink}}
     </div>

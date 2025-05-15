@@ -67,6 +67,7 @@ class cm extends \core_courseformat\output\local\content\cm {
         $mod = $this->mod;
         $displayoptions = $this->displayoptions;
 
+        $duration = $this->format->get_cm_duration($mod->id);
         $data = (object)[
             'grouping' => $mod->get_grouping_label($displayoptions['textclasses']),
             'modname' => get_string('pluginname', 'mod_' . $mod->modname),
@@ -78,7 +79,7 @@ class cm extends \core_courseformat\output\local\content\cm {
             'editing' => $PAGE->user_is_editing(),
             'sectionnum' => $this->section->section,
             'cmbulk' => !$mod->get_delegated_section_info(),
-            'duration' => '20'
+            'duration' => $this->format->durationstring($duration),
         ];
 
         // Add partial data segments.

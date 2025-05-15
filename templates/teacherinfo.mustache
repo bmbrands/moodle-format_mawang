@@ -15,20 +15,27 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template format_mawang/local/content/progress
+    @template format_mawang/teacherinfo
 
-    TODO describe template progress
-
+    A Teacher profile descriptions showing the teacher picture to the left
+    And the contents of the teacher profile to the right.
     Example context (json):
     {
+        "teacher": {
+            "id": 1,
+            "fullname": "John Doe",
+            "picture": "<img src=\"/path/to/picture.jpg\" alt=\"John Doe\" />",
+            "description": "<p>John Doe is a teacher with over 10 years of experience.</p>"
+        }
     }
 }}
-<div class="mawang-progress-container" data-region="courseprogresscontainer" data-id="{{sectionid}}" data-progress="{{progress}}">
-    <div class="progress">
-        <div class="progress-bar mawang-progress" data-region="courseprogress" role="progressbar" style="width: {{progress}}%" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100"></div>
+<div class="teacherinfo">
+    <div class="teacherinfo-picture">
+        {{{ picture }}}
     </div>
-    <div class="progress-text">
-        {{#str}}progress, format_mawang, {{progress}}{{/str}}
+    <div class="teacherinfo-description">
+        <h4>{{{ fullname }}}</h4>
+        <h5>{{{ fields.tqs }}}</h5>
+        {{{ teacher.description }}}
     </div>
 </div>
-

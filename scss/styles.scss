@@ -1,6 +1,14 @@
 /*! stylelint-disable */
 $gray-100: #f8f9fa !default;
 $gray-200: #e9ecef !default;
+$purple-900: #3C1366;
+$purple-800: #523E7B;
+$purple-700: #5331A3;
+$purple-500: #7448D1;
+$purple-300: #A37CFA;
+$purple-200: #C8C2FC;
+$purple-100: #EEF0FF;
+$purple-50: #F0EFF5;
 .course-content ul.mawang {
     list-style: none;
     padding: 0;
@@ -71,7 +79,22 @@ $gray-200: #e9ecef !default;
             }
         }
     }
+    .activity-item .activity-grid {
+        grid-template-areas:
+            "icon   name          groupmode      completion    actions"
+            "icon   visibility    groupmode      completion    actions"
+            "icon   dates         groupmode      completion    actions"
+            "icon   altcontent    altcontent     altcontent    altcontent"
+            "icon   afterlink     afterlink      afterlink     afterlink"
+            "icon   availability  availability   availability  availability"
+            "icon   duration     duration       duration      duration";
+    }
 
+    .activity-duration {
+        grid-area: duration;
+        grid-column: 2;
+        margin-top: 0.5rem;
+    }
     .changenumsections {
         margin-bottom: 1rem;
         margin-top: 1rem;
@@ -114,6 +137,15 @@ $gray-200: #e9ecef !default;
 
         .sectioncardbody {
             padding: 1rem 0.75rem;
+            flex: 1 1 100%;
+            .totalduration {
+                position: absolute;
+                bottom: 0.75rem;
+                left: 0.75rem;
+                padding: 6px 8px;
+                background-color: #F8F8F8;
+                border-radius: 10px;
+            }
         }
 
         .tilecontent > div > .icons-collapse-expand {
@@ -139,6 +171,8 @@ $gray-200: #e9ecef !default;
             padding: 0;
             max-height: 340px;
             height: 340px;
+            display: flex;
+            flex-direction: column;
 
             .sectionprogress {
                 top: 0.25rem;
@@ -159,6 +193,25 @@ $gray-200: #e9ecef !default;
                 max-width: 100%;
                 overflow: hidden;
                 word-wrap: break-word;
+                a {
+                    &:hover,
+                    &:focus {
+                        text-decoration: none;
+                    }
+                    &::after {
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        bottom: 0;
+                        left: 0;
+                        z-index: 1;
+                        // Just in case `pointer-events: none` is set on a parent
+                        pointer-events: auto;
+                        content: "";
+                        // IE10 bugfix, see https://stackoverflow.com/questions/16947967/ie10-hover-pseudo-class-doesnt-work-without-background-color
+                        background-color: rgba(0, 0, 0, 0);
+                    }
+                }
             }
 
             > .course-section-header {
@@ -166,7 +219,8 @@ $gray-200: #e9ecef !default;
                 flex: 1 0 100%;
                 border-top-left-radius: 0.5rem;
                 border-top-right-radius: 0.5rem;
-                min-height: 140px;
+                height: 140px;
+                max-height: 140px;
                 position: relative;
                 overflow: hidden;
 
@@ -198,22 +252,6 @@ $gray-200: #e9ecef !default;
                     cursor: auto;
                     outline: 0;
                 }
-
-                // Transition the filter property
-                transition: filter 0.3s;
-
-                &.tiletoggle {
-                    &:hover,
-                    &:focus {
-                        cursor: pointer;
-                        outline: 0;
-                        box-shadow: none;
-                        .section-image-background {
-                            filter: brightness(1.05);
-                            transform: scale(1.03);
-                        }
-                    }
-                }
             }
 
             &.show > .course-section-header h3 {
@@ -242,36 +280,23 @@ $gray-200: #e9ecef !default;
                     }
                 }
             }
+            .section-image-background {
+                transition: filter 0.3s;
+            }
+            &:hover,
+            &:focus {
+                cursor: pointer;
+                outline: 0;
+                box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, .25);
+                .section-image-background {
+                    filter: brightness(1.05);
+                }
+            }
         }
 
         .btn-icon {
             background-color: #fff;
         }
-    }
-
-    .progress-ring__circle {
-        transition: 0.35s stroke-dashoffset;
-        // axis compensation
-        transform: rotate(-90deg);
-        transform-origin: 50% 50%;
-        stroke-dashoffset: 20;
-        stroke: #007bff;
-        stroke-width: 6;
-        fill: transparent;
-    }
-
-    .progress-ring__back {
-        fill: rgba(254, 254, 254, .9);
-    }
-
-    .progress-ring__text {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 1rem;
-        font-weight: 700;
-        color: rgba(0, 43, 92, .92);
     }
 
     .mawang-level-0,
@@ -285,6 +310,47 @@ $gray-200: #e9ecef !default;
         }
     }
 }
+
+.format-mawang {
+    .separator {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .separator-icon {
+        font-size: 0.3rem;
+    }
+}
+
+.customfield-acc {
+    color: #000;
+    .card {
+        border: 1px solid var(--light);
+        border-radius: 0.5rem;
+        margin-bottom: 1rem;
+        .card-header,
+        .card-header:first-child {
+            padding: 0.5rem;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+        }
+        .card-header-text {
+            font-weight: 600;
+            color: $purple-700;
+        }
+        .btn.btn-icon.icons-collapse-expand {
+            color: $purple-700;
+            background-color: transparent;
+            &:hover,
+            &:focus {
+                outline: 0;
+                color: $purple-700;
+                background-color: transparent;
+            }
+        }
+    }
+}
+
 .format-mawang .form-filetypes-descriptions li {
     font-size: 0;
     display: inline;
@@ -297,4 +363,29 @@ $gray-200: #e9ecef !default;
 }
 body.format-mawang.limitedwidth #page.drawers .main-inner {
     max-width: 1280px;
+}
+.extracoursecontent {
+    .teacherinfo {
+        display: flex;
+        .teacherinfo-picture {
+            img {
+                border-radius: 50%;
+                width: 75px;
+                height: 75px;
+            }
+        }
+        .teacherinfo-description {
+            margin-left: 1rem;
+        }
+    }
+}
+
+.mawang-progress-container {
+    min-width: 250px;
+    .progress {
+        height: 10px;
+    }
+    .progress-text {
+        font-size: 0.8rem;
+    }
 }

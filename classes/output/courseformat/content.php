@@ -18,6 +18,7 @@ namespace format_mawang\output\courseformat;
 
 use core_courseformat\external\get_state;
 use course_modinfo;
+use navigation_node;
 use stdClass;
 
 /**
@@ -55,8 +56,20 @@ class content extends \core_courseformat\output\local\content {
         global $PAGE;
         $format = $this->format;
 
+        $tab = optional_param('tab', '', PARAM_INT);
+        if ($tab) {
+            $data = (object)[
+                'tabcontent' => $format->get_customfields_tab_content($tab),
+            ];
+            $data->cssurl = new \moodle_url('/course/format/mawang/scss/styles.css', ['cache' => time()]);
+            return $data;
+        }
+
         $sections = $this->export_sections($output);
         $initialsection = '';
+
+
+        $coursedisplay = $format->get_course_display();
 
         $data = (object)[
             'title' => $format->page_title(), // This method should be in the course_format class.
@@ -64,18 +77,20 @@ class content extends \core_courseformat\output\local\content {
             'sections' => $sections,
             'format' => $format->get_format(),
             'sectionreturn' => null,
+            'teacherprofile' => $this->get_teacher_profile(),
+            'multipage' => ($coursedisplay == COURSE_DISPLAY_MULTIPAGE),
         ];
 
         // The single section format has extra navigation.
         if ($this->format->get_sectionid()) {
             $singlesectionnum = $this->format->get_sectionnum();
-            if (!$PAGE->theme->usescourseindex) {
+            //if (!$PAGE->theme->usescourseindex) {
                 $sectionnavigation = new $this->sectionnavigationclass($format, $singlesectionnum);
                 $data->sectionnavigation = $sectionnavigation->export_for_template($output);
 
                 $sectionselector = new $this->sectionselectorclass($format, $sectionnavigation);
                 $data->sectionselector = $sectionselector->export_for_template($output);
-            }
+            //}
             $data->hasnavigation = true;
             $data->singlesection = array_shift($data->sections);
             $data->sectionreturn = $singlesectionnum;
@@ -93,5 +108,68 @@ class content extends \core_courseformat\output\local\content {
         $data->cssurl = new \moodle_url('/course/format/mawang/scss/styles.css', ['cache' => time()]);
         $data->editing = $PAGE->user_is_editing();
         return $data;
+    }
+
+    /**
+     * Get the teacher profile to display on the course page.
+     *
+     * @return string
+     */
+    public function get_teacher_profile() {
+        global $OUTPUT;
+
+        $coursectx = $this->format->get_context();
+        if (!$coursectx) {
+            return '';
+        }
+
+        // Teachers
+        $teachers = get_enrolled_users($coursectx, 'moodle/course:changefullname');
+
+        // Get the first teacher.
+        $teacher = reset($teachers);
+        $fields = (array)profile_user_record($teacher->id);
+        return $OUTPUT->render_from_template(
+            'format_mawang/teacherinfo',
+            [
+                'fullname' => fullname($teacher),
+                'profileurl' => new \moodle_url('/user/profile.php', ['id' => $teacher->id]),
+                'picture' => $OUTPUT->user_picture($teacher, ['size' => 100]),
+                'teacher' => $teacher,
+                'fields' => $fields,
+            ]
+        );
+    }
+
+    /**
+     * We use our own version of the Boost secondary navigation
+     */
+    protected function secondary_navigation() {
+        global $PAGE, $OUTPUT;
+
+        $handler = \core_course\customfield\course_handler::create();
+        $datas = $handler->get_instance_data($PAGE->course->id);
+        $categories = [];
+        foreach ($datas as $data) {
+            $catid = $data->get_field()->get_category()->get('id');
+            if (in_array($catid, $categories)) {
+                continue;
+            }
+            $catname = $data->get_field()->get_category()->get('name');
+            $nodeproperties = [
+                'text' => $catname,
+                'shorttext' => urlencode($catname),
+                'key' => $catid,
+                'type' => 'navigation_node::TYPE_COURSE',
+                'action' => new \moodle_url('/course/view.php', ['id' => $PAGE->course->id, 'tab' => $catid]),
+            ];
+            $node = new navigation_node($nodeproperties);
+            $PAGE->secondarynav->add_node($node);
+            $categories[] = $catid;
+        }
+
+        $tablistnav = $PAGE->has_tablist_secondary_navigation();
+        $moremenu = new \core\navigation\output\more_menu($PAGE->secondarynav, 'nav-tabs', true, $tablistnav);
+        return $moremenu->export_for_template($OUTPUT);
     }
 }

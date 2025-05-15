@@ -15,20 +15,20 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template format_mawang/local/content/progress
+    @template format_mawang/local/content/section/cmsummary
 
-    TODO describe template progress
+    TODO describe template cmsummary
 
     Example context (json):
     {
     }
 }}
-<div class="mawang-progress-container" data-region="courseprogresscontainer" data-id="{{sectionid}}" data-progress="{{progress}}">
-    <div class="progress">
-        <div class="progress-bar mawang-progress" data-region="courseprogress" role="progressbar" style="width: {{progress}}%" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100"></div>
+<div class="section-summary-activities d-flex">
+    <div class="purposes d-flex my-2">
+        {{#purposecount}}
+            <div class="d-flex align-items-center pr-2 ma-small">
+                {{#pix}}{{icon}}, format_mawang{{/pix}} {{{name}}}
+            </div>
+        {{/purposecount}}
     </div>
-    <div class="progress-text">
-        {{#str}}progress, format_mawang, {{progress}}{{/str}}
-    </div>
-</div>
-
+ </div>

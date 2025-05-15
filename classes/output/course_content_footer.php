@@ -72,7 +72,7 @@ class course_content_footer implements \renderable, \templatable {
                 // Only return this section data if it's visible by current user on the course page.
                 $sectionstate = new $sectionclass($courseformat, $section);
                 $exportstate = $sectionstate->export_for_template($renderer);
-                if ($exportstate->parentid == 0 && !$exportstate->hasrestrictions) {
+                if (!$exportstate->hasrestrictions) {
                     $sectionsvisible[] = $exportstate;
                 }
             }
@@ -161,9 +161,6 @@ class course_content_footer implements \renderable, \templatable {
                 $section = (object)$section;
             }
             $children[] = intval($section->id);
-            if ($section->children) {
-                $children = array_merge($children, $this->get_children($section->children));
-            }
         }
         return $children;
     }

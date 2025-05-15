@@ -87,4 +87,42 @@ class section extends \core_courseformat\output\local\content\section {
         return $data;
     }
 
+    /**
+     * Add the section cm list to the data structure.
+     *
+     * @param stdClass $data the current cm data reference
+     * @param renderer_base $output typically, the renderer that's calling this function
+     * @return bool if the cm has name data
+     */
+    protected function add_cm_data(stdClass &$data, renderer_base $output): bool {
+        $result = false;
+
+        $section = $this->section;
+        $format = $this->format;
+
+        $display = $format->get_course_display();
+
+        $showsummary = ($section->section != 0 &&
+            $section->section != $format->get_sectionnum() &&
+            $format->get_course_display() == COURSE_DISPLAY_MULTIPAGE
+        );
+
+        $showcmlist = $section->uservisible;
+
+        // Add activities summary if necessary.
+        if ($showsummary) {
+            $cmsummary = new $this->cmsummaryclass($format, $section);
+            $data->cmsummary = $cmsummary->export_for_template($output);
+            $data->onlysummary = true;
+            $result = true;
+        }
+        // Add the cm list.
+        if ($showcmlist) {
+            $cmlist = new $this->cmlistclass($format, $section);
+            $data->cmlist = $cmlist->export_for_template($output);
+            $result = true;
+        }
+        return $result;
+    }
+
 }
