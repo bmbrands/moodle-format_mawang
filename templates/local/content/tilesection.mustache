@@ -76,40 +76,48 @@
             {{> core_courseformat/local/content/section/summary }}
         {{/ core_courseformat/local/content/section/summary }}
         {{/summary}}
-        {{#cmsummary.totalduration}}
-            <div class="totalduration ma-small">
-                {{{.}}}
-            </div>
-        {{/cmsummary.totalduration}}
+        <div class="grower"></div>
+        <div class="d-flex justify-content-between align-items-center">
+            {{#cmsummary.totalduration}}
+                <div class="totalduration ma-small">
+                    {{{.}}}
+                </div>
+            {{/cmsummary.totalduration}}
+            {{#lastvisited}}
+                <span class="recentlyviewed ml-auto">{{#str}}recentlyviewed, format_mawang{{/str}}</span>
+            {{/lastvisited}}
+        </div>
     </div>
 </li>
 {{^restrictionlock}}
-<li id="section-content-{{num}}"
-    class="sectioncontent"
-    data-sectionid="{{num}}"
-    data-region="sectioncontent"
-    data-sectionreturnid="{{sectionreturnid}}"
-    data-for="section"
-    data-id="{{id}}"
-    data-number="{{num}}"
->
-{{$ core_courseformat/local/content/section/content }}
-    <div class="tilecontent d-flex position-relative">
-        <button class="btn btn-close bg-light" data-action="tiletoggle" data-id="{{id}}" data-number="{{num}}" tabindex="0">
-            <span class="sr-only">{{#str}}close, format_mawang{{/str}}</span>
-            <span aria-hidden="true">&times;</span>
-        </button>
-        {{> format_mawang/local/content/section/orgcontent }}
-        {{^showaslink}}
-        <ul class="mawang-level-{{level}}" data-for="course_subsectionlist" data-parent="{{id}}">
-            {{#insertsubsection}}
-                {{> format_mawang/local/content/addsection}}
-            {{/insertsubsection}}
-        </ul>
-        {{/showaslink}}
-    </div>
-{{/ core_courseformat/local/content/section/content }}
-</li>
+    {{^multipage}}
+    <li id="section-content-{{num}}"
+        class="sectioncontent"
+        data-sectionid="{{num}}"
+        data-region="sectioncontent"
+        data-sectionreturnid="{{sectionreturnid}}"
+        data-for="section"
+        data-id="{{id}}"
+        data-number="{{num}}"
+    >
+    {{$ core_courseformat/local/content/section/content }}
+        <div class="tilecontent d-flex position-relative">
+            <button class="btn btn-close bg-light" data-action="tiletoggle" data-id="{{id}}" data-number="{{num}}" tabindex="0">
+                <span class="sr-only">{{#str}}close, format_mawang{{/str}}</span>
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{> format_mawang/local/content/section/orgcontent }}
+            {{^showaslink}}
+            <ul class="mawang-level-{{level}}" data-for="course_subsectionlist" data-parent="{{id}}">
+                {{#insertsubsection}}
+                    {{> format_mawang/local/content/addsection}}
+                {{/insertsubsection}}
+            </ul>
+            {{/showaslink}}
+        </div>
+    {{/ core_courseformat/local/content/section/content }}
+    </li>
+    {{/multipage}}
 {{/restrictionlock}}
 {{#testingonly-make-mustache-lint-happy}}
 </ul>

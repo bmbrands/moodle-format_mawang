@@ -77,3 +77,5 @@ $string['activity'] = '{$a} activity';
 $string['progress'] = '{$a}% Progress';
 $string['lessons'] = 'Lessons';
 $string['coursetutor'] = 'Meet the course tutor';
+$string['video'] = '{$a} video';
+$string['recentlyviewed'] = 'Recently viewed';

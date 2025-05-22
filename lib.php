@@ -58,13 +58,8 @@ class format_mawang extends core_courseformat\base {
             $PAGE->add_body_class('has-customfields-tab');
         }
 
-        if (get_config('format_mawang', 'courseindexautoclose')) {
-            if ($PAGE->pagetype == 'course-view') {
-                set_user_preference('drawer-open-index', false);
-            }
-            if (strpos($PAGE->pagetype, 'mod-') === 0) {
-                set_user_preference('drawer-open-index', true);
-            }
+        if (strpos($PAGE->pagetype, 'mod-') === 0) {
+            $PAGE->set_secondary_navigation(false);
         }
         $openblocksfor = get_config('format_mawang', 'autoblockopen');
         if ($openblocksfor) {
@@ -157,7 +152,7 @@ class format_mawang extends core_courseformat\base {
      * @param section_info $section
      * @return int Depth of the section in hierarchy.
      */
-    public function get_section_depth(section_info $section): int {
+    public function get_section_depth_DISABLED(section_info $section): int {
         $parent = $this->get_section($section->parent);
         return $parent && $parent->section ? $this->get_section_depth($parent) + 1 : 1;
     }
@@ -620,14 +615,14 @@ class format_mawang extends core_courseformat\base {
             return null;
         }
 
-        $mergeup = optional_param('mergeup', null, PARAM_INT);
-        if ($mergeup && has_capability('moodle/course:update', context_course::instance($this->courseid))) {
-            require_sesskey();
-            $section = $this->get_section($mergeup, MUST_EXIST);
-            $this->mergeup_section($section);
-            $url = course_get_url($this->courseid, $section->parent);
-            redirect($url);
-        }
+        // $mergeup = optional_param('mergeup', null, PARAM_INT);
+        // if ($mergeup && has_capability('moodle/course:update', context_course::instance($this->courseid))) {
+        //     require_sesskey();
+        //     $section = $this->get_section($mergeup, MUST_EXIST);
+        //     $this->mergeup_section($section);
+        //     $url = course_get_url($this->courseid, $section->parent);
+        //     redirect($url);
+        // }
 
         // For show/hide actions call the parent method and return the new content for .section_availability element.
         $rv = parent::section_action($section, $action, $sr);
@@ -682,7 +677,7 @@ class format_mawang extends core_courseformat\base {
      * @param bool $returnid
      * @return int
      */
-    public function find_collapsed_parent($section, $returnid = false) {
+    public function find_collapsed_parent_DISABLED($section, $returnid = false) {
         $section = $this->get_section($section);
         if (!$section->section || $section->collapsed == FORMAT_mawang_COLLAPSED) {
             return $returnid ? $section->id : $section->section;
@@ -775,7 +770,7 @@ class format_mawang extends core_courseformat\base {
      *
      * @param moodle_page $page instance of page calling set_course
      */
-    public function page_set_course(moodle_page $page) {
+    public function page_set_course_DISABLED(moodle_page $page) {
         global $PAGE;
         if ($PAGE != $page) {
             return;
@@ -1112,7 +1107,7 @@ class format_mawang extends core_courseformat\base {
      * @param int|section_info $parent
      * @param null|section_info|int $before null if in the end of subsections list
      */
-    public function can_move_section_to($section, $parent, $before = null) {
+    public function can_move_section_to_DISABLED($section, $parent, $before = null) {
         $section = $this->get_section($section);
         $parent = $this->get_section($parent);
         if ($section === null || $parent === null ||

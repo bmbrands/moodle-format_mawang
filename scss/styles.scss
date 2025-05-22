@@ -21,25 +21,6 @@ $purple-50: #F0EFF5;
         border: 0;
         margin-bottom: 1rem;
 
-        &.editing {
-            & > .course-section-header {
-                border: 1px solid #dcdcdc;
-                border-bottom: 0;
-                border-top-left-radius: 0.5rem;
-                border-top-right-radius: 0.5rem;
-                padding: 0.5rem 0 0 0;
-            }
-
-            & > .course-content-item-content {
-                display: flex;
-                flex-direction: column;
-                border: 1px solid #dcdcdc;
-                border-top: 0;
-                border-bottom-left-radius: 0.5rem;
-                border-bottom-right-radius: 0.5rem;
-            }
-        }
-
         .section-image-sample {
             border-radius: 0.5rem;
             background-size: cover;
@@ -51,10 +32,6 @@ $purple-50: #F0EFF5;
             margin-left: 0.5rem;
         }
 
-        .content {
-            padding-left: 0.5rem;
-            padding-right: 0.5rem;
-        }
 
         .section-edit-button {
             background-color: #f9f9f9;
@@ -117,10 +94,10 @@ $purple-50: #F0EFF5;
     .tilesections {
         display: grid;
         grid-gap: 1rem;
-        margin: 0 0.5rem;
+        margin: 0;
         padding: 0;
         max-width: 100%;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(273px, 1fr));
         grid-template-rows: auto;
 
         & > li.sectioncontent {
@@ -136,15 +113,22 @@ $purple-50: #F0EFF5;
         }
 
         .sectioncardbody {
-            padding: 1rem 0.75rem;
-            flex: 1 1 100%;
+            padding: 1rem 0.75rem 0.5rem 0.75rem;
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
             .totalduration {
-                position: absolute;
-                bottom: 0.75rem;
-                left: 0.75rem;
                 padding: 6px 8px;
                 background-color: #F8F8F8;
                 border-radius: 10px;
+            }
+            .grower {
+                flex-grow: 1;
+            }
+            .recentlyviewed {
+                font-size: 0.8rem;
+                font-weight: 600;
+                color: $purple-800;
             }
         }
 
@@ -167,10 +151,8 @@ $purple-50: #F0EFF5;
             position: relative;
             margin: 0;
             border: 1px solid $gray-200;
-            border-radius: 0.5rem;
+            border-radius: 0.6rem;
             padding: 0;
-            max-height: 340px;
-            height: 340px;
             display: flex;
             flex-direction: column;
 
@@ -216,7 +198,6 @@ $purple-50: #F0EFF5;
 
             > .course-section-header {
                 padding: 1.5rem 1rem;
-                flex: 1 0 100%;
                 border-top-left-radius: 0.5rem;
                 border-top-right-radius: 0.5rem;
                 height: 140px;
@@ -245,12 +226,6 @@ $purple-50: #F0EFF5;
                     background-repeat: no-repeat;
                     pointer-events: none;
                     transition: filter 0.3s, transform 0.3s;
-                }
-
-                &:hover,
-                &:focus {
-                    cursor: auto;
-                    outline: 0;
                 }
             }
 
@@ -361,9 +336,7 @@ $purple-50: #F0EFF5;
 .format-mawang input[name="sectionimage"]~p {
     margin-bottom: 0;
 }
-body.format-mawang.limitedwidth #page.drawers .main-inner {
-    max-width: 1280px;
-}
+
 .extracoursecontent {
     .teacherinfo {
         display: flex;

@@ -68,7 +68,6 @@ class content extends \core_courseformat\output\local\content {
         $sections = $this->export_sections($output);
         $initialsection = '';
 
-
         $coursedisplay = $format->get_course_display();
 
         $data = (object)[
@@ -84,13 +83,13 @@ class content extends \core_courseformat\output\local\content {
         // The single section format has extra navigation.
         if ($this->format->get_sectionid()) {
             $singlesectionnum = $this->format->get_sectionnum();
-            //if (!$PAGE->theme->usescourseindex) {
-                $sectionnavigation = new $this->sectionnavigationclass($format, $singlesectionnum);
-                $data->sectionnavigation = $sectionnavigation->export_for_template($output);
+            $courseid = $this->format->get_courseid();
+            set_user_preference('courseformat_' . $format->get_format() . '_' . $courseid .'_lastvisited', $singlesectionnum);
+            $sectionnavigation = new $this->sectionnavigationclass($format, $singlesectionnum);
+            $data->sectionnavigation = $sectionnavigation->export_for_template($output);
 
-                $sectionselector = new $this->sectionselectorclass($format, $sectionnavigation);
-                $data->sectionselector = $sectionselector->export_for_template($output);
-            //}
+            $sectionselector = new $this->sectionselectorclass($format, $sectionnavigation);
+            $data->sectionselector = $sectionselector->export_for_template($output);
             $data->hasnavigation = true;
             $data->singlesection = array_shift($data->sections);
             $data->sectionreturn = $singlesectionnum;

@@ -154,14 +154,19 @@
             <li class="tiles">
                 <ul class="tilesections unlist">
                     {{#sections}}
-                        {{#num}}
-                            {{> format_mawang/local/content/tilesection }}
-                        {{/num}}
+                        {{> format_mawang/local/content/tilesection }}
                     {{/sections}}
                 </ul>
             </li>
         {{/editing}}
     </ul>
+    {{#numsections}}
+        {{^singlesection}}
+            {{$ core_courseformat/local/content/addsection}}
+                {{> core_courseformat/local/content/addsection}}
+            {{/ core_courseformat/local/content/addsection}}
+        {{/singlesection}}
+    {{/numsections}}
     {{^singlesection}}
         <div class="extracoursecontent">
             <h3 class="my-5">{{#str}}coursetutor, format_mawang{{/str}}</h3>
@@ -185,6 +190,7 @@
             {{/sectionselector}}
         </div>
     {{/hasnavigation}}
+
     {{#bulkedittools}}
         {{$ core_courseformat/local/content/bulkedittools}}
             {{> core_courseformat/local/content/bulkedittools}}

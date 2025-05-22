@@ -7,19 +7,6 @@
   .course-content ul.mawang li.section {
     border: 0;
     margin-bottom: 1rem; }
-    .course-content ul.mawang li.section.editing > .course-section-header {
-      border: 1px solid #dcdcdc;
-      border-bottom: 0;
-      border-top-left-radius: 0.5rem;
-      border-top-right-radius: 0.5rem;
-      padding: 0.5rem 0 0 0; }
-    .course-content ul.mawang li.section.editing > .course-content-item-content {
-      display: flex;
-      flex-direction: column;
-      border: 1px solid #dcdcdc;
-      border-top: 0;
-      border-bottom-left-radius: 0.5rem;
-      border-bottom-right-radius: 0.5rem; }
     .course-content ul.mawang li.section .section-image-sample {
       border-radius: 0.5rem;
       background-size: cover;
@@ -29,9 +16,6 @@
       margin-right: 0.5rem;
       position: relative;
       margin-left: 0.5rem; }
-    .course-content ul.mawang li.section .content {
-      padding-left: 0.5rem;
-      padding-right: 0.5rem; }
     .course-content ul.mawang li.section .section-edit-button {
       background-color: #f9f9f9;
       position: absolute;
@@ -66,10 +50,10 @@
   .course-content ul.mawang .tilesections {
     display: grid;
     grid-gap: 1rem;
-    margin: 0 0.5rem;
+    margin: 0;
     padding: 0;
     max-width: 100%;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(273px, 1fr));
     grid-template-rows: auto; }
     .course-content ul.mawang .tilesections > li.sectioncontent {
       display: none;
@@ -79,15 +63,20 @@
       .course-content ul.mawang .tilesections > li.sectioncontent.show {
         display: block; }
     .course-content ul.mawang .tilesections .sectioncardbody {
-      padding: 1rem 0.75rem;
-      flex: 1 1 100%; }
+      padding: 1rem 0.75rem 0.5rem 0.75rem;
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column; }
       .course-content ul.mawang .tilesections .sectioncardbody .totalduration {
-        position: absolute;
-        bottom: 0.75rem;
-        left: 0.75rem;
         padding: 6px 8px;
         background-color: #F8F8F8;
         border-radius: 10px; }
+      .course-content ul.mawang .tilesections .sectioncardbody .grower {
+        flex-grow: 1; }
+      .course-content ul.mawang .tilesections .sectioncardbody .recentlyviewed {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #523E7B; }
     .course-content ul.mawang .tilesections .tilecontent > div > .icons-collapse-expand {
       display: none; }
     .course-content ul.mawang .tilesections .tilecontent > .btn-close {
@@ -101,10 +90,8 @@
       position: relative;
       margin: 0;
       border: 1px solid #e9ecef;
-      border-radius: 0.5rem;
+      border-radius: 0.6rem;
       padding: 0;
-      max-height: 340px;
-      height: 340px;
       display: flex;
       flex-direction: column; }
       .course-content ul.mawang .tilesections > li.section .sectionprogress {
@@ -136,7 +123,6 @@
           background-color: rgba(0, 0, 0, 0); }
       .course-content ul.mawang .tilesections > li.section > .course-section-header {
         padding: 1.5rem 1rem;
-        flex: 1 0 100%;
         border-top-left-radius: 0.5rem;
         border-top-right-radius: 0.5rem;
         height: 140px;
@@ -162,9 +148,6 @@
           background-repeat: no-repeat;
           pointer-events: none;
           transition: filter 0.3s, transform 0.3s; }
-        .course-content ul.mawang .tilesections > li.section > .course-section-header:hover, .course-content ul.mawang .tilesections > li.section > .course-section-header:focus {
-          cursor: auto;
-          outline: 0; }
       .course-content ul.mawang .tilesections > li.section.show > .course-section-header h3 {
         border-left: 4px solid #007bff; }
       .course-content ul.mawang .tilesections > li.section.locked > .course-section-header {
@@ -232,9 +215,6 @@
 
 .format-mawang input[name="sectionimage"] ~ p {
   margin-bottom: 0; }
-
-body.format-mawang.limitedwidth #page.drawers .main-inner {
-  max-width: 1280px; }
 
 .extracoursecontent .teacherinfo {
   display: flex; }

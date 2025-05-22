@@ -71,7 +71,7 @@ class cmsummary extends \core_courseformat\output\local\content\section\cmsummar
         $activitycount = 0;
         $readingcount = 0;
         $totalduration = 0;
-        // $videocount = 0;
+        $videocount = 0;
         $purposecounts = [];
         $metadata = [];
 
@@ -91,10 +91,13 @@ class cmsummary extends \core_courseformat\output\local\content\section\cmsummar
                     $mods[$thismod->modname]['count'] = 1;
                 }
                 $purpose = plugin_supports('mod', $thismod->modname, FEATURE_MOD_PURPOSE, MOD_PURPOSE_OTHER);
-                if ($purpose == MOD_PURPOSE_CONTENT) {
+                if ($thismod->modname == 'video') {
+                    $videocount++;
+                } else if ($purpose == MOD_PURPOSE_CONTENT) {
                     $readingcount++;
                 } else {
                     $activitycount++;
+
                 }
                 $totalduration += $this->format->get_cm_duration($thismod->id);
                 if ($cancomplete && $completioninfo->is_enabled($thismod) != COMPLETION_TRACKING_NONE) {
@@ -114,6 +117,9 @@ class cmsummary extends \core_courseformat\output\local\content\section\cmsummar
         }
         if ($readingcount > 0) {
             $purposecounts[] = (object)['name' => get_string('reading', 'format_mawang', $readingcount), 'icon' => 'reading'];
+        }
+        if ($videocount > 0) {
+            $purposecounts[] = (object)['name' => get_string('video', 'format_mawang', $videocount), 'icon' => 'video'];
         }
         $totalduration = $this->format->durationstring($totalduration);
         return [$mods, $complete, $total, $showcompletion, $purposecounts, $totalduration];

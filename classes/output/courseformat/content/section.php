@@ -59,6 +59,7 @@ class section extends \core_courseformat\output\local\content\section {
         $section = $this->section;
 
         $summary = new $this->summaryclass($format, $section);
+        $lastvisited = get_user_preferences('courseformat_' . $format->get_format() . '_' . $course->id . '_lastvisited', 0);
 
         $data = (object)[
             'num' => $section->section ?? '0',
@@ -74,6 +75,7 @@ class section extends \core_courseformat\output\local\content\section {
             'sectionname' => $format->get_section_name($section),
             'sectionimage' => $this->format->get_section_image($this->section->id),
             'courseid' => $course->id,
+            'lastvisited' => $lastvisited == $section->section,
         ];
 
         $haspartials = [];
@@ -102,8 +104,7 @@ class section extends \core_courseformat\output\local\content\section {
 
         $display = $format->get_course_display();
 
-        $showsummary = ($section->section != 0 &&
-            $section->section != $format->get_sectionnum() &&
+        $showsummary = (
             $format->get_course_display() == COURSE_DISPLAY_MULTIPAGE
         );
 
