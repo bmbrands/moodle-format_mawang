@@ -1637,7 +1637,7 @@ class format_mawang extends core_courseformat\base {
             }
             $shortnames = $data->get_field()->get('shortname');
             $fullname = $data->get_field()->get('name');
-            $value = $data->get_value();
+            $value = $data->export_value();
             if (!isset($metadata[$cat])) {
                 $metadata[$cat] = [
                     'name' => $cat,

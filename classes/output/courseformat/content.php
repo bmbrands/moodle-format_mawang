@@ -139,36 +139,4 @@ class content extends \core_courseformat\output\local\content {
             ]
         );
     }
-
-    /**
-     * We use our own version of the Boost secondary navigation
-     */
-    protected function secondary_navigation() {
-        global $PAGE, $OUTPUT;
-
-        $handler = \core_course\customfield\course_handler::create();
-        $datas = $handler->get_instance_data($PAGE->course->id);
-        $categories = [];
-        foreach ($datas as $data) {
-            $catid = $data->get_field()->get_category()->get('id');
-            if (in_array($catid, $categories)) {
-                continue;
-            }
-            $catname = $data->get_field()->get_category()->get('name');
-            $nodeproperties = [
-                'text' => $catname,
-                'shorttext' => urlencode($catname),
-                'key' => $catid,
-                'type' => 'navigation_node::TYPE_COURSE',
-                'action' => new \moodle_url('/course/view.php', ['id' => $PAGE->course->id, 'tab' => $catid]),
-            ];
-            $node = new navigation_node($nodeproperties);
-            $PAGE->secondarynav->add_node($node);
-            $categories[] = $catid;
-        }
-
-        $tablistnav = $PAGE->has_tablist_secondary_navigation();
-        $moremenu = new \core\navigation\output\more_menu($PAGE->secondarynav, 'nav-tabs', true, $tablistnav);
-        return $moremenu->export_for_template($OUTPUT);
-    }
 }
