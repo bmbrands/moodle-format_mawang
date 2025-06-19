@@ -16,6 +16,48 @@ $purple-50: #F0EFF5;
     h3.sectionname {
         font-size: 1.35rem;
     }
+    .activity-information {
+        button[data-action="toggle-manual-completion"],
+        .completion-dropdown button {
+            width: 2.5rem;
+            min-width: 2.5rem;
+            padding: 0;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            // Add a dashed border to indicate it's a toggle
+            border: 1px dashed #ccc;
+        }
+        .completion-dropdown button {
+            .fa-check {
+                display: none;
+            }
+            &.btn-success .fa-check {
+                display: inline-block;
+            }
+            &::after {
+                content: "";
+                display: none;
+            }
+        }
+    }
+    .course-section .availabilityinfo {
+        background-color: #EEF0FF;
+        grid-column: auto;
+        width: auto;
+        max-width: max-content;
+    }
+    .activity-item .activity-dates {
+        margin-top: 0.5rem;
+        padding: 0.25rem 1rem;
+        background-color: #EEF0FF;
+        grid-column: auto;
+        width: auto;
+        max-width: max-content;
+        border-radius: 1rem;
+    }
 
     li.section {
         border: 0;
@@ -38,6 +80,7 @@ $purple-50: #F0EFF5;
             position: absolute;
             top: 0.5rem;
             right: 0.5rem;
+            z-index: 100;
 
             &:hover,
             &:focus {
@@ -83,22 +126,20 @@ $purple-50: #F0EFF5;
         align-items: end;
     }
 
-    li#section-0 {
-        padding-bottom: 0.5rem;
-    }
-
     .btn-icon.dropdown-toggle::after {
         display: none;
     }
 
     .tilesections {
-        display: grid;
-        grid-gap: 1rem;
-        margin: 0;
-        padding: 0;
-        max-width: 100%;
-        grid-template-columns: repeat(auto-fill, minmax(273px, 1fr));
-        grid-template-rows: auto;
+        &.showgrid {
+            display: grid;
+            grid-gap: 1rem;
+            margin: 0;
+            padding: 0;
+            max-width: 100%;
+            grid-template-columns: repeat(auto-fill, minmax(273px, 1fr));
+            grid-template-rows: auto;
+        }
 
         & > li.sectioncontent {
             display: none;
@@ -140,6 +181,16 @@ $purple-50: #F0EFF5;
             position: absolute;
             top: 0;
             right: 0;
+                        display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            padding: 0.5rem;
+            width: 35px;
+            height: 35px;
+            max-width: 35px;
+            max-height: 35px;
+            background-color: #f4f5fc;
         }
 
         & > li.show > .course-content-item-content.collapse {
@@ -156,6 +207,11 @@ $purple-50: #F0EFF5;
             display: flex;
             flex-direction: column;
 
+            &.edittile {
+                max-width: 400px;
+                margin-bottom: 3rem;
+            }
+
             .sectionprogress {
                 top: 0.25rem;
                 right: 0.25rem;
@@ -169,7 +225,7 @@ $purple-50: #F0EFF5;
                 font-size: 1rem;
             }
 
-            .tiletext {
+            &.tile .tiletext {
                 text-decoration: none;
                 flex: 0 0 100%;
                 max-width: 100%;
@@ -258,8 +314,8 @@ $purple-50: #F0EFF5;
             .section-image-background {
                 transition: filter 0.3s;
             }
-            &:hover,
-            &:focus {
+            &.tile:hover,
+            &.tile:focus {
                 cursor: pointer;
                 outline: 0;
                 box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, .25);
@@ -335,22 +391,6 @@ $purple-50: #F0EFF5;
 }
 .format-mawang input[name="sectionimage"]~p {
     margin-bottom: 0;
-}
-
-.extracoursecontent {
-    .teacherinfo {
-        display: flex;
-        .teacherinfo-picture {
-            img {
-                border-radius: 50%;
-                width: 75px;
-                height: 75px;
-            }
-        }
-        .teacherinfo-description {
-            margin-left: 1rem;
-        }
-    }
 }
 
 .mawang-progress-container {

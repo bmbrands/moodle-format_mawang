@@ -1,8 +1,11 @@
-# Documentation for the Couthino Course Format
+# Documentation for the Mawang Course Format
 
-## 1. Functionality of the Course Format
+## 1. Functionality of the Mawang Format
 
-The Couthino course format combines the functionality of the Flexible Sections course format with that of the Tiles course format. The technical basis for the Couthino course format is the latest version (May 13, 2024) of the Flexible Sections course format. On top of this, modifications have been made to add tiles to this format. Clicking on a tile opens the content of the corresponding section while closing other sections.
+The Mawang course format is designed by Madison Wang en implemented by Bas Brands. It features a tile based layout and is intended to
+provide a clean and professional course experience. It features progress indication, last visisted section, a course warning messages
+Custom navigation experience for some activities, and inpage block area.
+This course forut should be installed with theme_mawang
 
 ## 2. Additional Features
 

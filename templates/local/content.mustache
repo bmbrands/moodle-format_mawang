@@ -127,12 +127,14 @@
 {{/tabcontent}}
 {{^tabcontent}}
 {{^singlesection}}
+{{#coursemessage}}
 <div class="course-warning my-5">
     <div class="alert alert-info" role="alert">
         <span class="iconwrapper icon-no-margin text-white">{{#pix}} i/info, core {{/pix}}</span>
-        This course starts on Monday. You can view all of the course content now, but you will only be able to access the discussion forums on the scheduled day from 00:05 UTC*
+        {{coursemessage}}
     </div>
 </div>
+{{/coursemessage}}
 
 <h3 class="my-5">{{#str}}lessons, format_mawang{{/str}}</h3>
 {{/singlesection}}
@@ -146,13 +148,17 @@
             {{> format_mawang/local/content/section }}
         {{/initialsection}}
         {{#editing}}
-            {{#sections}}
-                {{> format_mawang/local/content/section }}
-            {{/sections}}
+            <li class="tiles">
+                <ul class="tilesections unlist">
+                    {{#sections}}
+                        {{> format_mawang/local/content/tilesectionedit }}
+                    {{/sections}}
+                </ul>
+            </li>
         {{/editing}}
         {{^editing}}
             <li class="tiles">
-                <ul class="tilesections unlist">
+                <ul class="tilesections showgrid unlist">
                     {{#sections}}
                         {{> format_mawang/local/content/tilesection }}
                     {{/sections}}
@@ -167,12 +173,7 @@
             {{/ core_courseformat/local/content/addsection}}
         {{/singlesection}}
     {{/numsections}}
-    {{^singlesection}}
-        <div class="extracoursecontent">
-            <h3 class="my-5">{{#str}}coursetutor, format_mawang{{/str}}</h3>
-            {{{teacherprofile}}}
-        </div>
-    {{/singlesection}}
+
     {{#hasnavigation}}
         <div class="single-section">
             {{#sectionnavigation}}
@@ -190,7 +191,9 @@
             {{/sectionselector}}
         </div>
     {{/hasnavigation}}
-
+    <div class="mt-5">
+    {{{teacherprofile}}}
+    </div>
     {{#bulkedittools}}
         {{$ core_courseformat/local/content/bulkedittools}}
             {{> core_courseformat/local/content/bulkedittools}}

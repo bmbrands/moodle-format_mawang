@@ -29,8 +29,8 @@ use format_mawang\constants;
 use core\output\inplace_editable;
 
 
-define('FORMAT_mawang_COLLAPSED', 1);
-define('FORMAT_mawang_EXPANDED', 0);
+define('FORMAT_MAWANG_COLLAPSED', 1);
+define('FORMAT_MAWANG_EXPANDED', 0);
 
 /**
  * Main class for the mawang course format.
@@ -82,7 +82,6 @@ class format_mawang extends core_courseformat\base {
      * @return bool
      */
     public function uses_sections() {
-
         return true;
     }
 
@@ -92,16 +91,7 @@ class format_mawang extends core_courseformat\base {
      * @return bool
      */
     public function uses_course_index() {
-        return $this->get_course_index_display() != constants::COURSEINDEX_NONE;
-    }
-
-    /**
-     * Type of course index display
-     *
-     * @return int
-     */
-    public function get_course_index_display(): int {
-        return (int)$this->get_course()->courseindexdisplay;
+        return true;
     }
 
     /**
@@ -141,20 +131,6 @@ class format_mawang extends core_courseformat\base {
         } else {
             return $this->get_default_section_name($section);
         }
-    }
-
-    /**
-     * Returns the depth of the section in hierarchy
-     *
-     * For example, top section has depth 1, subsection of top section has depth 2,
-     * its subsection has depth 3.
-     *
-     * @param section_info $section
-     * @return int Depth of the section in hierarchy.
-     */
-    public function get_section_depth_DISABLED(section_info $section): int {
-        $parent = $this->get_section($section->parent);
-        return $parent && $parent->section ? $this->get_section_depth($parent) + 1 : 1;
     }
 
     /**
@@ -255,10 +231,11 @@ class format_mawang extends core_courseformat\base {
             }
         }
         foreach ($modinfo->get_section_info_all() as $section) {
-            if ($section->parent == 0 && $section->section != 0) {
-                $this->navigation_add_section($navigation, $node, $section);
-            }
+            $this->navigation_add_section($navigation, $node, $section);
         }
+        // $currentsection = $this->get_viewed_section();
+        // $this->navigation_add_section($navigation, $node, $modinfo->sections[0]);
+
     }
 
     /**
@@ -308,21 +285,15 @@ class format_mawang extends core_courseformat\base {
 
         $sectionnode = $node->add($sectionname, $url, navigation_node::TYPE_SECTION, null, $section->id);
         $sectionnode->nodetype = navigation_node::NODETYPE_BRANCH;
-        $sectionnode->hidden = !$section->visible || !$section->available;
+        $sectionnode->hidden = false;
         if ($section->section == $this->get_viewed_section()) {
             $sectionnode->force_open();
         }
-        if ($this->section_has_parent($navigation->includesectionnum, $section->section)
-            || $navigation->includesectionnum == $section->section) {
+        if ($navigation->includesectionnum == $section->section) {
             $modinfo = get_fast_modinfo($this->courseid);
             if (!empty($modinfo->sections[$section->section])) {
                 foreach ($modinfo->sections[$section->section] as $cmid) {
                     $this->navigation_add_activity($sectionnode, $modinfo->get_cm($cmid));
-                }
-            }
-            foreach ($modinfo->get_section_info_all() as $subsection) {
-                if ($subsection->parent == $section->section && $subsection->section != 0) {
-                    $this->navigation_add_section($navigation, $sectionnode, $subsection);
                 }
             }
         }
@@ -390,14 +361,6 @@ class format_mawang extends core_courseformat\base {
      */
     public function section_format_options($foreditform = false): array {
         return [
-            'parent' => [
-                'type' => PARAM_INT,
-                'label' => '',
-                'element_type' => 'hidden',
-                'default' => 0,
-                'cache' => true,
-                'cachedefault' => 0,
-            ],
             'visibleold' => [
                 'type' => PARAM_INT,
                 'label' => '',
@@ -412,12 +375,12 @@ class format_mawang extends core_courseformat\base {
                 'element_type' => 'select',
                 'element_attributes' => [
                     [
-                        FORMAT_mawang_EXPANDED => new lang_string('showexpanded', 'format_mawang'),
-                        FORMAT_mawang_COLLAPSED => new lang_string('showcollapsed', 'format_mawang'),
+                        FORMAT_MAWANG_COLLAPSED => new lang_string('showascard', 'format_mawang'),
+                        FORMAT_MAWANG_EXPANDED => new lang_string('showexpanded', 'format_mawang'),
                     ],
                 ],
                 'cache' => true,
-                'cachedefault' => FORMAT_mawang_EXPANDED,
+                'cachedefault' => FORMAT_MAWANG_COLLAPSED,
                 'default' => COURSE_DISPLAY_SINGLEPAGE,
             ],
             'sectionimage' => [
@@ -441,18 +404,9 @@ class format_mawang extends core_courseformat\base {
      * @return array of options
      */
     public function course_format_options($foreditform = false) {
-        global $PAGE;
         static $courseformatoptions = false;
         if ($courseformatoptions === false) {
             $courseformatoptions = [
-                'showsection0title' => [
-                    'default' => get_config('format_mawang', 'showsection0titledefault') ?? 0,
-                    'type' => PARAM_BOOL,
-                ],
-                'courseindexdisplay' => [
-                    'default' => get_config('format_mawang', 'courseindexdisplay') ?? 0,
-                    'type' => PARAM_INT,
-                ],
                 'cmbacklink' => [
                     'default' => (bool)get_config('format_mawang', 'cmbacklink'),
                     'type' => PARAM_BOOL,
@@ -463,24 +417,12 @@ class format_mawang extends core_courseformat\base {
                 ),
             ];
         }
-        if ($foreditform && !isset($courseformatoptions['showsection0title']['label'])) {
+        if ($foreditform && !isset($courseformatoptions['coursedisplay']['label'])) {
             $options = [
                 constants::COURSEINDEX_FULL => get_string('courseindexfull', 'format_mawang'),
-                constants::COURSEINDEX_SECTIONS => get_string('courseindexsections', 'format_mawang'),
                 constants::COURSEINDEX_NONE => get_string('courseindexnone', 'format_mawang'),
             ];
             $courseformatoptionsedit = [
-                'showsection0title' => [
-                    'label' => new lang_string('showsection0title', 'format_mawang'),
-                    'help' => 'showsection0title',
-                    'help_component' => 'format_mawang',
-                    'element_type' => 'advcheckbox',
-                ],
-                'courseindexdisplay' => [
-                    'label' => new lang_string('courseindexdisplay', 'format_mawang'),
-                    'element_type' => 'select',
-                    'element_attributes' => [$options],
-                ],
                 'cmbacklink' => [
                     'label' => new lang_string('cmbacklink', 'format_mawang'),
                     'element_type' => 'advcheckbox',
@@ -609,20 +551,10 @@ class format_mawang extends core_courseformat\base {
 
         if ($section->section && ($action === 'showexpanded' || $action === 'showcollapsed')) {
             require_capability('moodle/course:update', context_course::instance($this->courseid));
-            $newvalue = ($action === 'showexpanded') ? FORMAT_mawang_EXPANDED : FORMAT_mawang_COLLAPSED;
+            $newvalue = ($action === 'showexpanded') ? FORMAT_MAWANG_EXPANDED : FORMAT_MAWANG_COLLAPSED;
             course_update_section($this->courseid, $section, ['collapsed' => $newvalue]);
-            // TODO what to return?
             return null;
         }
-
-        // $mergeup = optional_param('mergeup', null, PARAM_INT);
-        // if ($mergeup && has_capability('moodle/course:update', context_course::instance($this->courseid))) {
-        //     require_sesskey();
-        //     $section = $this->get_section($mergeup, MUST_EXIST);
-        //     $this->mergeup_section($section);
-        //     $url = course_get_url($this->courseid, $section->parent);
-        //     redirect($url);
-        // }
 
         // For show/hide actions call the parent method and return the new content for .section_availability element.
         $rv = parent::section_action($section, $action, $sr);
@@ -671,22 +603,6 @@ class format_mawang extends core_courseformat\base {
     }
 
     /**
-     * Returns either section or it's parent or grandparent, whoever first is collapsed
-     *
-     * @param int|section_info $section
-     * @param bool $returnid
-     * @return int
-     */
-    public function find_collapsed_parent_DISABLED($section, $returnid = false) {
-        $section = $this->get_section($section);
-        if (!$section->section || $section->collapsed == FORMAT_mawang_COLLAPSED) {
-            return $returnid ? $section->id : $section->section;
-        } else {
-            return $this->find_collapsed_parent($section->parent, $returnid);
-        }
-    }
-
-    /**
      * URL of the page from where this function was called (use referer if this is an AJAX request)
      *
      * @return moodle_url
@@ -729,262 +645,6 @@ class format_mawang extends core_courseformat\base {
     }
 
     /**
-     * Is this section displayed on the current page
-     *
-     * Used in course index
-     *
-     * @param int $sectionnum
-     * @return bool
-     */
-    public function is_section_displayed_on_current_page(int $sectionnum): bool {
-        $viewedsection = $this->get_viewed_section();
-        if ($viewedsection) {
-            return $sectionnum == $viewedsection || $this->section_has_parent($sectionnum, $viewedsection);
-        } else {
-            $section = $this->get_section($sectionnum);
-            if (!$section->parent) {
-                return true;
-            }
-            return $this->find_collapsed_parent($section->parent) ? false : true;
-        }
-    }
-
-    /**
-     * Create a new section under given parent
-     *
-     * @param int|section_info $parent parent section
-     * @param null|int|section_info $before
-     * @return int $sectionnum
-     */
-    public function create_new_section($parent = 0, $before = null): int {
-        $section = course_create_section($this->courseid, 0);
-        $sectionnum = $this->move_section($section, $parent, $before);
-        return $sectionnum;
-    }
-
-    /**
-     * Allows course format to execute code on moodle_page::set_course()
-     *
-     * format_mawang processes additional attributes in the view course URL
-     * to manipulate sections and redirect to course view page
-     *
-     * @param moodle_page $page instance of page calling set_course
-     */
-    public function page_set_course_DISABLED(moodle_page $page) {
-        global $PAGE;
-        if ($PAGE != $page) {
-            return;
-        }
-        if ($this->on_course_view_page()) {
-            $context = context_course::instance($this->courseid);
-            $currentsectionnum = $this->get_viewed_section();
-
-            // Fix the section argument.
-            if ($currentsectionnum && !optional_param('duplicatesection', 0, PARAM_INT)) {
-                $sectioninfo = $this->get_modinfo()->get_section_info($currentsectionnum);
-                if (!$sectioninfo || !$sectioninfo->collapsed) {
-                    redirect(course_get_url($this->get_course(), $sectioninfo ? $this->find_collapsed_parent($sectioninfo) : null));
-                }
-            }
-
-            if ($currentsectionnum) {
-                navigation_node::override_active_url(new moodle_url('/course/view.php',
-                    ['id' => $this->courseid,
-                        'section' => $currentsectionnum]));
-            }
-
-            // If requested, create new section and redirect to course view page.
-            $addchildsection = optional_param('addchildsection', null, PARAM_INT);
-            if ($addchildsection !== null && has_capability('moodle/course:update', $context)) {
-                $sectionnum = $this->create_new_section($addchildsection);
-                $url = course_get_url($this->courseid, $sectionnum);
-                redirect($url);
-            }
-
-            // If requested, merge the section content with parent and remove the section.
-            $mergeup = optional_param('mergeup', null, PARAM_INT);
-            if ($mergeup && confirm_sesskey() && has_capability('moodle/course:update', $context)) {
-                $section = $this->get_section($mergeup, MUST_EXIST);
-                $this->mergeup_section($section);
-                $url = course_get_url($this->courseid, $section->parent);
-                redirect($url);
-            }
-
-            // If requested, delete the section.
-            $deletesection = optional_param('deletesection', null, PARAM_INT);
-            if ($deletesection && confirm_sesskey() && has_capability('moodle/course:update', $context)
-                && optional_param('confirm', 0, PARAM_INT) == 1) {
-                $section = $this->get_section($deletesection, MUST_EXIST);
-                $parent = $section->parent;
-                $this->delete_section_with_children($section);
-                $url = course_get_url($this->courseid, $parent);
-                redirect($url);
-            }
-
-            // If requested, move section.
-            $movesection = optional_param('movesection', null, PARAM_INT);
-            $moveparent = optional_param('moveparent', null, PARAM_INT);
-            $movebefore = optional_param('movebefore', null, PARAM_RAW);
-            $sr = optional_param('sr', null, PARAM_RAW);
-            $options = [];
-            if ($sr !== null) {
-                $options = ['sr' => $sr];
-            }
-            if ($movesection !== null && $moveparent !== null && has_capability('moodle/course:update', $context)) {
-                $newsectionnum = $this->move_section($movesection, $moveparent, $movebefore);
-                redirect(course_get_url($this->courseid, $newsectionnum, $options));
-            }
-
-            // If requested, switch collapsed attribute.
-            $switchcollapsed = optional_param('switchcollapsed', null, PARAM_INT);
-            if ($switchcollapsed && confirm_sesskey() && has_capability('moodle/course:update', $context)
-                && ($section = $this->get_section($switchcollapsed))) {
-                if ($section->collapsed == FORMAT_mawang_EXPANDED) {
-                    $newvalue = FORMAT_mawang_COLLAPSED;
-                } else {
-                    $newvalue = FORMAT_mawang_EXPANDED;
-                }
-                $this->update_section_format_options(['id' => $section->id, 'collapsed' => $newvalue]);
-                if ($newvalue == FORMAT_mawang_COLLAPSED) {
-                    if (!isset($options['sr'])) {
-                        $options['sr'] = $this->find_collapsed_parent($section->parent);
-                    }
-                    redirect(course_get_url($this->courseid, $switchcollapsed, $options));
-                } else {
-                    redirect(course_get_url($this->courseid, $switchcollapsed, $options));
-                }
-            }
-
-            // Set course marker if required.
-            $marker = optional_param('marker', null, PARAM_INT);
-            if ($marker !== null && has_capability('moodle/course:setcurrentsection', $context) && confirm_sesskey()) {
-                if ($marker > 0) {
-                    // Set marker.
-                    $url = course_get_url($this->courseid, $marker, ['sr' => $this->get_viewed_section()]);
-                    course_set_marker($this->courseid, $marker);
-                    redirect($url);
-                } else if ($this->get_course()->marker) {
-                    // Remove marker.
-                    $url = course_get_url($this->courseid, $this->get_course()->marker,
-                        ['sr' => $this->get_viewed_section()]);
-                    course_set_marker($this->courseid, 0);
-                    redirect($url);
-                }
-            }
-
-            // Change visibility if required.
-            $hide = optional_param('hide', null, PARAM_INT);
-            if ($hide !== null && has_capability('moodle/course:sectionvisibility', $context) && confirm_sesskey()) {
-                $url = course_get_url($this->courseid, $hide, ['sr' => $this->get_viewed_section()]);
-                $this->set_section_visible($hide, 0);
-                redirect($url);
-            }
-            $show = optional_param('show', null, PARAM_INT);
-            if ($show !== null && has_capability('moodle/course:sectionvisibility', $context) && confirm_sesskey()) {
-                $url = course_get_url($this->courseid, $show, ['sr' => $this->get_viewed_section()]);
-                $this->set_section_visible($show, 1);
-                redirect($url);
-            }
-        }
-    }
-
-    /**
-     * Moves section to the specified position
-     *
-     * @param int|section_info $section
-     * @param int|section_info $parent
-     * @param null|int|section_info $before
-     * @return int new section number
-     */
-    public function move_section($section, $parent, $before = null) {
-        global $DB;
-        $section = $this->get_section($section);
-        $parent = $this->get_section($parent);
-        $newsectionnumber = $section->section;
-        if (!$this->can_move_section_to($section, $parent, $before)) {
-            return $newsectionnumber;
-        }
-        if ($section->visible != $parent->visible && $section->parent != $parent->section) {
-            // Section is changing parent and new parent has different visibility than the section.
-            if ($section->visible) {
-                // Visible section is moved under hidden parent.
-                $updatesectionvisible = 0;
-                $updatesectionvisibleold = 1;
-            } else {
-                // Hidden section is moved under visible parent.
-                if ($section->visibleold) {
-                    $updatesectionvisible = 1;
-                    $updatesectionvisibleold = 1;
-                }
-            }
-        }
-
-        // Find the changes in the sections numbering.
-        $origorder = [];
-        foreach ($this->get_sections() as $subsection) {
-            $origorder[$subsection->id] = $subsection->section;
-        }
-        $neworder = [];
-        $this->reorder_sections($neworder, 0, $section->section, $parent, $before);
-        if (count($origorder) != count($neworder)) {
-            die('Error in sections hierarchy'); // TODO.
-        }
-        $changes = [];
-        foreach ($origorder as $id => $num) {
-            if ($num == $section->section) {
-                $newsectionnumber = $neworder[$id];
-            }
-            if ($num != $neworder[$id]) {
-                $changes[$id] = ['old' => $num, 'new' => $neworder[$id]];
-                if ($num && $this->get_course()->marker == $num) {
-                    $changemarker = $neworder[$id];
-                }
-            }
-            if ($this->resolve_section_number($parent) === $num) {
-                $newparentnum = $neworder[$id];
-            }
-        }
-
-        if (empty($changes) && $newparentnum == $section->parent) {
-            return $newsectionnumber;
-        }
-
-        // Build array of required changes in field 'parent'.
-        $changeparent = [];
-        foreach ($this->get_sections() as $subsection) {
-            foreach ($changes as $id => $change) {
-                if ($subsection->parent == $change['old']) {
-                    $changeparent[$subsection->id] = $change['new'];
-                }
-            }
-        }
-        $changeparent[$section->id] = $newparentnum;
-
-        // Update all in database in one transaction.
-        $transaction = $DB->start_delegated_transaction();
-        // Update sections numbers in 2 steps to avoid breaking database uniqueness constraint.
-        foreach ($changes as $id => $change) {
-            $DB->set_field('course_sections', 'section', -$change['new'], ['id' => $id]);
-        }
-        foreach ($changes as $id => $change) {
-            $DB->set_field('course_sections', 'section', $change['new'], ['id' => $id]);
-        }
-        // Change parents of their subsections.
-        foreach ($changeparent as $id => $newnum) {
-            $this->update_section_format_options(['id' => $id, 'parent' => $newnum]);
-        }
-        $transaction->allow_commit();
-        rebuild_course_cache($this->courseid, true);
-        if (isset($changemarker)) {
-            course_set_marker($this->courseid, $changemarker);
-        }
-        if (isset($updatesectionvisible)) {
-            $this->set_section_visible($newsectionnumber, $updatesectionvisible, $updatesectionvisibleold);
-        }
-        return $newsectionnumber;
-    }
-
-    /**
      * Sets the section visible/hidden including subsections and modules
      *
      * @param int|stdClass|section_info $section
@@ -1000,351 +660,17 @@ class format_mawang extends core_courseformat\base {
             return;
         }
         $section = $this->get_section($section);
-        if ($visibility && $section->parent && !$this->get_section($section->parent)->visible) {
-            // Can not set section visible when parent is hidden.
-            return;
-        }
-        $ch = [$section];
-        while (!empty($ch)) {
-            $chlast = $ch;
-            $ch = [];
-            foreach ($chlast as $s) {
-                // Store copy of attributes to avoid rebuilding course cache when we need to access section properties.
-                $subsections[] = (object)['section' => $s->section,
-                    'id' => $s->id, 'visible' => $s->visible, 'visibleold' => $s->visibleold];
-                $ch += $this->get_subsections($s);
-            }
-        }
-        foreach ($subsections as $s) {
-            if ($s->section == $sectionnumber) {
-                set_section_visible($this->courseid, $s->section, $visibility);
-                if ($setvisibleold === null) {
-                    $setvisibleold = $visibility;
-                }
-                $this->update_section_format_options(['id' => $s->id, 'visibleold' => $setvisibleold]);
-            } else {
-                if ($visibility) {
-                    if ($s->visibleold) {
-                        set_section_visible($this->courseid, $s->section, $s->visibleold);
-                    }
-                } else {
-                    if ($s->visible) {
-                        set_section_visible($this->courseid, $s->section, $visibility);
-                        $this->update_section_format_options(['id' => $s->id, 'visibleold' => $s->visible]);
-                    }
-                }
-            }
-        }
-    }
 
-    /**
-     * Returns the list of direct subsections of the specified section
-     *
-     * @param int|section_info $section
-     * @return array
-     */
-    public function get_subsections($section) {
-        $sectionnum = $this->resolve_section_number($section);
-        $subsections = [];
-        foreach ($this->get_sections() as $num => $subsection) {
-            if ($subsection->parent == $sectionnum && $num != $sectionnum) {
-                $subsections[$num] = $subsection;
+        if ($visibility) {
+            if ($section->visibleold) {
+                set_section_visible($this->courseid, $section->section, $section->visibleold);
             }
-        }
-        return $subsections;
-    }
-
-    /**
-     * Function recursively reorders the sections while moving one section to the new position
-     *
-     * If $movedsectionnum is not specified, function just populates the array for each (sub)section
-     * If $movedsectionnum is specified, we ignore it on the present location but add it
-     * under $movetoparentnum before $movebeforenum
-     *
-     * @param array $neworder the result or re-ordering, array (sectionid => sectionnumber)
-     * @param int|section_info $cursection
-     * @param int|section_info $movedsectionnum
-     * @param int|section_info $movetoparentnum
-     * @param int|section_info $movebeforenum
-     */
-    protected function reorder_sections(&$neworder, $cursection, $movedsectionnum = null,
-                                        $movetoparentnum = null, $movebeforenum = null) {
-        // Normalise arguments.
-        $cursection = $this->get_section($cursection);
-        $movetoparentnum = $this->resolve_section_number($movetoparentnum);
-        $movebeforenum = $this->resolve_section_number($movebeforenum);
-        $movedsectionnum = $this->resolve_section_number($movedsectionnum);
-        if ($movedsectionnum === null) {
-            $movebeforenum = $movetoparentnum = null;
-        }
-
-        // Ignore section being moved.
-        if ($movedsectionnum !== null && $movedsectionnum == $cursection->section) {
-            return;
-        }
-
-        // Add current section to $neworder.
-        $neworder[$cursection->id] = count($neworder);
-        // Loop through subsections and reorder them (insert $movedsectionnum if necessary).
-        foreach ($this->get_subsections($cursection) as $subsection) {
-            if ($movebeforenum && $subsection->section == $movebeforenum) {
-                $this->reorder_sections($neworder, $movedsectionnum);
-            }
-            $this->reorder_sections($neworder, $subsection, $movedsectionnum, $movetoparentnum, $movebeforenum);
-        }
-        if (!$movebeforenum && $movetoparentnum !== null && $movetoparentnum == $cursection->section) {
-            $this->reorder_sections($neworder, $movedsectionnum);
-        }
-    }
-
-    /**
-     * Check if we can move the section to this position
-     *
-     * not allow to insert section as it's own subsection
-     * not allow to insert section directly before or after itself (it would not change anything)
-     *
-     * @param int|section_info $section
-     * @param int|section_info $parent
-     * @param null|section_info|int $before null if in the end of subsections list
-     */
-    public function can_move_section_to_DISABLED($section, $parent, $before = null) {
-        $section = $this->get_section($section);
-        $parent = $this->get_section($parent);
-        if ($section === null || $parent === null ||
-            !has_capability('moodle/course:update', context_course::instance($this->courseid))) {
-            return false;
-        }
-        // Check that $parent is not subsection of $section.
-        if ($section->section == $parent->section || $this->section_has_parent($parent, $section->section)) {
-            return false;
-        }
-        if ($section->parent != $parent->section) {
-            // When moving to another parent, check the depth.
-            if ($this->get_section_depth($parent) + 1 > $this->get_max_section_depth()) {
-                return false;
-            }
-        }
-
-        if ($before) {
-            if (is_string($before)) {
-                $before = (int)$before;
-            }
-            $before = $this->get_section($before);
-            // Check that it's a subsection of $parent.
-            if (!$before || $before->parent !== $parent->section) {
-                return false;
-            }
-        }
-
-        if ($section->parent == $parent->section) {
-            // Section's parent is not being changed
-            // do not insert section directly before or after itself.
-            if ($before && $before->section == $section->section) {
-                return false;
-            }
-            $subsections = [];
-            $lastsibling = null;
-            foreach ($this->get_sections() as $num => $sibling) {
-                if ($sibling->parent == $parent->section) {
-                    if ($before && $before->section == $num) {
-                        if ($lastsibling && $lastsibling->section == $section->section) {
-                            return false;
-                        } else {
-                            return true;
-                        }
-                    }
-                    $lastsibling = $sibling;
-                }
-            }
-            if ($lastsibling && !$before && $lastsibling->section == $section->section) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Checks if given section has another section among it's parents
-     *
-     * @param int|section_info $section child section
-     * @param int $parentnum parent section number
-     * @return boolean
-     */
-    public function section_has_parent($section, $parentnum) {
-        if (!$section) {
-            return false;
-        }
-        $section = $this->get_section($section);
-        if (!$section->section) {
-            return false;
-        } else if ($section->parent == $parentnum) {
-            return true;
-        } else if ($section->parent == 0) {
-            return false;
-        } else if ($section->parent >= $section->section) {
-            // Some error.
-            return false;
         } else {
-            return $this->section_has_parent($section->parent, $parentnum);
-        }
-    }
-
-    /**
-     * Completely removes a section, all subsections and activities they contain
-     *
-     * @param section_info $section
-     * @return array Array containing arrays of section ids and course mod ids that were deleted
-     */
-    public function delete_section_with_children(section_info $section): array {
-        global $DB;
-        if (!$section->section) {
-            // Section 0 does not have parent.
-            return [[], []];
-        }
-
-        $sectionid = $section->id;
-        $course = $this->get_course();
-
-        // Move the section to be removed to the end (this will re-number other sections).
-        $this->move_section($section->section, 0);
-
-        $modinfo = get_fast_modinfo($this->courseid);
-        $allsections = $modinfo->get_section_info_all();
-        $process = false;
-        $sectionstodelete = [];
-        $modulestodelete = [];
-        foreach ($allsections as $sectioninfo) {
-            if ($sectioninfo->id == $sectionid) {
-                // This is the section to be deleted. Since we have already
-                // moved it to the end we know that we need to delete this section
-                // and all the following (which can only be its subsections).
-                $process = true;
-            }
-            if ($process) {
-                $sectionstodelete[] = $sectioninfo->id;
-                if (!empty($modinfo->sections[$sectioninfo->section])) {
-                    $modulestodelete = array_merge($modulestodelete,
-                        $modinfo->sections[$sectioninfo->section]);
-                }
-                // Remove the marker if it points to this section.
-                if ($sectioninfo->section == $course->marker) {
-                    course_set_marker($course->id, 0);
-                }
+            if ($section->visible) {
+                set_section_visible($this->courseid, $section->section, $visibility);
+                $this->update_section_format_options(['id' => $section->id, 'visibleold' => $section->visible]);
             }
         }
-
-        foreach ($modulestodelete as $cmid) {
-            course_delete_module($cmid);
-        }
-
-        [$sectionsql, $params] = $DB->get_in_or_equal($sectionstodelete);
-        $sections = $DB->get_records_select('course_sections', "id $sectionsql", $params);
-
-        // Delete section records.
-        $transaction = $DB->start_delegated_transaction();
-        $DB->execute('DELETE FROM {course_format_options} WHERE sectionid ' . $sectionsql, $params);
-        $DB->execute('DELETE FROM {course_sections} WHERE id ' . $sectionsql, $params);
-        $transaction->allow_commit();
-
-        foreach ($sections as $section) {
-            // Invalidate the section cache by given section id.
-            course_modinfo::purge_course_section_cache_by_id($course->id, $section->id);
-
-            // Delete section summary files.
-            $context = \context_course::instance($course->id);
-            $fs = get_file_storage();
-            $fs->delete_area_files($context->id, 'course', 'section', $section->id);
-
-            // Trigger an event for course section deletion.
-            $event = \core\event\course_section_deleted::create(
-                [
-                    'objectid' => $section->id,
-                    'courseid' => $course->id,
-                    'context' => $context,
-                    'other' => [
-                        'sectionnum' => $section->section,
-                        'sectionname' => $this->get_section_name($section),
-                    ],
-                ]
-            );
-            $event->add_record_snapshot('course_sections', $section);
-            $event->trigger();
-        }
-
-        // Partial rebuild section cache that has been purged.
-        rebuild_course_cache($this->courseid, true, true);
-
-        return [$sectionstodelete, $modulestodelete];
-    }
-
-    /**
-     * Moves the section content to the parent section and deletes it
-     *
-     * Moves all activities and subsections to the parent section (section 0
-     * can never be deleted)
-     *
-     * @param section_info $section
-     */
-    public function mergeup_section(section_info $section): void {
-        global $DB;
-        if (!$section->section || !$section->parent) {
-            // Section 0 does not have parent.
-            return;
-        }
-
-        // Move all modules and activities from this section to parent.
-        $modinfo = get_fast_modinfo($this->courseid);
-        $allsections = $modinfo->get_section_info_all();
-        $subsections = $this->get_subsections($section);
-        $parent = $modinfo->get_section_info($section->parent);
-        if (!empty($modinfo->sections[$section->section])) {
-            foreach ($modinfo->sections[$section->section] as $cmid) {
-                moveto_module($modinfo->get_cm($cmid), $parent);
-            }
-        }
-        foreach ($subsections as $subsection) {
-            $this->update_section_format_options(
-                ['id' => $subsection->id, 'parent' => $parent->section]);
-        }
-
-        if ($this->get_course()->marker == $section->section) {
-            course_set_marker($this->courseid, 0);
-        }
-
-        // Move the section to be removed to the end (this will re-number other sections).
-        $this->move_section($section->section, 0);
-
-        // Invalidate the section cache by given section id.
-        course_modinfo::purge_course_section_cache_by_id($this->courseid, $section->id);
-
-        // Delete section summary files.
-        $context = \context_course::instance($this->courseid);
-        $fs = get_file_storage();
-        $fs->delete_area_files($context->id, 'course', 'section', $section->id);
-
-        // Delete section completely.
-        $transaction = $DB->start_delegated_transaction();
-        $DB->delete_records('course_format_options', ['courseid' => $this->courseid, 'sectionid' => $section->id]);
-        $DB->delete_records('course_sections', ['id' => $section->id]);
-        $transaction->allow_commit();
-
-        // Partial rebuild section cache that has been purged.
-        rebuild_course_cache($this->courseid, true, true);
-    }
-
-    /**
-     * Display 'Add section' as a link on the page and not as a "Add subsection" menu item
-     *
-     * @param int $sectionnum
-     * @return bool
-     */
-    public function should_display_add_sub_section_link(int $sectionnum): bool {
-        // Display for the top-level sections and for the sections that are displayed as a link.
-        if (!$sectionnum) {
-            return true;
-        }
-        $section = $this->get_section($sectionnum);
-        return (bool)$section->collapsed;
     }
 
     /**
@@ -1368,163 +694,6 @@ class format_mawang extends core_courseformat\base {
             $maxsections = 52;
         }
         return $maxsections;
-    }
-
-    /**
-     * Set the current section number to display.
-     * Some formats has the hability to swith from one section to multiple sections per page.
-     *
-     * @param int|null $sectionnum null for all sections or a sectionid.
-     */
-    public function set_section_number(int $sectionnum): void {
-        global $CFG;
-        if ((int)$CFG->branch >= 404) {
-            parent::set_sectionnum($sectionnum);
-        } else {
-            parent::set_section_number($sectionnum);
-        }
-    }
-
-    /**
-     * Set if the current format instance will show multiple sections or an individual one.
-     *
-     * Some formats has the hability to swith from one section to multiple sections per page,
-     * output components will use this method to know if the current display is a single or
-     * multiple sections.
-     *
-     * @return int zero for all sections or the sectin number
-     */
-    public function get_section_number(): int {
-        global $CFG;
-        if ((int)$CFG->branch >= 404) {
-            return (int)parent::get_sectionnum();
-        } else {
-            return parent::get_section_number();
-        }
-    }
-
-    /**
-     * Get number of sections without a parent
-     *
-     * @return int
-     */
-    public function get_number_of_toplevel_sections(): int {
-        $cnt = 0;
-        foreach ($this->get_sections() as $section) {
-            if ($section->section && !$section->parent) {
-                $cnt++;
-            }
-        }
-        return $cnt;
-    }
-
-    /**
-     * Find next section that is sibling of a given section
-     *
-     * @param section_info $section
-     * @return section_info|null
-     */
-    protected function find_next_sibling(section_info $section): ?section_info {
-        $modinfo = get_fast_modinfo($this->courseid);
-        $allsections = $modinfo->get_section_info_all();
-        $found = false;
-        foreach ($allsections as $s) {
-            if ($s->id == $section->id) {
-                $found = true;
-            } else if ($s->parent == $section->parent && $found) {
-                return $s;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Helper method for duplicating sections
-     *
-     * @param section_info $originalsection
-     * @param int $newparent
-     * @param bool $istop
-     * @return stdClass
-     */
-    protected function duplicate_section_properties(section_info $originalsection, int $newparent, bool $istop = false): stdClass {
-        $course = $this->get_course();
-        $newsection = course_create_section($course);
-
-        if (!empty($originalsection->name) && $istop) {
-            $newsection->name = get_string('duplicatedsection', 'moodle', $originalsection->name);
-        } else {
-            $newsection->name = $originalsection->name;
-        }
-        $newsection->summary = $originalsection->summary;
-        $newsection->summaryformat = $originalsection->summaryformat;
-        $newsection->visible = $originalsection->visible;
-        $newsection->availability = $originalsection->availability;
-
-        foreach (array_keys($this->section_format_options()) as $key) {
-            $newsection->$key = $originalsection->$key ?? null;
-        }
-        $newsection->parent = $newparent;
-        course_update_section($course, $newsection, $newsection);
-        $this->update_section_format_options($newsection);
-
-        return $newsection;
-    }
-
-    /**
-     * Duplicate a section
-     *
-     * @param section_info $originalsection The section to be duplicated
-     * @return section_info The new duplicated section
-     */
-    public function duplicate_section(section_info $originalsection): section_info {
-        $course = $this->get_course();
-        $modinfo = $this->get_modinfo();
-        $oldsectioninfo = $modinfo->get_section_info($originalsection->section);
-        $createbefore = $this->find_next_sibling($oldsectioninfo);
-
-        // When duplicating top-level section check that maxsectionslimit is not reached.
-        if (!$oldsectioninfo->parent) {
-            $cnt = $this->get_number_of_toplevel_sections();
-            $maxsections = $this->get_max_toplevel_sections();
-
-            if ($cnt >= $maxsections) {
-                throw new moodle_exception('maxsectionslimit', 'moodle', '', $maxsections);
-            }
-        }
-
-        // Find list of all sections that need to be duplicated.
-        $sectionstocopy = [];
-        $allsections = $modinfo->get_section_info_all();
-        $addsectiontocopy = function(section_info $s) use (&$addsectiontocopy, &$allsections, &$sectionstocopy) {
-            $sectionstocopy[$s->section] = $s;
-            foreach ($allsections as $sc) {
-                if ($sc->parent == $s->section) {
-                    $addsectiontocopy($sc);
-                }
-            }
-        };
-        $addsectiontocopy($oldsectioninfo);
-
-        // Duplicate all sections.
-        $parentmapping = [];
-        foreach ($sectionstocopy as $s) {
-            $newparent = empty($parentmapping) ? $s->parent : $parentmapping[$s->parent]->section;
-            $ns = $this->duplicate_section_properties($s, $newparent, empty($parentmapping));
-            $parentmapping[$s->section] = $ns;
-        }
-
-        // Duplicate all modules.
-        foreach ($sectionstocopy as $s) {
-            foreach (($modinfo->sections[$s->section] ?? []) as $modnumber) {
-                $originalcm = $modinfo->cms[$modnumber];
-                duplicate_module($course, $originalcm, $parentmapping[$s->section]->id, false);
-            }
-        }
-
-        // Move the new section right after the original section.
-        $newsection = $parentmapping[$oldsectioninfo->section]->section;
-        $newsection = $this->move_section($newsection, $oldsectioninfo->parent, $createbefore);
-        return get_fast_modinfo($course)->get_section_info($newsection);
     }
 
     /**
@@ -1759,9 +928,10 @@ function format_mawang_before_footer() {
 
     global $OUTPUT;
     if ($cm = format_mawang_add_back_link_to_cm()) {
+        $url = new \moodle_url('/course/section.php', ['id' => $cm->sectionnum]);
         return $OUTPUT->render_from_template('format_mawang/back_link_in_cms', [
             'backtosection' => [
-                'url' => course_get_url($cm->course, $cm->sectionnum)->out(false),
+                'url' => $url->out(false),
                 'sectionname' => get_section_name($cm->course, $cm->sectionnum),
             ],
         ]);

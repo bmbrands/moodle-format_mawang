@@ -27,7 +27,5 @@ class constants {
     /** @var int */
     const COURSEINDEX_FULL = 0;
     /** @var int */
-    const COURSEINDEX_SECTIONS = 1;
-    /** @var int */
     const COURSEINDEX_NONE = 2;
 }

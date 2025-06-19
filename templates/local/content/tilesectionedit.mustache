@@ -28,7 +28,7 @@
 <ul>
 {{/testingonly-make-mustache-lint-happy}}
 <li id="section-{{num}}"
-    class="section course-section main tile{{!
+    class="section course-section main edittile{{!
         }}{{#onlysummary}} section-summary{{/onlysummary}}{{!
         }}{{#ishidden}} hidden{{/ishidden}}{{!
         }}{{#iscurrent}} current{{/iscurrent}}{{!
@@ -40,12 +40,6 @@
     data-for="section"
     data-id="{{id}}"
     data-number="{{num}}"
-    {{^multipage}}
-        data-number="{{num}}"
-        data-action="{{^restrictionlock}}tiletoggle{{/restrictionlock}}"
-        tabindex="0"
-        {{^restrictionlock}}role="button"{{/restrictionlock}}
-    {{/multipage}}
 >
     {{#restrictionlock}}
         <div class="badge badge-warning badge-pill section-restricted-badge">
@@ -54,9 +48,13 @@
         </div>
     {{/restrictionlock}}
 
-    <div class="course-section-header {{^restrictionlock}}tiletoggle{{/restrictionlock}} d-flex flex-column justify-content-end position-relative"
+    <div class="course-section-header d-flex flex-column justify-content-end position-relative"
     >
+        <button class="btn btn-icon icon-no-margin section-edit-button" data-action="section-edit-form" data-sectionid="{{id}}" data-sectionnum="{{num}}" data-sectionname="{{name}}" data-courseid="{{courseid}}">
+            {{#pix}} e/insert_edit_image, core {{/pix}}
+        </button>
         <div class="section-image-background" style='background-image: url("{{sectionimage}}");' aria-hidden="true">
+
         </div>
     </div>
     <div class="sectioncardbody">
@@ -89,9 +87,8 @@
     </div>
 </li>
 {{^restrictionlock}}
-    {{^multipage}}
     <li id="section-content-{{num}}"
-        class="sectioncontent"
+        class="sectioncontentedit"
         data-sectionid="{{num}}"
         data-region="sectioncontent"
         data-sectionreturnid="{{sectionreturnid}}"
@@ -108,15 +105,12 @@
             {{> format_mawang/local/content/section/orgcontent }}
             {{^showaslink}}
             <ul class="mawang-level-{{level}}" data-for="course_subsectionlist" data-parent="{{id}}">
-                {{#insertsubsection}}
                     {{> format_mawang/local/content/addsection}}
-                {{/insertsubsection}}
             </ul>
             {{/showaslink}}
         </div>
     {{/ core_courseformat/local/content/section/content }}
     </li>
-    {{/multipage}}
 {{/restrictionlock}}
 {{#testingonly-make-mustache-lint-happy}}
 </ul>

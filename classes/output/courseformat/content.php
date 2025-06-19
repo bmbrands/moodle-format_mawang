@@ -76,7 +76,6 @@ class content extends \core_courseformat\output\local\content {
             'sections' => $sections,
             'format' => $format->get_format(),
             'sectionreturn' => null,
-            'teacherprofile' => $this->get_teacher_profile(),
             'multipage' => ($coursedisplay == COURSE_DISPLAY_MULTIPAGE),
         ];
 
@@ -93,6 +92,8 @@ class content extends \core_courseformat\output\local\content {
             $data->hasnavigation = true;
             $data->singlesection = array_shift($data->sections);
             $data->sectionreturn = $singlesectionnum;
+        } else {
+            $data->teacherprofile = \filter_teacherprofile\text_filter::quick_get_teacher();
         }
 
         if ($this->hasaddsection) {
@@ -104,39 +105,30 @@ class content extends \core_courseformat\output\local\content {
             $bulkedittools = new $this->bulkedittoolsclass($format);
             $data->bulkedittools = $bulkedittools->export_for_template($output);
         }
+        $data->coursemessage = $this->get_startdate_message();
         $data->cssurl = new \moodle_url('/course/format/mawang/scss/styles.css', ['cache' => time()]);
         $data->editing = $PAGE->user_is_editing();
         return $data;
     }
 
     /**
-     * Get the teacher profile to display on the course page.
-     *
+     * Get the message about the course start data
      * @return string
      */
-    public function get_teacher_profile() {
-        global $OUTPUT;
-
-        $coursectx = $this->format->get_context();
-        if (!$coursectx) {
-            return '';
+    public function get_startdate_message() {
+        $course = $this->format->get_course();
+        $startdate = $course->startdate;
+        if ($startdate && $startdate > time()) {
+            if ($startdate < strtotime('today')) {
+                $dayname = get_string('coursestartstoday', 'format_mawang');
+            } else if ($startdate < strtotime('next week')) {
+                $dayname = userdate($startdate, get_string('strftimedayonly', 'format_mawang'));
+                return get_string('coursestartdate', 'format_mawang', $dayname);
+            } else {
+                $date = userdate($startdate, get_string('strftimedaydate', 'langconfig'));
+                return get_string('coursestartdate', 'format_mawang', $date);
+            }
         }
-
-        // Teachers
-        $teachers = get_enrolled_users($coursectx, 'moodle/course:changefullname');
-
-        // Get the first teacher.
-        $teacher = reset($teachers);
-        $fields = (array)profile_user_record($teacher->id);
-        return $OUTPUT->render_from_template(
-            'format_mawang/teacherinfo',
-            [
-                'fullname' => fullname($teacher),
-                'profileurl' => new \moodle_url('/user/profile.php', ['id' => $teacher->id]),
-                'picture' => $OUTPUT->user_picture($teacher, ['size' => 100]),
-                'teacher' => $teacher,
-                'fields' => $fields,
-            ]
-        );
+        return '';
     }
 }

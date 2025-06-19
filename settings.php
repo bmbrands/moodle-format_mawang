@@ -35,38 +35,6 @@ if ($ADMIN->fulltree) {
         new lang_string('indentation_help', 'format_topics').'<br />'.$link,
         1
     ));
-    $settings->add(new admin_setting_configtext('format_mawang/maxsectiondepth',
-        get_string('maxsectiondepth', 'format_mawang'),
-        get_string('maxsectiondepthdesc', 'format_mawang'), 2, PARAM_INT, 7));
-
-    $options = [
-        constants::COURSEINDEX_FULL => get_string('courseindexfull', 'format_mawang'),
-        constants::COURSEINDEX_SECTIONS => get_string('courseindexsections', 'format_mawang'),
-        constants::COURSEINDEX_NONE => get_string('courseindexnone', 'format_mawang'),
-    ];
-    $settings->add(new admin_setting_configselect('format_mawang/courseindexdisplay',
-        get_string('courseindexdisplay', 'format_mawang'),
-        get_string('courseindexdisplaydesc', 'format_mawang'), 0, $options));
-
-    $settings->add(new admin_setting_configcheckbox('format_mawang/cmbacklink',
-        get_string('cmbacklink', 'format_mawang'),
-        get_string('cmbacklinkdesc', 'format_mawang'), 0));
-
-    $settings->add(new admin_setting_configcheckbox('format_mawang/courseindexautoclose',
-        get_string('courseindexautoclose', 'format_mawang'),
-        get_string('courseindexautoclosedesc', 'format_mawang'), 1));
-
-    // Get a list of all available modules.
-    $modulelist = core_component::get_plugin_list('mod');
-    $modules = [];
-    foreach ($modulelist as $module => $dir) {
-        $modules[$module] = get_string('modulename', $module) . ' (' . $module . ')';
-    }
-
-    $settings->add(new admin_setting_configmultiselect('format_mawang/autoblockopen',
-        get_string('autoblockopen', 'format_mawang'),
-        get_string('autoblockopendesc', 'format_mawang'),
-        [], $modules));
 
     $settings->add(new admin_setting_configstoredfile('format_mawang/defaultsectionimage',
         get_string('defaultsectionimage', 'format_mawang'),
