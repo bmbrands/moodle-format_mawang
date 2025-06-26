@@ -83,9 +83,7 @@
     }
 }}
 {{> format_mawang/local/navigate_back_to }}
-{{#cssurl}}
 <link rel="stylesheet" type="text/css" href="{{{cssurl}}}">
-{{/cssurl}}
 {{#secondarymoremenu}}
     <div class="secondary-navigation d-print-none">
         {{> core/moremenu}}
@@ -153,7 +151,7 @@
             <li class="tiles">
                 <ul class="tilesections unlist">
                     {{#sections}}
-                        {{> format_mawang/local/content/tilesectionedit }}
+                        {{> format_mawang/local/content/section }}
                     {{/sections}}
                 </ul>
             </li>

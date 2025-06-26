@@ -101,21 +101,53 @@
     data-id="{{id}}"
     data-number="{{num}}"
 >
-    <div class="course-section-header d-flex"
+    <div class="course-section-header-edit d-flex"
         data-for="section_title"
         data-id="{{id}}"
         data-number="{{num}}"
     >
         {{^singlesection}}
-            {{#sectionimage}}
-                <div class="section-image-sample border" style='background-image: url("{{{sectionimage}}}");' aria-hidden="true">
-                    {{#editing}}
-                        <button class="btn btn-icon icon-no-margin section-edit-button" data-action="section-edit-form" data-sectionid="{{id}}" data-sectionnum="{{num}}" data-sectionname="{{name}}" data-courseid="{{courseid}}">
-                            {{#pix}} e/insert_edit_image, core {{/pix}}
-                        </button>
-                    {{/editing}}
+            <div class="card sectioncard">
+                {{#sectionimage}}
+                    <div class="course-section-card-header {{^restrictionlock}}tiletoggle{{/restrictionlock}}">
+                        <div class="section-image-background" style='background-image: url("{{sectionimage}}");' aria-hidden="true">
+                        </div>
+                        {{#editing}}
+                            <button class="btn btn-icon icon-no-margin section-edit-button" data-action="section-edit-form" data-sectionid="{{id}}" data-sectionnum="{{num}}" data-sectionname="{{name}}" data-courseid="{{courseid}}">
+                                {{#pix}} e/insert_edit_image, core {{/pix}}
+                            </button>
+                        {{/editing}}
+                    </div>
+                {{/sectionimage}}
+                <div class="sectioncardbody">
+                    {{#header}}
+                        {{$ format_mawang/local/content/section/tileheader }}
+                            {{> format_mawang/local/content/section/tileheader }}
+                        {{/ format_mawang/local/content/section/tileheader }}
+                    {{/header}}
+                    {{#cmsummary}}
+                        {{$ format_mawang/local/content/section/cmsummary }}
+                            {{> format_mawang/local/content/section/cmsummary }}
+                        {{/ format_mawang/local/content/section/cmsummary }}
+                    {{/cmsummary}}
+                    {{#summary}}
+                    {{$ core_courseformat/local/content/section/summary }}
+                        {{> core_courseformat/local/content/section/summary }}
+                    {{/ core_courseformat/local/content/section/summary }}
+                    {{/summary}}
+                    <div class="grower"></div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        {{#cmsummary.totalduration}}
+                            <div class="totalduration ma-small">
+                                {{{.}}}
+                            </div>
+                        {{/cmsummary.totalduration}}
+                        {{#lastvisited}}
+                            <span class="recentlyviewed ml-auto">{{#str}}recentlyviewed, format_mawang{{/str}}</span>
+                        {{/lastvisited}}
+                    </div>
                 </div>
-            {{/sectionimage}}
+            </div>
         {{/singlesection}}
         {{$ format_mawang/local/content/section/content }}
             {{> format_mawang/local/content/section/content }}

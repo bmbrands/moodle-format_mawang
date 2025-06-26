@@ -28,7 +28,7 @@
 <ul>
 {{/testingonly-make-mustache-lint-happy}}
 <li id="section-{{num}}"
-    class="section course-section main tile{{!
+    class="tilesection course-section main tile{{!
         }}{{#onlysummary}} section-summary{{/onlysummary}}{{!
         }}{{#ishidden}} hidden{{/ishidden}}{{!
         }}{{#iscurrent}} current{{/iscurrent}}{{!
@@ -54,8 +54,7 @@
         </div>
     {{/restrictionlock}}
 
-    <div class="course-section-header {{^restrictionlock}}tiletoggle{{/restrictionlock}} d-flex flex-column justify-content-end position-relative"
-    >
+    <div class="course-section-card-header {{^restrictionlock}}tiletoggle{{/restrictionlock}}">
         <div class="section-image-background" style='background-image: url("{{sectionimage}}");' aria-hidden="true">
         </div>
     </div>

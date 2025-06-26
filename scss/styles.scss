@@ -153,6 +153,12 @@ $purple-50: #F0EFF5;
             padding: 1rem;
         }
 
+        .sectioncard {
+            margin-top: 5rem;
+            max-width: 400px;
+            min-width: 400px;
+            border: 1px solid #cdcaca;
+        }
         .sectioncardbody {
             padding: 1rem 0.75rem 0.5rem 0.75rem;
             flex: 1 1 auto;
@@ -198,7 +204,32 @@ $purple-50: #F0EFF5;
             height: auto;
         }
 
-        & > li.section {
+        .course-section-card-header {
+            padding: 1.5rem 1rem;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+            height: 140px;
+            max-height: 140px;
+            position: relative;
+            overflow: hidden;
+
+            .section-image-background {
+                position: absolute;
+                border-top-left-radius: 0.5rem;
+                border-top-right-radius: 0.5rem;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                pointer-events: none;
+                transition: filter 0.3s, transform 0.3s;
+            }
+        }
+
+        & > li.tilesection {
             position: relative;
             margin: 0;
             border: 1px solid $gray-200;
@@ -250,43 +281,6 @@ $purple-50: #F0EFF5;
                         background-color: rgba(0, 0, 0, 0);
                     }
                 }
-            }
-
-            > .course-section-header {
-                padding: 1.5rem 1rem;
-                border-top-left-radius: 0.5rem;
-                border-top-right-radius: 0.5rem;
-                height: 140px;
-                max-height: 140px;
-                position: relative;
-                overflow: hidden;
-
-                h3.sectionname {
-                    color: #fff;
-                    background-color: rgba(0, 43, 92, .92);
-                    padding: 1rem 1rem 1rem 14px;
-                    border-left: 4px solid transparent;
-                    font-size: 1.35rem;
-                }
-
-                .section-image-background {
-                    position: absolute;
-                    border-top-left-radius: 0.5rem;
-                    border-top-right-radius: 0.5rem;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    background-size: cover;
-                    background-position: center;
-                    background-repeat: no-repeat;
-                    pointer-events: none;
-                    transition: filter 0.3s, transform 0.3s;
-                }
-            }
-
-            &.show > .course-section-header h3 {
-                border-left: 4px solid #007bff;
             }
 
             &.locked > .course-section-header {
