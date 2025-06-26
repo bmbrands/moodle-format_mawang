@@ -41,7 +41,7 @@ class before_footer_html_generation {
         }
 
         if ($cm = format_mawang_add_back_link_to_cm()) {
-            $url = new \moodle_url('/course/section.php', ['id' => $cm->sectionnum + 1]);
+            $url = new \moodle_url('/course/section.php', ['id' => $cm->sectionid]);
             $hook->add_html($OUTPUT->render_from_template('format_mawang/back_link_in_cms', [
                 'backtosection' => [
                     'url' => $url->out(false),
