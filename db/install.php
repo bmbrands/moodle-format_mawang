@@ -15,23 +15,21 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details.
+ * Install script for mawang format
+ *
+ * Documentation: {@link https://moodledev.io/docs/guides/upgrade}
  *
  * @package    format_mawang
- * @copyright  2025 Bas Brands
+ * @copyright  2025 Bas Brands <bas@sonsbeekmedia.nl>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
-$plugin->component    = 'format_mawang';
-$plugin->dependencies = [
-    'theme_mawang' => 2025061800,
-    'filter_teacherprofile' => 2025061800,
-    'local_modcustomfields' => 2024070300,
-];
-$plugin->release      = '1.0';
-$plugin->version      = 2025072200;
-$plugin->requires     = 2024100700;
-$plugin->supported    = [405, 405];
-$plugin->maturity     = MATURITY_STABLE;
+/**
+ * Executed on installation of mawang format
+ *
+ * @return bool
+ */
+function xmldb_format_mawang_install() {
+    \format_mawang\setup::install();
+    return true;
+}

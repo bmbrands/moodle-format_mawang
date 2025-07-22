@@ -72,8 +72,10 @@ $string['strftimedayonly'] = '%A';
 $string['coursestartdate'] = 'This course starts on {$a}';
 $string['coursestartstoday'] = 'This course starts today';
 
+$string['durationlabel'] = 'Duration';
 $string['durationcustomfieldname'] = 'Duration custom field name';
 $string['durationcustomfieldnamedesc'] = 'The name of the custom field that contains the duration of the activity. This field is used to display the duration in the course format.';
 $string['isvideocustomfieldname'] = 'Is video custom field name';
+$string['isvideolabel'] = 'Is video';
 $string['isvideocustomfieldnamedesc'] = 'The name of the custom field that indicates whether the activity is a video. This field is used for the video count on the course section card.';
 $string['cachedef_videos'] = 'Cache for videos in the mawang format';
