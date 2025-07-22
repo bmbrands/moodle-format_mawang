@@ -83,7 +83,9 @@
     }
 }}
 {{> format_mawang/local/navigate_back_to }}
+{{#cssurl}}
 <link rel="stylesheet" type="text/css" href="{{{cssurl}}}">
+{{/cssurl}}
 {{#secondarymoremenu}}
     <div class="secondary-navigation d-print-none">
         {{> core/moremenu}}
@@ -143,13 +145,13 @@
 
     <h2 class="accesshide">{{{title}}}</h2>
     {{{completionhelp}}}
-    <ul class="{{format}} mawang-level-0" data-for="course_sectionlist">
+    <ul class="{{format}} mawang-level-0">
         {{#initialsection}}
             {{> format_mawang/local/content/section }}
         {{/initialsection}}
         {{#editing}}
             <li class="tiles">
-                <ul class="tilesections unlist">
+                <ul class="tilesections unlist" data-for="course_sectionlist">
                     {{#sections}}
                         {{> format_mawang/local/content/section }}
                     {{/sections}}
@@ -158,7 +160,7 @@
         {{/editing}}
         {{^editing}}
             <li class="tiles">
-                <ul class="tilesections showgrid unlist">
+                <ul class="tilesections showgrid unlist" data-for="course_sectionlist">
                     {{#sections}}
                         {{> format_mawang/local/content/tilesection }}
                     {{/sections}}

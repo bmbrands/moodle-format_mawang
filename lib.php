@@ -28,7 +28,6 @@ require_once($CFG->dirroot. '/course/format/lib.php');
 use format_mawang\constants;
 use core\output\inplace_editable;
 
-
 define('FORMAT_MAWANG_COLLAPSED', 1);
 define('FORMAT_MAWANG_EXPANDED', 0);
 
@@ -789,7 +788,7 @@ class format_mawang extends core_courseformat\base {
      *     ['name' => 'Field 2', 'shortname' => 'field2', 'value' => 'Value 2'],
      *   ]],
      *   ['category' => ['name' => 'Category 2', 'shortname' => 'cat2', 'fields' => [...
-     * 
+     *
      */
     public function get_customfields_tab_content(int $tab): array {
         $handler = \core_course\customfield\course_handler::create();
@@ -829,17 +828,62 @@ class format_mawang extends core_courseformat\base {
      */
     public function get_cm_duration(int $cmid): int {
         $handler = \local_modcustomfields\customfield\mod_handler::create();
+        $fieldname = get_config('format_mawang', 'durationcustomfieldname');
         $datas = $handler->get_instance_data($cmid);
         $duration = 0;
         foreach ($datas as $data) {
             $field = $data->get_field();
             $shortname = $field->get('shortname');
             $value = $data->get_value();
-            if ($shortname == 'duration') {
+            if ($shortname == trim($fieldname)) {
                 $duration = Intval($value);
             }
         }
         return $duration;
+    }
+
+    /**
+     * Check to see if a course module is or contains a video.
+     * @param int $cmid
+     * @return bool
+     */
+    public function is_cm_video(int $cmid): bool {
+        global $DB;
+
+        $fieldname = get_config('format_mawang', 'isvideocustomfieldname');
+        if (empty($fieldname)) {
+            return false; // No custom field configured.
+        }
+        $videocache = cache::make('format_mawang', 'videos');
+        if ($videocache->has($fieldname)) {
+            $records = $videocache->get($fieldname);
+            if (in_array($cmid, $records)) {
+                return true;
+            } else {
+                return false; 
+            }
+        }
+
+        $field = $DB->get_record('customfield_field', ['shortname' => trim($fieldname)], '*', MUST_EXIST);
+        if (!$field) {
+            return false; // No custom field found.
+        }
+        $videocache = cache::make('format_mawang', 'videos');
+        $sql = "SELECT instanceid
+                FROM {customfield_data}
+                WHERE fieldid = :fieldid
+                AND " . $DB->sql_compare_text('value') . " = :value";
+        $params = ['fieldid' => $field->id, 'value' => '1'];
+        $records = $DB->get_records_sql($sql, $params);
+        $instanceids = [];
+        foreach ($records as $value) {
+            $instanceids[] = $value->instanceid;
+            if ($value->instanceid == $cmid) {
+                return true;
+            }
+        }
+        $videocache->set($fieldname, $instanceids);
+        return false;
     }
 
     /**

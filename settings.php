@@ -40,4 +40,19 @@ if ($ADMIN->fulltree) {
         get_string('defaultsectionimage', 'format_mawang'),
         get_string('defaultsectionimagedesc', 'format_mawang'), 'defaultsectionimage', 0,
         ['maxfiles' => 1, 'accepted_types' => ['.jpg', '.png', '.gif', '.svg', '.jpeg']]));
+
+    // Name of the duration custom field.
+    $settings->add(new admin_setting_configtext('format_mawang/durationcustomfieldname',
+        get_string('durationcustomfieldname', 'format_mawang'),
+        get_string('durationcustomfieldnamedesc', 'format_mawang'),
+        constants::DEFAULT_DURATION_CUSTOM_FIELD_NAME,
+        PARAM_TEXT, 50));
+
+    // Name of isvideo checkbox custom field.
+    $settings->add(new admin_setting_configtext('format_mawang/isvideocustomfieldname',
+        get_string('isvideocustomfieldname', 'format_mawang'),
+        get_string('isvideocustomfieldnamedesc', 'format_mawang'),
+        constants::DEFAULT_ISVIDEO_CUSTOM_FIELD_NAME,
+        PARAM_TEXT, 50));
+
 }

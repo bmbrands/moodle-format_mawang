@@ -91,7 +91,7 @@ class cmsummary extends \core_courseformat\output\local\content\section\cmsummar
                     $mods[$thismod->modname]['count'] = 1;
                 }
                 $purpose = plugin_supports('mod', $thismod->modname, FEATURE_MOD_PURPOSE, MOD_PURPOSE_OTHER);
-                if ($thismod->modname == 'video') {
+                if ($this->format->is_cm_video($thismod->id)) {
                     $videocount++;
                 } else if ($purpose == MOD_PURPOSE_CONTENT) {
                     $readingcount++;

@@ -14,22 +14,31 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace format_mawang;
-
 /**
- * Constants
+ * Event observers for mawang format
  *
  * @package    format_mawang
- * @copyright  2025 Bas Brands
+ * @category   event
+ * @copyright  2025 Bas Brands <bas@sonsbeekmedia.nl>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class constants {
-    /** @var int */
-    const COURSEINDEX_FULL = 0;
-    /** @var int */
-    const COURSEINDEX_NONE = 2;
-    /** @var string */
-    const DEFAULT_DURATION_CUSTOM_FIELD_NAME = 'duration';
-    /** @var string */
-    const DEFAULT_ISVIDEO_CUSTOM_FIELD_NAME = 'isvideo';
-}
+
+defined('MOODLE_INTERNAL') || die();
+
+$observers = [
+        [
+        'eventname' => '\core\event\course_module_created',
+        'callback'  => '\format_mawang\eventobservers::purge_cache',
+        'internal'  => false,
+    ],
+    [
+        'eventname' => '\core\event\course_module_updated',
+        'callback'  => '\format_mawang\eventobservers::purge_cache',
+        'internal'  => false,
+    ],
+    [
+        'eventname' => '\core\event\course_module_deleted',
+        'callback'  => '\format_mawang\eventobservers::purge_cache',
+        'internal'  => false,
+    ],
+];

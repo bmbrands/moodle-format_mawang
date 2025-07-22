@@ -14,22 +14,32 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace format_mawang;
-
 /**
- * Constants
+ * Cache definitions for mawang format
+ *
+ * Documentation: {@link https://docs.moodle.org/dev/Cache_API}
  *
  * @package    format_mawang
- * @copyright  2025 Bas Brands
+ * @category   cache
+ * @copyright  2025 Bas Brands <bas@sonsbeekmedia.nl>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class constants {
-    /** @var int */
-    const COURSEINDEX_FULL = 0;
-    /** @var int */
-    const COURSEINDEX_NONE = 2;
-    /** @var string */
-    const DEFAULT_DURATION_CUSTOM_FIELD_NAME = 'duration';
-    /** @var string */
-    const DEFAULT_ISVIDEO_CUSTOM_FIELD_NAME = 'isvideo';
-}
+
+defined('MOODLE_INTERNAL') || die();
+
+$definitions = [
+    'videos' => [
+        'mode' => cache_store::MODE_APPLICATION,
+        'simpledata' => true,
+        'lifetime' => 86400,
+        'invalidationevants' => [
+            'course_updated',
+            'course_module_updated',
+            'course_module_created',
+            'course_module_deleted',
+            'course_section_updated',
+            'course_section_created',
+            'course_section_deleted',
+        ],
+    ],
+];

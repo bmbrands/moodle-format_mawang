@@ -16,20 +16,26 @@
 
 namespace format_mawang;
 
+use core\event\base;
+use cache;
+
 /**
- * Constants
+ * Class eventobservers
  *
  * @package    format_mawang
- * @copyright  2025 Bas Brands
+ * @copyright  2025 Bas Brands <bas@sonsbeekmedia.nl>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class constants {
-    /** @var int */
-    const COURSEINDEX_FULL = 0;
-    /** @var int */
-    const COURSEINDEX_NONE = 2;
-    /** @var string */
-    const DEFAULT_DURATION_CUSTOM_FIELD_NAME = 'duration';
-    /** @var string */
-    const DEFAULT_ISVIDEO_CUSTOM_FIELD_NAME = 'isvideo';
+class eventobservers {
+
+    /**
+     * Purge cache when course module is created, restored, updated or deleted.
+     *
+     * @param base $event
+     * @return void
+     */
+    public static function purge_cache(base $event): void {
+        $videocache = cache::make('format_mawang', 'videos');
+        $videocache->purge();
+    }
 }
