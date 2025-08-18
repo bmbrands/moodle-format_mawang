@@ -410,10 +410,10 @@ class format_mawang extends core_courseformat\base {
                     'default' => (bool)get_config('format_mawang', 'cmbacklink'),
                     'type' => PARAM_BOOL,
                 ],
-                'coursedisplay' => array(
+                'coursedisplay' => [
                     'default' => $courseconfig->coursedisplay ?? COURSE_DISPLAY_SINGLEPAGE,
                     'type' => PARAM_INT,
-                ),
+                ],
             ];
         }
         if ($foreditform && !isset($courseformatoptions['coursedisplay']['label'])) {
@@ -426,18 +426,18 @@ class format_mawang extends core_courseformat\base {
                     'label' => new lang_string('cmbacklink', 'format_mawang'),
                     'element_type' => 'advcheckbox',
                 ],
-                'coursedisplay' => array(
+                'coursedisplay' => [
                     'label' => new lang_string('coursedisplay'),
                     'element_type' => 'select',
-                    'element_attributes' => array(
-                        array(
+                    'element_attributes' => [
+                        [
                             COURSE_DISPLAY_SINGLEPAGE => new lang_string('coursedisplay_single'),
-                            COURSE_DISPLAY_MULTIPAGE => new lang_string('coursedisplay_multi')
-                        )
-                    ),
+                            COURSE_DISPLAY_MULTIPAGE => new lang_string('coursedisplay_multi'),
+                        ],
+                    ],
                     'help' => 'coursedisplay',
                     'help_component' => 'moodle',
-                ),
+                ],
             ];
             $courseformatoptions = array_merge_recursive($courseformatoptions, $courseformatoptionsedit);
         }
@@ -836,7 +836,7 @@ class format_mawang extends core_courseformat\base {
             $shortname = $field->get('shortname');
             $value = $data->get_value();
             if ($shortname == trim($fieldname)) {
-                $duration = Intval($value);
+                $duration = intval($value);
             }
         }
         return $duration;
@@ -860,7 +860,7 @@ class format_mawang extends core_courseformat\base {
             if (in_array($cmid, $records)) {
                 return true;
             } else {
-                return false; 
+                return false;
             }
         }
 

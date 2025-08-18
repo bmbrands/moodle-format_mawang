@@ -46,11 +46,11 @@ class section extends \core_courseformat\output\local\content\section {
     }
 
         /**
-     * Export this data so it can be used as the context for a mustache template.
-     *
-     * @param renderer_base $output typically, the renderer that's calling this function
-     * @return stdClass data context for a mustache template
-     */
+         * Export this data so it can be used as the context for a mustache template.
+         *
+         * @param renderer_base $output typically, the renderer that's calling this function
+         * @return stdClass data context for a mustache template
+         */
     public function export_for_template(renderer_base $output): stdClass {
         global $USER, $PAGE;
 
