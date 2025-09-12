@@ -93,12 +93,8 @@ const toggleManualCompletionState = async(toggleButton) => {
     const completed = toggleType === TOGGLE_TYPES.TOGGLE_MARK_DONE;
 
     // Replace the button contents with the loading icon.
-    Templates.renderForPromise('core/loading', {})
-    .then((loadingHtml) => {
-        Templates.replaceNodeContents(toggleButton, loadingHtml, '');
-        return;
-    }).catch(() => {});
-
+    const {html, js} = await Templates.renderForPromise('core/loading', {});
+    Templates.replaceNodeContents(toggleButton, html, js);
     try {
         // Call the webservice to update the manual completion status.
         await toggleManualCompletion(cmid, completed);

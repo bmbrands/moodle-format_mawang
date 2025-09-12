@@ -26,8 +26,6 @@ $string['activity'] = '{$a} activity';
 $string['backtocourse'] = 'Back to course \'{$a}\'';
 $string['backtosection'] = 'Back to \'{$a}\'';
 $string['cachedef_videos'] = 'Cache for videos in the mawang format';
-
-// Completion widget.
 $string['close'] = 'Close';
 $string['cmbacklink'] = 'Display back link in activities';
 $string['cmbacklinkdesc'] = 'Display link \'Back to ...\' allowing to return to the course section inside the section activities.';
@@ -44,7 +42,6 @@ $string['deletesection'] = 'Delete section';
 $string['displaycontent'] = 'Display content';
 $string['durationcustomfieldname'] = 'Duration custom field name';
 $string['durationcustomfieldnamedesc'] = 'The name of the custom field that contains the duration of the activity. This field is used to display the duration in the course format.';
-
 $string['durationlabel'] = 'Duration';
 $string['editsection'] = 'Edit section';
 $string['editsectionname'] = 'Edit section name';
@@ -64,12 +61,9 @@ $string['plugin_description'] = 'A Cambridge University Press course format that
 $string['pluginname'] = 'mawang format';
 $string['privacy:metadata'] = 'The mawang format plugin does not store any personal data.';
 $string['progress'] = '{$a}% Progress';
-
 $string['reading'] = '{$a} reading';
 $string['recentlyviewed'] = 'Recently viewed';
 $string['section0name'] = 'General';
-
-// New strings for the Grid tiles.
 $string['sectionimage'] = 'Section image';
 $string['sectionname'] = 'Topic';
 $string['showascard'] = 'Display as a card';
