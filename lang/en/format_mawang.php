@@ -22,60 +22,60 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+$string['activity'] = '{$a} activity';
 $string['backtocourse'] = 'Back to course \'{$a}\'';
 $string['backtosection'] = 'Back to \'{$a}\'';
+$string['cachedef_videos'] = 'Cache for videos in the mawang format';
+
+// Completion widget.
+$string['close'] = 'Close';
 $string['cmbacklink'] = 'Display back link in activities';
 $string['cmbacklinkdesc'] = 'Display link \'Back to ...\' allowing to return to the course section inside the section activities.';
 $string['confirmdelete'] = 'Are you sure you want to delete this section? All activities and subsections will also be deleted';
 $string['confirmmerge'] = 'Are you sure you want to merge this section content with the parent? All activities and subsections will be moved';
 $string['courseindexfull'] = 'Sections and activities';
 $string['courseindexnone'] = 'Do not display';
+$string['coursestartdate'] = 'This course starts on {$a}';
+$string['coursestartstoday'] = 'This course starts today';
 $string['currentsection'] = 'This section';
+$string['defaultsectionimage'] = 'Default section image';
+$string['defaultsectionimagedesc'] = 'This image will be used as a default section image if the section does not have its own image.';
 $string['deletesection'] = 'Delete section';
 $string['displaycontent'] = 'Display content';
+$string['durationcustomfieldname'] = 'Duration custom field name';
+$string['durationcustomfieldnamedesc'] = 'The name of the custom field that contains the duration of the activity. This field is used to display the duration in the course format.';
+
+$string['durationlabel'] = 'Duration';
 $string['editsection'] = 'Edit section';
 $string['editsectionname'] = 'Edit section name';
 $string['hidefromothers'] = 'Hide section';
+$string['isvideocustomfieldname'] = 'Is video custom field name';
+$string['isvideocustomfieldnamedesc'] = 'The name of the custom field that indicates whether the activity is a video. This field is used for the video count on the course section card.';
+$string['isvideolabel'] = 'Is video';
+$string['lessons'] = 'Lessons';
 $string['movebeforecm'] = 'Before activity \'{$a}\'';
 $string['movebeforesection'] = 'Before \'{$a}\'';
 $string['movecmendofsection'] = 'To the end of section \'{$a}\'';
 $string['movecmsection'] = 'To the section \'{$a}\'';
 $string['movesectiontotheend'] = 'To the end';
 $string['newsectionname'] = 'New name for section {$a}';
-$string['pluginname'] = 'mawang format';
+$string['notavailable'] = 'Not available';
 $string['plugin_description'] = 'A Cambridge University Press course format that displays the course content in a card format, allowing for a more visual and engaging learning experience.';
+$string['pluginname'] = 'mawang format';
 $string['privacy:metadata'] = 'The mawang format plugin does not store any personal data.';
+$string['progress'] = '{$a}% Progress';
+
+$string['reading'] = '{$a} reading';
+$string['recentlyviewed'] = 'Recently viewed';
 $string['section0name'] = 'General';
+
+// New strings for the Grid tiles.
+$string['sectionimage'] = 'Section image';
 $string['sectionname'] = 'Topic';
 $string['showascard'] = 'Display as a card';
 $string['showexpanded'] = 'Display after cards';
 $string['showfromothers'] = 'Show section';
 $string['showsection0title'] = 'Show top section title';
 $string['showsection0title_help'] = 'Show the title of the top section on the course page.';
-
-// New strings for the Grid tiles.
-$string['sectionimage'] = 'Section image';
-
-// Completion widget.
-$string['close'] = 'Close';
-$string['notavailable'] = 'Not available';
-$string['defaultsectionimage'] = 'Default section image';
-$string['defaultsectionimagedesc'] = 'This image will be used as a default section image if the section does not have its own image.';
-
-$string['reading'] = '{$a} reading';
-$string['activity'] = '{$a} activity';
-$string['progress'] = '{$a}% Progress';
-$string['lessons'] = 'Lessons';
-$string['video'] = '{$a} video';
-$string['recentlyviewed'] = 'Recently viewed';
 $string['strftimedayonly'] = '%A';
-$string['coursestartdate'] = 'This course starts on {$a}';
-$string['coursestartstoday'] = 'This course starts today';
-
-$string['durationlabel'] = 'Duration';
-$string['durationcustomfieldname'] = 'Duration custom field name';
-$string['durationcustomfieldnamedesc'] = 'The name of the custom field that contains the duration of the activity. This field is used to display the duration in the course format.';
-$string['isvideocustomfieldname'] = 'Is video custom field name';
-$string['isvideolabel'] = 'Is video';
-$string['isvideocustomfieldnamedesc'] = 'The name of the custom field that indicates whether the activity is a video. This field is used for the video count on the course section card.';
-$string['cachedef_videos'] = 'Cache for videos in the mawang format';
+$string['video'] = '{$a} video';

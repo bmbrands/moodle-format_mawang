@@ -92,13 +92,13 @@
 }
 
 .course-content ul.mawang .activity-item .activity-grid {
-    grid-template-areas: 
-        "icon   name          groupmode      completion    actions" 
-        "icon   visibility    groupmode      completion    actions" 
-        "icon   dates         groupmode      completion    actions" 
-        "icon   altcontent    altcontent     altcontent    altcontent" 
-        "icon   afterlink     afterlink      afterlink     afterlink" 
-        "icon   availability  availability   availability  availability" 
+    grid-template-areas:
+        "icon   name          groupmode      completion    actions"
+        "icon   visibility    groupmode      completion    actions"
+        "icon   dates         groupmode      completion    actions"
+        "icon   altcontent    altcontent     altcontent    altcontent"
+        "icon   afterlink     afterlink      afterlink     afterlink"
+        "icon   availability  availability   availability  availability"
         "icon   duration     duration       duration      duration";
 }
 

@@ -22,6 +22,7 @@
     Example context (json):
     {
         "title": "Course",
+        "editing": 1,
         "initialsection": {
             "num": 0,
             "id": 34,
@@ -50,6 +51,7 @@
         "sections": [
             {
                 "num": 1,
+                "headinglevel": 4,
                 "id": 35,
                 "header": {
                     "title": "Section title",
@@ -101,7 +103,7 @@
                         href="#coll{{shortname}}"
                         id="hcoll{{shortname}}"
                         aria-expanded="false"
-                        aria-controls="coll{{shortname}}"
+                        aria-controls="#coll{{shortname}}"
                         class="btn btn-icon mr-1 icons-collapse-expand justify-content-center stretched-link"
                         aria-label="{{name}}">
                         <span class="expanded-icon icon-no-margin p-2" title="{{#str}} collapse, core {{/str}}">

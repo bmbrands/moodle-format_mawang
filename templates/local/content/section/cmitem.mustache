@@ -35,9 +35,13 @@
         "anchor": "module-3",
         "module": "forum",
         "extraclasses": "newmessages",
-        "indent": 0
+        "indent": 0,
+        "mustacheonly": true
     }
 }}
+{{#mustacheonly}}
+<ul>
+{{/mustacheonly}}
 <li
     class="activity activity-wrapper wrapper-mawang {{module}} modtype_{{module}} {{extraclasses}} {{#hasinfo}}hasinfo{{/hasinfo}} {{#indent}}indented{{/indent}}"
     {{#anchor}}id="{{anchor}}"{{/anchor}}
@@ -50,3 +54,6 @@
     {{/ format_mawang/local/content/cm}}
 {{/cmformat}}
 </li>
+{{#mustacheonly}}
+</ul>
+{{/mustacheonly}}
