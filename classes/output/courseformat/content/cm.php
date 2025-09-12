@@ -43,14 +43,14 @@ class cm extends \core_courseformat\output\local\content\cm {
         return 'format_mawang/local/content/cm';
     }
 
-        /**
-         * Constructor.
-         *
-         * @param course_format $format the course format
-         * @param section_info $section the section info
-         * @param cm_info $mod the course module ionfo
-         * @param array $displayoptions optional extra display options
-         */
+    /**
+     * Constructor.
+     *
+     * @param course_format $format the course format
+     * @param section_info $section the section info
+     * @param cm_info $mod the course module ionfo
+     * @param array $displayoptions optional extra display options
+     */
     public function __construct(course_format $format, section_info $section, cm_info $mod, array $displayoptions = []) {
         parent::__construct($format, $section, $mod, $displayoptions);
         $this->section = $section;

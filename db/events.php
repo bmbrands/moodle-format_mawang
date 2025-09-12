@@ -26,19 +26,19 @@
 defined('MOODLE_INTERNAL') || die();
 
 $observers = [
-        [
+    [
         'eventname' => '\core\event\course_module_created',
         'callback'  => '\format_mawang\eventobservers::purge_cache',
         'internal'  => false,
-        ],
-        [
+    ],
+    [
         'eventname' => '\core\event\course_module_updated',
         'callback'  => '\format_mawang\eventobservers::purge_cache',
         'internal'  => false,
-        ],
-        [
+    ],
+    [
         'eventname' => '\core\event\course_module_deleted',
         'callback'  => '\format_mawang\eventobservers::purge_cache',
         'internal'  => false,
-        ],
+    ],
 ];

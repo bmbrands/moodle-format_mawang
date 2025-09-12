@@ -25,10 +25,9 @@
 }}
 <div class="mawang-progress-container" data-region="courseprogresscontainer" data-id="{{sectionid}}" data-progress="{{progress}}">
     <div class="progress">
-        <div class="progress-bar mawang-progress" data-region="courseprogress" role="progressbar" style="width: {{progress}}%" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="progress-bar mawang-progress" data-region="courseprogress" role="progressbar" style="width: {{#progress}}{{progress}}{{/progress}}{{^progress}}0{{/progress}}%" aria-valuenow="{{#progress}}{{progress}}{{/progress}}{{^progress}}0{{/progress}}" aria-valuemin="0" aria-valuemax="100"></div>
     </div>
     <div class="progress-text">
         {{#str}}progress, format_mawang, {{progress}}{{/str}}
     </div>
 </div>
-

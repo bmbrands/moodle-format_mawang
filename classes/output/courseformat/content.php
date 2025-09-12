@@ -61,7 +61,6 @@ class content extends \core_courseformat\output\local\content {
             $data = (object)[
                 'tabcontent' => $format->get_customfields_tab_content($tab),
             ];
-            // $data->cssurl = new \moodle_url('/course/format/mawang/scss/styles.css', ['cache' => time()]);
             return $data;
         }
 
@@ -106,7 +105,6 @@ class content extends \core_courseformat\output\local\content {
             $data->bulkedittools = $bulkedittools->export_for_template($output);
         }
         $data->coursemessage = $this->get_startdate_message();
-        // $data->cssurl = new \moodle_url('/course/format/mawang/scss/styles.css', ['cache' => time()]);
         $data->editing = $PAGE->user_is_editing();
         return $data;
     }

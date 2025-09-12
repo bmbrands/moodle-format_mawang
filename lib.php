@@ -161,7 +161,6 @@ class format_mawang extends core_courseformat\base {
     public function page_title(): string {
         global $CFG;
         if ((int)$CFG->branch >= 404) {
-            // TODO it is possible it is not used anymore. Review.
             return 'Topic outline';
         } else {
             return get_string('topicoutline');
@@ -232,8 +231,6 @@ class format_mawang extends core_courseformat\base {
         foreach ($modinfo->get_section_info_all() as $section) {
             $this->navigation_add_section($navigation, $node, $section);
         }
-        // $currentsection = $this->get_viewed_section();
-        // $this->navigation_add_section($navigation, $node, $modinfo->sections[0]);
 
     }
 
@@ -486,21 +483,6 @@ class format_mawang extends core_courseformat\base {
      */
     public function can_delete_section($section) {
         return true;
-    }
-
-    /**
-     * Prepares the templateable object to display section name.
-     *
-     * @param \section_info|\stdClass $section
-     * @param bool $linkifneeded
-     * @param bool $editable
-     * @param null|lang_string|string $edithint
-     * @param null|lang_string|string $editlabel
-     * @return inplace_editable|void
-     */
-    public function inplace_editable_render_section_name($section, $linkifneeded = true,
-            $editable = null, $edithint = null, $editlabel = null) {
-        return parent::inplace_editable_render_section_name($section, $linkifneeded, $editable, $edithint, $editlabel);
     }
 
     /**
