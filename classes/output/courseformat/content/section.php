@@ -59,7 +59,7 @@ class section extends \core_courseformat\output\local\content\section {
         $section = $this->section;
 
         $summary = new $this->summaryclass($format, $section);
-        $lastvisited = get_user_preferences('courseformat_' . $format->get_format() . '_' . $course->id . '_lastvisited', 0);
+        $lastvisited = get_user_preferences('courseformat_' . $format->get_format() . '_' . $course->id . '_lastvisited', false);
 
         $data = (object)[
             'num' => $section->section ?? '0',
@@ -75,7 +75,7 @@ class section extends \core_courseformat\output\local\content\section {
             'sectionname' => $format->get_section_name($section),
             'sectionimage' => $this->format->get_section_image($this->section->id),
             'courseid' => $course->id,
-            'lastvisited' => $lastvisited == $section->section,
+            'lastvisited' => ($section->section > 0) && ($lastvisited == $section->section),
         ];
 
         $haspartials = [];

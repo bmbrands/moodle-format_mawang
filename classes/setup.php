@@ -16,6 +16,8 @@
 
 namespace format_mawang;
 
+defined('MOODLE_INTERNAL') || die();
+
 /**
  * Class setup
  *
@@ -46,10 +48,22 @@ class setup {
         }
         $categories = \core_customfield\category::get_records(['component' => 'local_modcustomfields']);
         if (empty($categories)) {
-            return;
+            // Create the category if it doesn't exist
+            $category = new \core_customfield\category(0, (object)[
+                'name' => 'Activity custom fields',
+                'component' => 'local_modcustomfields',
+                'area' => 'mod',
+                'contextid' => 1, // System context ID is always 1
+                'sortorder' => 1,
+                'description' => 'Custom fields for activities',
+                'descriptionformat' => FORMAT_HTML,
+            ]);
+            $category->save();
+            $categoryid = $category->get('id');
+        } else {
+            $category = reset($categories);
+            $categoryid = $category->get('id');
         }
-        $category = reset($categories);
-        $categoryid = $category->get('id');
         $configdata = [
             'required' => 0,
             'uniquevalues' => 0,

@@ -408,7 +408,7 @@ class format_mawang extends core_courseformat\base {
                     'type' => PARAM_BOOL,
                 ],
                 'coursedisplay' => [
-                    'default' => $courseconfig->coursedisplay ?? COURSE_DISPLAY_SINGLEPAGE,
+                    'default' => $courseconfig->coursedisplay ?? COURSE_DISPLAY_MULTIPAGE,
                     'type' => PARAM_INT,
                 ],
             ];
@@ -428,8 +428,8 @@ class format_mawang extends core_courseformat\base {
                     'element_type' => 'select',
                     'element_attributes' => [
                         [
-                            COURSE_DISPLAY_SINGLEPAGE => new lang_string('coursedisplay_single'),
                             COURSE_DISPLAY_MULTIPAGE => new lang_string('coursedisplay_multi'),
+                            COURSE_DISPLAY_SINGLEPAGE => new lang_string('coursedisplay_single'),
                         ],
                     ],
                     'help' => 'coursedisplay',
@@ -846,7 +846,7 @@ class format_mawang extends core_courseformat\base {
             }
         }
 
-        $field = $DB->get_record('customfield_field', ['shortname' => trim($fieldname)], '*', MUST_EXIST);
+        $field = $DB->get_record('customfield_field', ['shortname' => trim($fieldname)], '*');
         if (!$field) {
             return false; // No custom field found.
         }

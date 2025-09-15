@@ -115,6 +115,9 @@ $purple-50: #F0EFF5;
         grid-column: 2;
         margin-top: 0.5rem;
     }
+    .activity .duration img {
+        margin-bottom: 2px;
+    }
     .changenumsections {
         margin-bottom: 1rem;
         margin-top: 1rem;
@@ -168,6 +171,9 @@ $purple-50: #F0EFF5;
                 padding: 6px 8px;
                 background-color: #F8F8F8;
                 border-radius: 10px;
+                img {
+                    margin-bottom: 2px;
+                }
             }
             .grower {
                 flex-grow: 1;

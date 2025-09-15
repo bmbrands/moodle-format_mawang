@@ -1,266 +1,338 @@
 /*! stylelint-disable */
 .course-content ul.mawang {
   list-style: none;
-  padding: 0; }
-  .course-content ul.mawang h3.sectionname {
-    font-size: 1.35rem; }
-  .course-content ul.mawang .activity-information button[data-action="toggle-manual-completion"],
-  .course-content ul.mawang .activity-information .completion-dropdown button {
-    width: 2.5rem;
-    min-width: 2.5rem;
-    padding: 0;
-    height: 2.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    border: 1px dashed #ccc; }
-  .course-content ul.mawang .activity-information .completion-dropdown button .fa-check {
-    display: none; }
-  .course-content ul.mawang .activity-information .completion-dropdown button.btn-success .fa-check {
-    display: inline-block; }
-  .course-content ul.mawang .activity-information .completion-dropdown button::after {
-    content: "";
-    display: none; }
-  .course-content ul.mawang .course-section .availabilityinfo {
-    background-color: #EEF0FF;
-    grid-column: auto;
-    width: auto;
-    max-width: max-content; }
-  .course-content ul.mawang .activity-item .activity-dates {
-    margin-top: 0.5rem;
-    padding: 0.25rem 1rem;
-    background-color: #EEF0FF;
-    grid-column: auto;
-    width: auto;
-    max-width: max-content;
-    border-radius: 1rem; }
-  .course-content ul.mawang li.section {
+  padding: 0;
+}
+.course-content ul.mawang h3.sectionname {
+  font-size: 1.35rem;
+}
+.course-content ul.mawang .activity-information button[data-action=toggle-manual-completion],
+.course-content ul.mawang .activity-information .completion-dropdown button {
+  width: 2.5rem;
+  min-width: 2.5rem;
+  padding: 0;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px dashed #ccc;
+}
+.course-content ul.mawang .activity-information .completion-dropdown button .fa-check {
+  display: none;
+}
+.course-content ul.mawang .activity-information .completion-dropdown button.btn-success .fa-check {
+  display: inline-block;
+}
+.course-content ul.mawang .activity-information .completion-dropdown button::after {
+  content: "";
+  display: none;
+}
+.course-content ul.mawang .course-section .availabilityinfo {
+  background-color: #EEF0FF;
+  grid-column: auto;
+  width: auto;
+  max-width: max-content;
+}
+.course-content ul.mawang .activity-item .activity-dates {
+  margin-top: 0.5rem;
+  padding: 0.25rem 1rem;
+  background-color: #EEF0FF;
+  grid-column: auto;
+  width: auto;
+  max-width: max-content;
+  border-radius: 1rem;
+}
+.course-content ul.mawang li.section {
+  border: 0;
+  margin-bottom: 1rem;
+}
+.course-content ul.mawang li.section .section-image-sample {
+  border-radius: 0.5rem;
+  background-size: cover;
+  background-position: center;
+  width: 300px;
+  height: 200px;
+  margin-right: 0.5rem;
+  position: relative;
+  margin-left: 0.5rem;
+}
+.course-content ul.mawang li.section .section-edit-button {
+  background-color: #f9f9f9;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 100;
+}
+.course-content ul.mawang li.section .section-edit-button:hover, .course-content ul.mawang li.section .section-edit-button:focus {
+  background-color: #cacaca;
+}
+.course-content ul.mawang li.section .section-modchooser-link.activity-add {
+  max-width: 50%;
+  padding: 0 !important;
+  background-color: transparent;
+  border: 0;
+}
+.course-content ul.mawang li.section .section-modchooser-link.activity-add .pluscontainer {
+  display: none !important;
+}
+.course-content ul.mawang .activity-item .activity-grid {
+  grid-template-areas: "icon   name          groupmode      completion    actions" "icon   visibility    groupmode      completion    actions" "icon   dates         groupmode      completion    actions" "icon   altcontent    altcontent     altcontent    altcontent" "icon   afterlink     afterlink      afterlink     afterlink" "icon   availability  availability   availability  availability" "icon   duration     duration       duration      duration";
+}
+.course-content ul.mawang .activity-duration {
+  grid-area: duration;
+  grid-column: 2;
+  margin-top: 0.5rem;
+}
+.course-content ul.mawang .activity .duration img {
+  margin-bottom: 2px;
+}
+.course-content ul.mawang .changenumsections {
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  border: 0;
+}
+.course-content ul.mawang .section_action_menu {
+  display: flex;
+  align-items: end;
+}
+.course-content ul.mawang .btn-icon.dropdown-toggle::after {
+  display: none;
+}
+.course-content ul.mawang .tilesections.showgrid {
+  display: grid;
+  grid-gap: 1rem;
+  margin: 0;
+  padding: 0;
+  max-width: 100%;
+  grid-template-columns: repeat(auto-fill, minmax(273px, 1fr));
+  grid-template-rows: auto;
+}
+.course-content ul.mawang .tilesections > li.sectioncontent {
+  display: none;
+}
+.course-content ul.mawang .tilesections > li.sectioncontent.show {
+  display: block;
+}
+.course-content ul.mawang .tilesections > li.sectioncontent {
+  border: 1px solid #cdcaca;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+.course-content ul.mawang .tilesections .sectioncard {
+  margin-top: 5rem;
+  max-width: 400px;
+  min-width: 400px;
+  border: 1px solid #cdcaca;
+}
+.course-content ul.mawang .tilesections .sectioncardbody {
+  padding: 1rem 0.75rem 0.5rem 0.75rem;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+.course-content ul.mawang .tilesections .sectioncardbody .totalduration {
+  padding: 6px 8px;
+  background-color: #F8F8F8;
+  border-radius: 10px;
+}
+.course-content ul.mawang .tilesections .sectioncardbody .totalduration img {
+  margin-bottom: 2px;
+}
+.course-content ul.mawang .tilesections .sectioncardbody .grower {
+  flex-grow: 1;
+}
+.course-content ul.mawang .tilesections .sectioncardbody .recentlyviewed {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #523E7B;
+}
+.course-content ul.mawang .tilesections .tilecontent > div > .icons-collapse-expand {
+  display: none;
+}
+.course-content ul.mawang .tilesections .tilecontent > .btn-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  padding: 0.5rem;
+  width: 35px;
+  height: 35px;
+  max-width: 35px;
+  max-height: 35px;
+  background-color: #f4f5fc;
+}
+.course-content ul.mawang .tilesections > li.show > .course-content-item-content.collapse {
+  display: block;
+  height: auto;
+}
+.course-content ul.mawang .tilesections .course-section-card-header {
+  padding: 1.5rem 1rem;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  height: 140px;
+  max-height: 140px;
+  position: relative;
+  overflow: hidden;
+}
+.course-content ul.mawang .tilesections .course-section-card-header .section-image-background {
+  position: absolute;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  transition: filter 0.3s, transform 0.3s;
+}
+.course-content ul.mawang .tilesections > li.tilesection {
+  position: relative;
+  margin: 0;
+  border: 1px solid #e9ecef;
+  border-radius: 0.6rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.course-content ul.mawang .tilesections > li.tilesection.edittile {
+  max-width: 400px;
+  margin-bottom: 3rem;
+}
+.course-content ul.mawang .tilesections > li.tilesection .sectionprogress {
+  top: 0.25rem;
+  right: 0.25rem;
+}
+.course-content ul.mawang .tilesections > li.tilesection .section-restricted-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 100;
+  font-size: 1rem;
+}
+.course-content ul.mawang .tilesections > li.tilesection.tile .tiletext {
+  text-decoration: none;
+  flex: 0 0 100%;
+  max-width: 100%;
+  overflow: hidden;
+  word-wrap: break-word;
+}
+.course-content ul.mawang .tilesections > li.tilesection.tile .tiletext a:hover, .course-content ul.mawang .tilesections > li.tilesection.tile .tiletext a:focus {
+  text-decoration: none;
+}
+.course-content ul.mawang .tilesections > li.tilesection.tile .tiletext a::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  pointer-events: auto;
+  content: "";
+  background-color: rgba(0, 0, 0, 0);
+}
+.course-content ul.mawang .tilesections > li.tilesection.locked > .course-section-header {
+  filter: grayscale(100%);
+}
+.course-content ul.mawang .tilesections > li.tilesection.locked > .course-section-header .section-image-background {
+  opacity: 0.5;
+}
+.course-content ul.mawang .tilesections > li.tilesection.locked > .course-section-header h3.sectionname {
+  background-color: rgba(0, 43, 92, 0.4);
+}
+.course-content ul.mawang .tilesections > li.tilesection.locked > .course-section-header .sectionprogress {
+  display: none;
+}
+.course-content ul.mawang .tilesections > li.tilesection.locked > .course-section-header:hover:before, .course-content ul.mawang .tilesections > li.tilesection.locked > .course-section-header:focus:before {
+  border: 0;
+}
+.course-content ul.mawang .tilesections > li.tilesection .section-image-background {
+  transition: filter 0.3s;
+}
+.course-content ul.mawang .tilesections > li.tilesection.tile:hover, .course-content ul.mawang .tilesections > li.tilesection.tile:focus {
+  cursor: pointer;
+  outline: 0;
+  box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.25);
+}
+.course-content ul.mawang .tilesections > li.tilesection.tile:hover .section-image-background, .course-content ul.mawang .tilesections > li.tilesection.tile:focus .section-image-background {
+  filter: brightness(1.05);
+}
+.course-content ul.mawang .tilesections .btn-icon {
+  background-color: #fff;
+}
+.course-content ul.mawang .mawang-level-0,
+.course-content ul.mawang .mawang-level-1 {
+  padding-left: 0;
+}
+@media screen and (max-width: 600px) {
+  .course-content ul.mawang .activity-item:not(.activityinline) {
     border: 0;
-    margin-bottom: 1rem; }
-    .course-content ul.mawang li.section .section-image-sample {
-      border-radius: 0.5rem;
-      background-size: cover;
-      background-position: center;
-      width: 300px;
-      height: 200px;
-      margin-right: 0.5rem;
-      position: relative;
-      margin-left: 0.5rem; }
-    .course-content ul.mawang li.section .section-edit-button {
-      background-color: #f9f9f9;
-      position: absolute;
-      top: 0.5rem;
-      right: 0.5rem;
-      z-index: 100; }
-      .course-content ul.mawang li.section .section-edit-button:hover, .course-content ul.mawang li.section .section-edit-button:focus {
-        background-color: #cacaca; }
-    .course-content ul.mawang li.section .section-modchooser-link.activity-add {
-      max-width: 50%;
-      padding: 0 !important;
-      background-color: transparent;
-      border: 0; }
-      .course-content ul.mawang li.section .section-modchooser-link.activity-add .pluscontainer {
-        display: none !important; }
-  .course-content ul.mawang .activity-item .activity-grid {
-    grid-template-areas: "icon   name          groupmode      completion    actions" "icon   visibility    groupmode      completion    actions" "icon   dates         groupmode      completion    actions" "icon   altcontent    altcontent     altcontent    altcontent" "icon   afterlink     afterlink      afterlink     afterlink" "icon   availability  availability   availability  availability" "icon   duration     duration       duration      duration"; }
-  .course-content ul.mawang .activity-duration {
-    grid-area: duration;
-    grid-column: 2;
-    margin-top: 0.5rem; }
-  .course-content ul.mawang .changenumsections {
-    margin-bottom: 1rem;
-    margin-top: 1rem;
-    border: 0; }
-  .course-content ul.mawang .section_action_menu {
-    display: flex;
-    align-items: end; }
-  .course-content ul.mawang .btn-icon.dropdown-toggle::after {
-    display: none; }
-  .course-content ul.mawang .tilesections.showgrid {
-    display: grid;
-    grid-gap: 1rem;
-    margin: 0;
-    padding: 0;
-    max-width: 100%;
-    grid-template-columns: repeat(auto-fill, minmax(273px, 1fr));
-    grid-template-rows: auto; }
-  .course-content ul.mawang .tilesections > li.sectioncontent {
-    display: none;
-    border: 1px solid #cdcaca;
-    border-radius: 0.5rem;
-    padding: 1rem; }
-    .course-content ul.mawang .tilesections > li.sectioncontent.show {
-      display: block; }
-  .course-content ul.mawang .tilesections .sectioncard {
-    margin-top: 5rem;
-    max-width: 400px;
-    min-width: 400px;
-    border: 1px solid #cdcaca; }
-  .course-content ul.mawang .tilesections .sectioncardbody {
-    padding: 1rem 0.75rem 0.5rem 0.75rem;
-    flex: 1 1 auto;
-    display: flex;
-    flex-direction: column; }
-    .course-content ul.mawang .tilesections .sectioncardbody .totalduration {
-      padding: 6px 8px;
-      background-color: #F8F8F8;
-      border-radius: 10px; }
-    .course-content ul.mawang .tilesections .sectioncardbody .grower {
-      flex-grow: 1; }
-    .course-content ul.mawang .tilesections .sectioncardbody .recentlyviewed {
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: #523E7B; }
-  .course-content ul.mawang .tilesections .tilecontent > div > .icons-collapse-expand {
-    display: none; }
-  .course-content ul.mawang .tilesections .tilecontent > .btn-close {
-    position: absolute;
-    top: 0;
-    right: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    padding: 0.5rem;
-    width: 35px;
-    height: 35px;
-    max-width: 35px;
-    max-height: 35px;
-    background-color: #f4f5fc; }
-  .course-content ul.mawang .tilesections > li.show > .course-content-item-content.collapse {
-    display: block;
-    height: auto; }
-  .course-content ul.mawang .tilesections .course-section-card-header {
-    padding: 1.5rem 1rem;
-    border-top-left-radius: 0.5rem;
-    border-top-right-radius: 0.5rem;
-    height: 140px;
-    max-height: 140px;
-    position: relative;
-    overflow: hidden; }
-    .course-content ul.mawang .tilesections .course-section-card-header .section-image-background {
-      position: absolute;
-      border-top-left-radius: 0.5rem;
-      border-top-right-radius: 0.5rem;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      pointer-events: none;
-      transition: filter 0.3s, transform 0.3s; }
-  .course-content ul.mawang .tilesections > li.tilesection {
-    position: relative;
-    margin: 0;
-    border: 1px solid #e9ecef;
-    border-radius: 0.6rem;
-    padding: 0;
-    display: flex;
-    flex-direction: column; }
-    .course-content ul.mawang .tilesections > li.tilesection.edittile {
-      max-width: 400px;
-      margin-bottom: 3rem; }
-    .course-content ul.mawang .tilesections > li.tilesection .sectionprogress {
-      top: 0.25rem;
-      right: 0.25rem; }
-    .course-content ul.mawang .tilesections > li.tilesection .section-restricted-badge {
-      position: absolute;
-      top: 1rem;
-      left: 1rem;
-      z-index: 100;
-      font-size: 1rem; }
-    .course-content ul.mawang .tilesections > li.tilesection.tile .tiletext {
-      text-decoration: none;
-      flex: 0 0 100%;
-      max-width: 100%;
-      overflow: hidden;
-      word-wrap: break-word; }
-      .course-content ul.mawang .tilesections > li.tilesection.tile .tiletext a:hover, .course-content ul.mawang .tilesections > li.tilesection.tile .tiletext a:focus {
-        text-decoration: none; }
-      .course-content ul.mawang .tilesections > li.tilesection.tile .tiletext a::after {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        z-index: 1;
-        pointer-events: auto;
-        content: "";
-        background-color: rgba(0, 0, 0, 0); }
-    .course-content ul.mawang .tilesections > li.tilesection.locked > .course-section-header {
-      filter: grayscale(100%); }
-      .course-content ul.mawang .tilesections > li.tilesection.locked > .course-section-header .section-image-background {
-        opacity: 0.5; }
-      .course-content ul.mawang .tilesections > li.tilesection.locked > .course-section-header h3.sectionname {
-        background-color: rgba(0, 43, 92, 0.4); }
-      .course-content ul.mawang .tilesections > li.tilesection.locked > .course-section-header .sectionprogress {
-        display: none; }
-      .course-content ul.mawang .tilesections > li.tilesection.locked > .course-section-header:hover:before, .course-content ul.mawang .tilesections > li.tilesection.locked > .course-section-header:focus:before {
-        border: 0; }
-    .course-content ul.mawang .tilesections > li.tilesection .section-image-background {
-      transition: filter 0.3s; }
-    .course-content ul.mawang .tilesections > li.tilesection.tile:hover, .course-content ul.mawang .tilesections > li.tilesection.tile:focus {
-      cursor: pointer;
-      outline: 0;
-      box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.25); }
-      .course-content ul.mawang .tilesections > li.tilesection.tile:hover .section-image-background, .course-content ul.mawang .tilesections > li.tilesection.tile:focus .section-image-background {
-        filter: brightness(1.05); }
-  .course-content ul.mawang .tilesections .btn-icon {
-    background-color: #fff; }
-  .course-content ul.mawang .mawang-level-0,
-  .course-content ul.mawang .mawang-level-1 {
-    padding-left: 0; }
-  @media screen and (max-width: 600px) {
-    .course-content ul.mawang .activity-item:not(.activityinline) {
-      border: 0; } }
+  }
+}
 
 .format-mawang .separator {
   display: flex;
   align-items: center;
-  justify-content: center; }
-
+  justify-content: center;
+}
 .format-mawang .separator-icon {
-  font-size: 0.3rem; }
+  font-size: 0.3rem;
+}
 
 .customfield-acc {
-  color: #000; }
-  .customfield-acc .card {
-    border: 1px solid var(--light);
-    border-radius: 0.5rem;
-    margin-bottom: 1rem; }
-    .customfield-acc .card .card-header,
-    .customfield-acc .card .card-header:first-child {
-      padding: 0.5rem;
-      border-top-left-radius: 0.5rem;
-      border-top-right-radius: 0.5rem; }
-    .customfield-acc .card .card-header-text {
-      font-weight: 600;
-      color: #5331A3; }
-    .customfield-acc .card .btn.btn-icon.icons-collapse-expand {
-      color: #5331A3;
-      background-color: transparent; }
-      .customfield-acc .card .btn.btn-icon.icons-collapse-expand:hover, .customfield-acc .card .btn.btn-icon.icons-collapse-expand:focus {
-        outline: 0;
-        color: #5331A3;
-        background-color: transparent; }
+  color: #000;
+}
+.customfield-acc .card {
+  border: 1px solid var(--light);
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+.customfield-acc .card .card-header,
+.customfield-acc .card .card-header:first-child {
+  padding: 0.5rem;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+.customfield-acc .card .card-header-text {
+  font-weight: 600;
+  color: #5331A3;
+}
+.customfield-acc .card .btn.btn-icon.icons-collapse-expand {
+  color: #5331A3;
+  background-color: transparent;
+}
+.customfield-acc .card .btn.btn-icon.icons-collapse-expand:hover, .customfield-acc .card .btn.btn-icon.icons-collapse-expand:focus {
+  outline: 0;
+  color: #5331A3;
+  background-color: transparent;
+}
 
 .format-mawang .form-filetypes-descriptions li {
   font-size: 0;
-  display: inline; }
-  .format-mawang .form-filetypes-descriptions li small {
-    font-size: 12px; }
+  display: inline;
+}
+.format-mawang .form-filetypes-descriptions li small {
+  font-size: 12px;
+}
 
-.format-mawang input[name="sectionimage"] ~ p {
-  margin-bottom: 0; }
+.format-mawang input[name=sectionimage] ~ p {
+  margin-bottom: 0;
+}
 
 .mawang-progress-container {
-  min-width: 250px; }
-  .mawang-progress-container .progress {
-    height: 10px; }
-  .mawang-progress-container .progress-text {
-    font-size: 0.8rem; }
+  min-width: 250px;
+}
+.mawang-progress-container .progress {
+  height: 10px;
+}
+.mawang-progress-container .progress-text {
+  font-size: 0.8rem;
+}
 
 /*# sourceMappingURL=styles.css.map */

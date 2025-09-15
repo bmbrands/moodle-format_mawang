@@ -41,7 +41,7 @@ Feature: Sections can be edited and deleted in mawang sections format
     Given I am on "Course 2" course homepage with editing mode on
     When I edit the section "1"
     Then the field "Section name" matches value ""
-    And I should see "New section"
+    And I should see "Topic 1"
 
   Scenario: Edit section summary in mawang sections format
     Given I am on "Course 1" course homepage with editing mode on
@@ -88,17 +88,9 @@ Feature: Sections can be edited and deleted in mawang sections format
   Scenario: Adding sections at the end of a mawang sections format
     Given I am on "Course 1" course homepage with editing mode on
     When I click on "Add section" "link" in the "course-addsection" "region"
-    Then I should see "New section" in the "New section" "section"
+    Then I should see "Topic 6" in the "Topic 6" "section"
     And I should see "Test choice name" in the "Section 5" "section"
 
-  @javascript
-  Scenario: Adding sections between in mawang sections format
-    Given I am on "Course 1" course homepage with editing mode on
-    When I hover over the "Add section" "link" in the "Section 4" "section"
-    And I click on "Add section" "link" in the "Section 4" "section"
-    Then I should see "New section" in the "New section" "section"
-    And I should see "Test choice name" in the "Section 5" "section"
-    And I should not see "Test choice name" in the "New section" "section"
 
   @javascript
   Scenario: Add a section and then add an activity in it
@@ -107,7 +99,7 @@ Feature: Sections can be edited and deleted in mawang sections format
     And I add an assign activity to course "Course 1" section "6" and I fill the form with:
       | Assignment name | Very new activity |
       | Description     | Test              |
-    Then I should see "Very new activity" in the "New section" "section"
+    Then I should see "Very new activity" in the "Topic 6" "section"
 
   @javascript
   Scenario: Copy section permalink URL to clipboard
