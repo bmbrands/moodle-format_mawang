@@ -60,17 +60,11 @@ jobs:
           sudo locale-gen en_AU.UTF-8
           echo "NVM_DIR=$HOME/.nvm" >> $GITHUB_ENV
 
-      - name: Install additional plugins
+      - name: Install moodle-plugin-ci
         run: |
           moodle-plugin-ci add-plugin bmbrands/moodle-local_modcustomfields
           moodle-plugin-ci add-plugin bmbrands/moodle-filter_teacherprofile
           moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1
-        env:
-          DB: ${{ matrix.database }}
-          MOODLE_BRANCH: ${{ matrix.moodle-branch }}
-
-      - name: Install moodle-plugin-ci
-        run: moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1
         env:
           DB: ${{ matrix.database }}
           MOODLE_BRANCH: ${{ matrix.moodle-branch }}
