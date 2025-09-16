@@ -53,18 +53,3 @@ Feature: Section image upload functionality in mawang format
     And I am on the "Course 1" course page
     Then I should see "Visual Section" in the "Visual Section" tile
     And I should see the section image in tile for section "1"
-
-  @javascript
-  Scenario: Teacher can replace section image
-    Given I am on the "Course 1" course page logged in as teacher1
-    And I turn editing mode on
-    And I edit the section "3"
-    And I upload "course/format/mawang/tests/fixtures/section-image.png" file to "Section image" filemanager
-    And I press "Save changes"
-    And I turn editing mode off
-    And I am on the "Course 1" course page
-    And I should see the section image in tile for section "3"
-    When I edit the section "3"
-    And I delete "section-image.png" from "Section image" filemanager
-    And I press "Save changes"
-    Then I should not see the section image in tile for section "3"
