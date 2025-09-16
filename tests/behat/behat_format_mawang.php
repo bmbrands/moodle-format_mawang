@@ -44,7 +44,7 @@ class behat_format_mawang extends behat_base {
      * @param string $sectionnumber The section number
      */
     public function i_click_on_tile_for_section($sectionnumber) {
-        // Find the tile section by section number
+        // Find the tile section by section number.
         $xpath = "//li[@id='section-{$sectionnumber}' and contains(@class, 'tilesection')]";
         $element = $this->find('xpath', $xpath);
         $element->click();
@@ -58,11 +58,11 @@ class behat_format_mawang extends behat_base {
      * @param string $tiledescriptor The tile descriptor (e.g., "Topic 1", "section-2")
      */
     public function i_should_see_text_in_the_tile($text, $tiledescriptor) {
-        // Handle different tile descriptors
+        // Handle different tile descriptors.
         if (preg_match('/^section-(\d+)$/', $tiledescriptor, $matches)) {
             $xpath = "//li[@id='section-{$matches[1]}' and contains(@class, 'tilesection')]";
         } else {
-            // Assume it's a topic name and find by text content
+            // Assume it's a topic name and find by text content.
             $xpath = "//li[contains(@class, 'tilesection') and contains(., '{$tiledescriptor}')]";
         }
 
@@ -81,11 +81,11 @@ class behat_format_mawang extends behat_base {
      * @param string $sectionnumber The section number
      */
     public function i_should_see_text_in_tile_for_section($text, $sectionnumber) {
-        // Find the specific tile section and check for the specified text
+        // Find the specific tile section and check for the specified text.
         $xpath = "//li[@id='section-{$sectionnumber}' and contains(@class, 'tilesection')]";
         $element = $this->find('xpath', $xpath);
 
-        // Check if the tile contains the specified text
+        // Check if the tile contains the specified text.
         $tiletext = $element->getText();
         if (strpos($tiletext, $text) === false) {
             throw new \Exception("'{$text}' text not found in tile for section {$sectionnumber}");
@@ -100,7 +100,7 @@ class behat_format_mawang extends behat_base {
      * @param string $sectionnumber The section number
      */
     public function i_should_not_see_text_in_tile_for_section($text, $sectionnumber) {
-        // Find the specific tile section and check that the specified text is not present
+        // Find the specific tile section and check that the specified text is not present.
         $xpath = "//li[@id='section-{$sectionnumber}' and contains(@class, 'tilesection')]";
 
         try {
@@ -110,7 +110,7 @@ class behat_format_mawang extends behat_base {
                 throw new \Exception("'{$text}' text unexpectedly found in tile for section {$sectionnumber}");
             }
         } catch (ElementNotFoundException $e) {
-            // If tile doesn't exist, that's also fine for a "should not see" test
+            // If tile doesn't exist, that's also fine for a "should not see" test.
             return;
         }
     }
@@ -122,7 +122,7 @@ class behat_format_mawang extends behat_base {
      * @param string $text The text to check for absence
      */
     public function i_should_not_see_text_in_any_tile($text) {
-        // Find all tile sections and check that none contain the specified text
+        // Find all tile sections and check that none contain the specified text.
         $xpath = "//li[contains(@class, 'tilesection')]";
 
         try {
@@ -140,15 +140,15 @@ class behat_format_mawang extends behat_base {
                 throw new \Exception("'{$text}' text unexpectedly found in tiles: {$tileslist}");
             }
         } catch (ElementNotFoundException $e) {
-            // Expected - no tiles found, which is fine
+            // Expected - no tiles found, which is fine.
             return;
         }
     }    /**
-     * Get the tile element for a specific section number.
-     *
-     * @param string $sectionnumber The section number
-     * @return \Behat\Mink\Element\NodeElement The tile element
-     */
+          * Get the tile element for a specific section number.
+          *
+          * @param string $sectionnumber The section number
+          * @return \Behat\Mink\Element\NodeElement The tile element
+          */
     protected function get_tile_for_section($sectionnumber) {
         $xpath = "//li[@id='section-{$sectionnumber}' and contains(@class, 'tilesection')]";
         return $this->find('xpath', $xpath);
@@ -172,7 +172,8 @@ class behat_format_mawang extends behat_base {
      * @return bool True if the tile has the recently viewed indicator
      */
     protected function tile_has_recently_viewed($sectionnumber) {
-        $xpath = "//li[@id='section-{$sectionnumber}' and contains(@class, 'tilesection')]//span[contains(@class, 'recentlyviewed')]";
+        $xpath = "//li[@id='section-{$sectionnumber}' and contains(@class, 'tilesection')]" .
+                 "//span[contains(@class, 'recentlyviewed')]";
 
         try {
             $this->find('xpath', $xpath);
@@ -189,22 +190,26 @@ class behat_format_mawang extends behat_base {
      * @param string $sectionnumber The section number
      */
     public function i_should_see_section_image_in_tile($sectionnumber) {
-        // Find the section-image-background div within the tile
-        $xpath = "//li[@id='section-{$sectionnumber}' and contains(@class, 'tilesection')]//div[contains(@class, 'section-image-background')]";
+        // Find the section-image-background div within the tile.
+        $xpath = "//li[@id='section-{$sectionnumber}' and contains(@class, 'tilesection')]" .
+                 "//div[contains(@class, 'section-image-background')]";
 
         try {
             $element = $this->find('xpath', $xpath);
 
-            // Get the style attribute to check for background-image
+            // Get the style attribute to check for background-image.
             $style = $element->getAttribute('style');
 
             if (empty($style)) {
                 throw new \Exception("No style attribute found on section image background for section {$sectionnumber}");
             }
 
-            // Check if the background-image contains pluginfile (indicating uploaded image)
-            if (!preg_match('/background-image:\s*url\(["\']?[^"\']*pluginfile\.php[^"\']*["\']?\)/', $style)) {
-                throw new \Exception("Section image background does not contain uploaded image (pluginfile.php) for section {$sectionnumber}. Style: {$style}");
+            // Check if the background-image contains pluginfile (indicating uploaded image).
+            $pattern = '/background-image:\s*url\(["\']?[^"\']*pluginfile\.php[^"\']*["\']?\)/';
+            if (!preg_match($pattern, $style)) {
+                $message = "Section image background does not contain uploaded image (pluginfile.php) " .
+                          "for section {$sectionnumber}. Style: {$style}";
+                throw new \Exception($message);
             }
 
         } catch (ElementNotFoundException $e) {
@@ -219,33 +224,38 @@ class behat_format_mawang extends behat_base {
      * @param string $sectionnumber The section number
      */
     public function i_should_not_see_section_image_in_tile($sectionnumber) {
-        // Find the section-image-background div within the tile
-        $xpath = "//li[@id='section-{$sectionnumber}' and contains(@class, 'tilesection')]//div[contains(@class, 'section-image-background')]";
+        // Find the section-image-background div within the tile.
+        $xpath = "//li[@id='section-{$sectionnumber}' and contains(@class, 'tilesection')]" .
+                 "//div[contains(@class, 'section-image-background')]";
 
         try {
             $element = $this->find('xpath', $xpath);
 
-            // Get the style attribute to check for background-image
+            // Get the style attribute to check for background-image.
             $style = $element->getAttribute('style');
 
-            // If no style attribute, that's fine for "should not see"
+            // If no style attribute, that's fine for "should not see".
             if (empty($style)) {
                 return;
             }
 
-            // Check if the background-image contains the default image (not pluginfile)
-            if (preg_match('/background-image:\s*url\(["\']?[^"\']*pluginfile\.php[^"\']*["\']?\)/', $style)) {
-                throw new \Exception("Section image background unexpectedly contains uploaded image (pluginfile.php) for section {$sectionnumber}. Style: {$style}");
+            // Check if the background-image contains the default image (not pluginfile).
+            $pattern = '/background-image:\s*url\(["\']?[^"\']*pluginfile\.php[^"\']*["\']?\)/';
+            if (preg_match($pattern, $style)) {
+                $message = "Section image background unexpectedly contains uploaded image (pluginfile.php) " .
+                          "for section {$sectionnumber}. Style: {$style}";
+                throw new \Exception($message);
             }
 
-            // If it contains the default image path, that's expected for "should not see uploaded image"
-            if (preg_match('/background-image:\s*url\(["\']?[^"\']*defaultsectionimage[^"\']*["\']?\)/', $style)) {
-                // This is fine - default image is showing, no uploaded image
+            // If it contains the default image path, that's expected for "should not see uploaded image".
+            $defaultpattern = '/background-image:\s*url\(["\']?[^"\']*defaultsectionimage[^"\']*["\']?\)/';
+            if (preg_match($defaultpattern, $style)) {
+                // This is fine - default image is showing, no uploaded image.
                 return;
             }
 
         } catch (ElementNotFoundException $e) {
-            // If the div doesn't exist, that's also fine for "should not see"
+            // If the div doesn't exist, that's also fine for "should not see".
             return;
         }
     }
@@ -257,7 +267,8 @@ class behat_format_mawang extends behat_base {
      * @return string The background-image style value
      */
     protected function get_section_background_image_style($sectionnumber) {
-        $xpath = "//li[@id='section-{$sectionnumber}' and contains(@class, 'tilesection')]//div[contains(@class, 'section-image-background')]";
+        $xpath = "//li[@id='section-{$sectionnumber}' and contains(@class, 'tilesection')]" .
+                 "//div[contains(@class, 'section-image-background')]";
 
         try {
             $element = $this->find('xpath', $xpath);
@@ -295,22 +306,27 @@ class behat_format_mawang extends behat_base {
      * @param string $sectionnumber The section number
      */
     public function i_should_see_duration_total_in_tile($duration, $sectionnumber) {
-        // Find the tile section and look for duration display in the specific div
-        $xpath = "//li[@id='section-{$sectionnumber}' and contains(@class, 'tilesection')]//div[contains(@class, 'totalduration')]";
+        // Find the tile section and look for duration display in the specific div.
+        $xpath = "//li[@id='section-{$sectionnumber}' and contains(@class, 'tilesection')]" .
+                 "//div[contains(@class, 'totalduration')]";
 
         try {
             $element = $this->find('xpath', $xpath);
-            $durationText = $element->getText();
+            $durationtext = $element->getText();
 
-            // Check if the duration matches the expected format (e.g., "15m")
-            $expectedText = $duration . 'm';
+            // Check if the duration matches the expected format (e.g., "15m").
+            $expectedtext = $duration . 'm';
 
-            if (trim($durationText) !== $expectedText) {
-                throw new \Exception("Expected duration '{$expectedText}' but found '{$durationText}' in tile for section {$sectionnumber}");
+            if (trim($durationtext) !== $expectedtext) {
+                $message = "Expected duration '{$expectedtext}' but found '{$durationtext}' " .
+                          "in tile for section {$sectionnumber}";
+                throw new \Exception($message);
             }
 
         } catch (ElementNotFoundException $e) {
-            throw new \Exception("Duration div with class 'totalduration ma-small' not found in tile for section {$sectionnumber}");
+            $message = "Duration div with class 'totalduration ma-small' not found " .
+                      "in tile for section {$sectionnumber}";
+            throw new \Exception($message);
         }
     }
 
@@ -321,20 +337,21 @@ class behat_format_mawang extends behat_base {
      * @param string $sectionnumber The section number
      */
     public function i_should_not_see_any_duration_in_tile($sectionnumber) {
-        // Find the tile section and check for absence of duration div
-        $xpath = "//li[@id='section-{$sectionnumber}' and contains(@class, 'tilesection')]//div[contains(@class, 'totalduration') and contains(@class, 'ma-small')]";
+        // Find the tile section and check for absence of duration div.
+        $xpath = "//li[@id='section-{$sectionnumber}' and contains(@class, 'tilesection')]" .
+                 "//div[contains(@class, 'totalduration') and contains(@class, 'ma-small')]";
 
         try {
             $element = $this->find('xpath', $xpath);
-            // If we find the element, check if it's empty or contains "0m"
-            $durationText = trim($element->getText());
+            // If we find the element, check if it's empty or contains "0m".
+            $durationtext = trim($element->getText());
 
-            if (!empty($durationText) && $durationText !== '0m') {
-                throw new \Exception("Unexpected duration text '{$durationText}' found in tile for section {$sectionnumber}");
+            if (!empty($durationtext) && $durationtext !== '0m') {
+                throw new \Exception("Unexpected duration text '{$durationtext}' found in tile for section {$sectionnumber}");
             }
 
         } catch (ElementNotFoundException $e) {
-            // If the duration div doesn't exist, that's fine for "should not see"
+            // If the duration div doesn't exist, that's fine for "should not see".
             return;
         }
     }
@@ -350,19 +367,20 @@ class behat_format_mawang extends behat_base {
 
         try {
             $tile = $this->find('xpath', $xpath);
-            $tileHtml = $tile->getHtml();
-            $tileText = $tile->getText();
+            $tilehtml = $tile->getHtml();
+            $tiletext = $tile->getText();
 
             echo "\n=== DEBUG: TILE CONTENT FOR SECTION {$sectionnumber} ===\n";
-            echo "Text: {$tileText}\n";
-            echo "HTML: " . substr($tileHtml, 0, 500) . "...\n";
+            echo "Text: {$tiletext}\n";
+            echo "HTML: " . substr($tilehtml, 0, 500) . "...\n";
 
-            // Check specifically for duration div
-            $durationXpath = "//li[@id='section-{$sectionnumber}' and contains(@class, 'tilesection')]//div[contains(@class, 'totalduration') and contains(@class, 'ma-small')]";
+            // Check specifically for duration div.
+            $durationxpath = "//li[@id='section-{$sectionnumber}' and contains(@class, 'tilesection')]" .
+                            "//div[contains(@class, 'totalduration') and contains(@class, 'ma-small')]";
             try {
-                $durationDiv = $this->find('xpath', $durationXpath);
-                $durationText = $durationDiv->getText();
-                echo "Duration div found: '{$durationText}'\n";
+                $durationdiv = $this->find('xpath', $durationxpath);
+                $durationtext = $durationdiv->getText();
+                echo "Duration div found: '{$durationtext}'\n";
             } catch (ElementNotFoundException $e) {
                 echo "Duration div NOT found\n";
             }
@@ -380,11 +398,11 @@ class behat_format_mawang extends behat_base {
      */
     public function i_ensure_mawang_custom_fields_are_set_up() {
         try {
-            // Try to set up the custom fields using the setup class
+            // Try to set up the custom fields using the setup class.
             \format_mawang\setup::install();
             echo "\n=== Mawang custom fields setup completed ===\n";
         } catch (\Exception $e) {
-            // Log the error but don't fail the test - the custom fields might not be available
+            // Log the error but don't fail the test - the custom fields might not be available.
             echo "\n=== Warning: Could not set up custom fields: " . $e->getMessage() . " ===\n";
             echo "=== This might be expected if local_modcustomfields plugin is not installed ===\n";
         }
