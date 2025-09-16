@@ -58,6 +58,10 @@ jobs:
           sudo locale-gen en_AU.UTF-8
           echo "NVM_DIR=$HOME/.nvm" >> $GITHUB_ENV
 
+      - name: Install additional plugins
+        run: |
+          git clone https://github.com/bmbrands/moodle-local_modcustomfields.git ci/moodle/local/modcustomfields
+
       - name: Install moodle-plugin-ci
         run: moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1
         env:
@@ -102,6 +106,10 @@ jobs:
       - name: PHPUnit tests
         if: ${{ !cancelled() }}
         run: moodle-plugin-ci phpunit --fail-on-warning
+
+      - name: Behat features
+        if: ${{ !cancelled() }}
+        run: moodle-plugin-ci behat --profile default
 
       - name: Mark cancelled jobs as failed.
         if: ${{ cancelled() }}

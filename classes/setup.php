@@ -32,6 +32,12 @@ class setup {
      * @return void
      */
     public static function install(): void {
+        // Check if the local_modcustomfields plugin is installed
+        if (!class_exists('\local_modcustomfields\customfield\mod_handler')) {
+            // Plugin not installed, skip custom field setup
+            return;
+        }
+
         $handler = \local_modcustomfields\customfield\mod_handler::create();
         $fields = $handler->get_fields();
         $durationfieldname = constants::DEFAULT_DURATION_CUSTOM_FIELD_NAME;
