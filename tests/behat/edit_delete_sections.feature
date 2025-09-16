@@ -91,7 +91,6 @@ Feature: Sections can be edited and deleted in mawang sections format
     Then I should see "Topic 6" in the "Topic 6" "section"
     And I should see "Test choice name" in the "Section 5" "section"
 
-
   @javascript
   Scenario: Add a section and then add an activity in it
     Given I am on "Course 1" course homepage with editing mode on
