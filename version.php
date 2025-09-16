@@ -31,7 +31,7 @@ $plugin->dependencies = [
     'local_modcustomfields' => 2024070300,
 ];
 $plugin->release      = '1.0';
-$plugin->version      = 2025072200;
+$plugin->version      = 2025101600;
 $plugin->requires     = 2024100700;
 $plugin->supported    = [405, 405];
 $plugin->maturity     = MATURITY_STABLE;

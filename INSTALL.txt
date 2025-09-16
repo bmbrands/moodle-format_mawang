@@ -1,0 +1,53 @@
+MAWANG PLUGIN SUITE INSTALLATION INSTRUCTIONS
+
+The Mawang plugin suite consists of 5 plugins that work together to provide an enhanced Moodle experience. All plugins should be installed in a Moodle 4.4+ environment with PHP 8.1 or higher.
+
+AUTOMATIC INSTALLATION
+
+Copy the install.php script to your Moodle root directory and run:
+php install.php
+
+This will automatically download and install all plugins in the correct order. Use --dry-run to see what will be installed without making changes.
+
+MANUAL INSTALLATION
+
+If you prefer to install manually, download each plugin and extract to the specified directory:
+
+Local Module Custom Fields Plugin
+Adds custom fields functionality to activity modules throughout Moodle. This provides the foundation for enhanced module configuration and is required by other plugins in the suite.
+Install to: local/modcustomfields
+
+Filter Teacher Profile Plugin  
+Displays teacher profile information and details within course content. This filter automatically detects teacher references and shows relevant profile data to students.
+Install to: filter/teacherprofile
+
+Assignment Submission Forms Plugin
+Extends assignment submissions with custom form capabilities and enhanced student interaction. This allows teachers to create structured submission forms beyond basic file uploads.
+Install to: mod/assign/submission/forms
+
+Mawang Theme
+A responsive theme designed specifically for the Mawang course format. This theme provides the visual styling and layout optimizations needed for the best user experience.
+Install to: theme/mawang
+
+Mawang Course Format
+The main course format that provides tile-based navigation and enhanced course presentation. This is the core plugin that transforms how courses are displayed and navigated.
+Install to: course/format/mawang
+
+INSTALLATION ORDER
+
+Install plugins in this order to satisfy dependencies:
+1. Local Module Custom Fields
+2. Filter Teacher Profile  
+3. Assignment Submission Forms
+4. Mawang Theme
+5. Mawang Course Format
+
+AFTER INSTALLATION
+
+Visit your Moodle site administration area and complete the plugin installation process through the notifications page. Configure each plugin according to your site needs. Create a new course or edit an existing course to use the Mawang format.
+
+TROUBLESHOOTING
+
+Ensure your Moodle version is 4.4 or higher and PHP is version 8.1 or above. Check that all plugin directories have proper write permissions. If installation fails, remove incomplete plugin directories and try again.
+
+For support visit the GitHub repositories at https://github.com/bmbrands
