@@ -5,7 +5,7 @@
 The Mawang course format is designed by Madison Wang en implemented by Bas Brands. It features a tile based layout and is intended to
 provide a clean and professional course experience. It features progress indication, last visisted section, a course warning messages
 Custom navigation experience for some activities, and inpage block area.
-This course forut should be installed with theme_mawang
+This course format should be installed with theme_mawang
 
 ## 2. Additional Features
 
@@ -24,7 +24,7 @@ Section images can be added via the "edit section" option in the section dropdow
 
 ## 5. Global Settings
 
-The Couthino course format has several global settings that administrators can configure:
+The Mawang course format has several global settings that administrators can configure:
 
 - **Show backlink in activities**
   - Setting: `format_mawang | cmbacklink`
