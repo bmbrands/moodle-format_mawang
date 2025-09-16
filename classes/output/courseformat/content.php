@@ -92,7 +92,10 @@ class content extends \core_courseformat\output\local\content {
             $data->singlesection = array_shift($data->sections);
             $data->sectionreturn = $singlesectionnum;
         } else {
-            $data->teacherprofile = \filter_teacherprofile\text_filter::quick_get_teacher();
+            // Only call teacher profile filter if the plugin is installed.
+            if (class_exists('\filter_teacherprofile\text_filter')) {
+                $data->teacherprofile = \filter_teacherprofile\text_filter::quick_get_teacher();
+            }
         }
 
         if ($this->hasaddsection) {

@@ -64,20 +64,28 @@
     right: 0.5rem;
     z-index: 100;
 }
-.course-content ul.mawang li.section .section-edit-button:hover, .course-content ul.mawang li.section .section-edit-button:focus {
+.course-content ul.mawang li.section .section-edit-button:hover,
+.course-content ul.mawang li.section .section-edit-button:focus {
     background-color: #cacaca;
 }
 .course-content ul.mawang li.section .section-modchooser-link.activity-add {
     max-width: 50%;
-    padding: 0 !important;
+    padding: 0;
     background-color: transparent;
     border: 0;
 }
 .course-content ul.mawang li.section .section-modchooser-link.activity-add .pluscontainer {
-    display: none !important;
+    display: none;
 }
 .course-content ul.mawang .activity-item .activity-grid {
-    grid-template-areas: "icon   name          groupmode      completion    actions" "icon   visibility    groupmode      completion    actions" "icon   dates         groupmode      completion    actions" "icon   altcontent    altcontent     altcontent    altcontent" "icon   afterlink     afterlink      afterlink     afterlink" "icon   availability  availability   availability  availability" "icon   duration     duration       duration      duration";
+    grid-template-areas:
+        "icon   name          groupmode      completion    actions"
+        "icon   visibility    groupmode      completion    actions"
+        "icon   dates         groupmode      completion    actions"
+        "icon   altcontent    altcontent     altcontent    altcontent"
+        "icon   afterlink     afterlink      afterlink     afterlink"
+        "icon   availability  availability   availability  availability"
+        "icon   duration     duration       duration      duration";
 }
 .course-content ul.mawang .activity-duration {
     grid-area: duration;
@@ -223,7 +231,8 @@
     overflow: hidden;
     word-wrap: break-word;
 }
-.course-content ul.mawang .tilesections > li.tilesection.tile .tiletext a:hover, .course-content ul.mawang .tilesections > li.tilesection.tile .tiletext a:focus {
+.course-content ul.mawang .tilesections > li.tilesection.tile .tiletext a:hover,
+.course-content ul.mawang .tilesections > li.tilesection.tile .tiletext a:focus {
     text-decoration: none;
 }
 .course-content ul.mawang .tilesections > li.tilesection.tile .tiletext a::after {
@@ -249,18 +258,21 @@
 .course-content ul.mawang .tilesections > li.tilesection.locked > .course-section-header .sectionprogress {
     display: none;
 }
-.course-content ul.mawang .tilesections > li.tilesection.locked > .course-section-header:hover:before, .course-content ul.mawang .tilesections > li.tilesection.locked > .course-section-header:focus:before {
+.course-content ul.mawang .tilesections > li.tilesection.locked > .course-section-header:hover:before,
+.course-content ul.mawang .tilesections > li.tilesection.locked > .course-section-header:focus:before {
     border: 0;
 }
 .course-content ul.mawang .tilesections > li.tilesection .section-image-background {
     transition: filter 0.3s;
 }
-.course-content ul.mawang .tilesections > li.tilesection.tile:hover, .course-content ul.mawang .tilesections > li.tilesection.tile:focus {
+.course-content ul.mawang .tilesections > li.tilesection.tile:hover,
+.course-content ul.mawang .tilesections > li.tilesection.tile:focus {
     cursor: pointer;
     outline: 0;
-    box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 4px 4px 2px rgba(0, 0, 0, 0.25);
 }
-.course-content ul.mawang .tilesections > li.tilesection.tile:hover .section-image-background, .course-content ul.mawang .tilesections > li.tilesection.tile:focus .section-image-background {
+.course-content ul.mawang .tilesections > li.tilesection.tile:hover .section-image-background,
+.course-content ul.mawang .tilesections > li.tilesection.tile:focus .section-image-background {
     filter: brightness(1.05);
 }
 .course-content ul.mawang .tilesections .btn-icon {
@@ -270,9 +282,10 @@
 .course-content ul.mawang .mawang-level-1 {
     padding-left: 0;
 }
+
 @media screen and (max-width: 600px) {
     .course-content ul.mawang .activity-item:not(.activityinline) {
-      border: 0;
+        border: 0;
     }
 }
 
@@ -307,7 +320,8 @@
     color: #5331a3;
     background-color: transparent;
 }
-.customfield-acc .card .btn.btn-icon.icons-collapse-expand:hover, .customfield-acc .card .btn.btn-icon.icons-collapse-expand:focus {
+.customfield-acc .card .btn.btn-icon.icons-collapse-expand:hover,
+.customfield-acc .card .btn.btn-icon.icons-collapse-expand:focus {
     outline: 0;
     color: #5331a3;
     background-color: transparent;
