@@ -57,9 +57,9 @@ class format_mawang extends core_courseformat\base {
             $PAGE->add_body_class('has-customfields-tab');
         }
 
-        if (strpos($PAGE->pagetype, 'mod-') === 0) {
-            $PAGE->set_secondary_navigation(false);
-        }
+        // if (strpos($PAGE->pagetype, 'mod-') === 0) {
+        //     $PAGE->set_secondary_navigation(false);
+        // }
         $openblocksfor = get_config('format_mawang', 'autoblockopen');
         if ($openblocksfor) {
             $openblocksfor = explode(',', $openblocksfor);

@@ -34,7 +34,7 @@
 <div class="d-flex align-items-end position-relative w-100">
     {{#headerdisplaymultipage}}
         {{#indenttitle}}
-            <span class="icon-no-margin p-2 dimmed_text mr-1" style="color: #dee2e6">
+            <span class="icon-no-margin p-2 dimmed_text me-1" style="color: #dee2e6">
                 <span class="dir-rtl-hide">{{#pix}} t/collapsedchevron, core {{/pix}}</span>
                 <span class="dir-ltr-hide">{{#pix}} t/collapsedchevron_rtl, core {{/pix}}</span>
             </span>
@@ -47,12 +47,12 @@
     {{^headerdisplaymultipage}}
         {{^hidetitle}}
             <div class="d-flex align-items-start position-relative w-100">
-                <a role="button" data-toggle="collapse"
+                <a role="button" data-bs-toggle="collapse"
                    href="#coursecontentcollapse{{num}}"
                    id="hcollapssesection{{num}}"
                    aria-expanded="{{^contentcollapsed}}true{{/contentcollapsed}}{{#contentcollapsed}}false{{/contentcollapsed}}"
                    aria-controls="coursecontentcollapse{{num}}"
-                   class="btn btn-icon mr-1 icons-collapse-expand justify-content-center
+                   class="btn btn-icon me-1 icons-collapse-expand justify-content-center
                        {{^editing}} stretched-link {{/editing}}
                        {{^sectionformat.parent}} d-none{{/sectionformat.parent}}
                        {{#contentcollapsed}} collapsed {{/contentcollapsed}}"

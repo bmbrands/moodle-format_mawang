@@ -58,7 +58,7 @@ class cmsummary extends \core_courseformat\output\local\content\section\cmsummar
      *
      * @return array with [[count by activity type], completed activities, total of activitites]
      */
-    private function calculate_section_stats(): array {
+    protected function calculate_section_stats(): array {
         $format = $this->format;
         $course = $format->get_course();
         $section = $this->section;

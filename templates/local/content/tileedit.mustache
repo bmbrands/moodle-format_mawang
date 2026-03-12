@@ -42,7 +42,7 @@
     data-number="{{num}}"
 >
     {{#restrictionlock}}
-        <div class="badge badge-warning badge-pill section-restricted-badge">
+        <div class="badge bg-warning text-dark rounded-pill section-restricted-badge">
             {{#str}}notavailable, format_mawang{{/str}}
             <i class="icon fa fa-lock"></i>
         </div>
@@ -81,7 +81,7 @@
                 </div>
             {{/cmsummary.totalduration}}
             {{#lastvisited}}
-                <span class="recentlyviewed ml-auto">{{#str}}recentlyviewed, format_mawang{{/str}}</span>
+                <span class="recentlyviewed ms-auto">{{#str}}recentlyviewed, format_mawang{{/str}}</span>
             {{/lastvisited}}
         </div>
     </div>
@@ -99,7 +99,7 @@
     {{$ core_courseformat/local/content/section/content }}
         <div class="tilecontent d-flex position-relative">
             <button class="btn btn-close bg-light" data-action="tiletoggle" data-id="{{id}}" data-number="{{num}}" tabindex="0">
-                <span class="sr-only">{{#str}}close, format_mawang{{/str}}</span>
+                <span class="visually-hidden">{{#str}}close, format_mawang{{/str}}</span>
                 <span aria-hidden="true">&times;</span>
             </button>
             {{> format_mawang/local/content/section/orgcontent }}

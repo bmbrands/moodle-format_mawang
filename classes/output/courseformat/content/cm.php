@@ -31,7 +31,7 @@ use stdClass;
 class cm extends \core_courseformat\output\local\content\cm {
 
     /** @var section_info the section object */
-    private $section;
+    protected $section;
 
     /**
      * Template name
@@ -92,7 +92,7 @@ class cm extends \core_courseformat\output\local\content\cm {
         $haspartials['editor'] = $this->add_editor_data($data, $output);
         $haspartials['groupmode'] = $this->add_groupmode_data($data, $output);
         $haspartials['visibility'] = $this->add_visibility_data($data, $output);
-        $this->add_actvitychooserbutton_data($data, $output);
+        $this->add_activitychooserbutton_data($data, $output);
         $this->add_format_data($data, $haspartials, $output);
 
         // Calculated fields.

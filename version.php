@@ -26,7 +26,6 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->component    = 'format_mawang';
 $plugin->dependencies = [
-    'theme_mawang' => 2025061800,
     'filter_teacherprofile' => 2025061800,
     'local_modcustomfields' => 2024070300,
 ];
