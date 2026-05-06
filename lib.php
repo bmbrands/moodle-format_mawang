@@ -411,6 +411,10 @@ class format_mawang extends core_courseformat\base {
                     'default' => $courseconfig->coursedisplay ?? COURSE_DISPLAY_MULTIPAGE,
                     'type' => PARAM_INT,
                 ],
+                'lessonstitle' => [
+                    'default' => get_string('lessons', 'format_mawang'),
+                    'type' => PARAM_TEXT,
+                ],
             ];
         }
         if ($foreditform && !isset($courseformatoptions['coursedisplay']['label'])) {
@@ -422,6 +426,12 @@ class format_mawang extends core_courseformat\base {
                 'cmbacklink' => [
                     'label' => new lang_string('cmbacklink', 'format_mawang'),
                     'element_type' => 'advcheckbox',
+                ],
+                'lessonstitle' => [
+                    'label' => new lang_string('lessonstitle', 'format_mawang'),
+                    'help' => 'lessonstitle',
+                    'help_component' => 'format_mawang',
+                    'element_type' => 'text',
                 ],
                 'coursedisplay' => [
                     'label' => new lang_string('coursedisplay'),
@@ -932,7 +942,7 @@ function format_mawang_add_back_link_to_cm(): ?cm_info {
             && $PAGE->cm
             && $PAGE->course->format === 'mawang' // Only modules in 'mawang' courses.
             && course_get_format($PAGE->course)->get_course()->cmbacklink
-            && $PAGE->pagelayout === 'incourse' // Only view pages with the incourse layout (not popup, embedded, etc).
+            && in_array($PAGE->pagelayout, ['incourse', 'report'], true) // Only view/report pages (not popup, embedded, etc).
             && $PAGE->cm->sectionnum // Do not display in activities in General section.
             && $PAGE->url->out_omit_querystring() === $CFG->wwwroot . "/mod/{$PAGE->cm->modname}/view.php") {
         return $PAGE->cm;

@@ -108,6 +108,10 @@ class content extends \core_courseformat\output\local\content {
             $data->bulkedittools = $bulkedittools->export_for_template($output);
         }
         $data->coursemessage = $this->get_startdate_message();
+        $courseoptions = $format->get_format_options();
+        $data->lessonstitle = !empty($courseoptions['lessonstitle'])
+            ? $courseoptions['lessonstitle']
+            : get_string('lessons', 'format_mawang');
         $data->editing = $PAGE->user_is_editing();
         return $data;
     }

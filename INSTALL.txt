@@ -17,7 +17,7 @@ Local Module Custom Fields Plugin
 Adds custom fields functionality to activity modules throughout Moodle. This provides the foundation for enhanced module configuration and is required by other plugins in the suite.
 Install to: local/modcustomfields
 
-Filter Teacher Profile Plugin  
+Filter Teacher Profile Plugin
 Displays teacher profile information and details within course content. This filter automatically detects teacher references and shows relevant profile data to students.
 Install to: filter/teacherprofile
 
@@ -37,7 +37,7 @@ INSTALLATION ORDER
 
 Install plugins in this order to satisfy dependencies:
 1. Local Module Custom Fields
-2. Filter Teacher Profile  
+2. Filter Teacher Profile
 3. Assignment Submission Forms
 4. Mawang Theme
 5. Mawang Course Format
